@@ -1,0 +1,85 @@
+<?xml version='1.0'?>
+
+<project name="logfork" default="jar" basedir=".">
+
+    <!-- Key directories -->
+    <property name="bin" value="bin"/>
+    <property name="include" value="include"/>
+    <property name="lib" value="lib"/>
+    <property name="src" value="src"/>
+
+    <target name="init">
+
+        <!-- Create the bin directory structure used by compile -->
+        <mkdir dir="${bin}" />
+
+        <!-- Create the directory for the jar file -->
+        <mkdir dir="${lib}" />
+
+        <!-- Create the dist directory -->
+        <mkdir dir="${dist}" />
+    </target>
+
+    <target name="compile" depends="init">
+        <javac
+            srcdir="${src}" 
+            destdir="${bin}"
+            source="1.5"
+            target="1.5"
+            includeAntRuntime="no"
+            debug="true"
+            debuglevel="lines,vars,source">
+            <classpath>
+                <!-- Include all jar files  -->
+                <fileset dir="${include}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <fileset dir="${eclipse.home}" includes="startup.jar"/>
+                <fileset dir="${eclipse.home}">
+                    <include name="dropins/eclipse/plugins/org.eclipse.*.jar"/>
+                    <include name="plugins/org.eclipse.*.jar"/>
+                </fileset>
+                <dirset dir="${eclipse.home}">
+                    <include name="dropins/eclipse/plugins/org.eclipse.*"/>
+                    <include name="plugins/org.eclipse.*"/>
+                </dirset>
+            </classpath>
+        </javac>
+
+    </target>
+
+    <target name="clean">
+        <echo message="Deleting non-essential dirs" />
+
+        <!-- Delete non-essential dirs -->
+        <delete dir="${bin}"/>
+        <delete dir="${lib}"/>
+
+        <!-- Delete rogue class files in src dir -->
+        <delete quiet="true">
+            <fileset dir="${src}" includes="**/*.class"/>
+        </delete>
+    </target>
+
+    <target name="jar" depends="compile">
+
+        <!-- Unpackage all our dependences so we can jar them up -->
+        <!-- NOTE: This does not overwrite anything that may already exist -->
+        <unjar dest="${bin}" overwrite="false">
+            <fileset dir="${include}">
+                <include name="**/*.jar"/>
+                <exclude name="**/*swt*"/>
+            </fileset>
+        </unjar>
+
+        <!-- Make a jar file -->
+        <jar jarfile="${lib}/ftf.jar" basedir="${bin}/">
+            <manifest>
+
+                <!-- Default to launching the GUI interface -->
+                <attribute name="Main-Class" value="${runclass}"/>
+            </manifest>
+        </jar>
+    </target>
+
+</project>
