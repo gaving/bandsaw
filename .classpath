@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="lib" path="include/apache-log4j-component-gump-22022009.jar"/>
+	<classpathentry kind="lib" path="include/apache-log4j-extras-1.0.jar"/>
+	<classpathentry kind="lib" path="include/apache-log4j-receivers-gump-22022009.jar"/>
+	<classpathentry kind="lib" path="include/jakarta-regexp-1.2.jar"/>
+	<classpathentry kind="lib" path="include/junit.jar"/>
+	<classpathentry kind="lib" path="include/log4j-1.2.8.jar"/>
+	<classpathentry kind="lib" path="include/log4j-gump-22022009.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

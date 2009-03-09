@@ -175,6 +175,14 @@ public class Log4jServer extends Thread
     /**
      * @return
      */
+    public static Log4jServer getLog4jServer()
+    {
+        return mLog4jServer;
+    }
+
+    /**
+     * @return
+     */
     public static Thread getPrimary()
     {
         return mPrimary;
