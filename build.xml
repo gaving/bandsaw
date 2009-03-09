@@ -6,6 +6,7 @@
     <property name="bin" value="bin"/>
     <property name="include" value="include"/>
     <property name="lib" value="lib"/>
+    <property name="config" value="config"/>
     <property name="src" value="src"/>
 
     <target name="init">
@@ -62,6 +63,12 @@
     </target>
 
     <target name="jar" depends="compile">
+
+        <copy todir="${bin}">
+            <fileset dir="${config}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
 
         <!-- Unpackage all our dependences so we can jar them up -->
         <!-- NOTE: This does not overwrite anything that may already exist -->
