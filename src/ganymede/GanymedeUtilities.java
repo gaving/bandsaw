@@ -41,511 +41,511 @@ import org.eclipse.ui.IViewSite;
  */
 public class GanymedeUtilities {
 
-	private static Table table;
+    private static Table table;
 
-	private static GanymedeView mView;
+    private static GanymedeView mView;
 
-	private static Log4jServer mSocketServer;
+    private static Log4jServer mSocketServer;
 
-	private static ShowDetailAction mShowDetailAction;
+    private static ShowDetailAction mShowDetailAction;
 
-	private static Hashtable colors = new Hashtable(5);
+    private static Hashtable colors = new Hashtable(5);
 
-	private static IAction mStartAction;
+    private static IAction mStartAction;
 
-	private static IAction mStopAction;
+    private static IAction mStopAction;
 
-	private static IViewSite mSite;
+    private static IViewSite mSite;
 
-	private static boolean mActionsInited = false;
+    private static boolean mActionsInited = false;
 
-	private static String sViewTitle;
+    private static String sViewTitle;
 
-	private static int mServerType = Ganymede.P_SERVER_TYPE_SOCKET_APPENDER;
+    private static int mServerType = Ganymede.P_SERVER_TYPE_SOCKET_APPENDER;
 
-	static public Iterator getColumnLabels() {
-		Vector v = new Vector();
-		v.add(Log4jItem.LABEL_LEVEL);
-		v.add(Log4jItem.LABEL_CATEGORY);
-		v.add(Log4jItem.LABEL_MESSAGE);
-		v.add(Log4jItem.LABEL_LINE_NUMBER);
-		v.add(Log4jItem.LABEL_DATE);
-		v.add(Log4jItem.LABEL_NDC);
-		v.add(Log4jItem.LABEL_THROWABLE);
-		return v.iterator();
-	}
+    static public Iterator getColumnLabels() {
+        Vector v = new Vector();
+        v.add(Log4jItem.LABEL_LEVEL);
+        v.add(Log4jItem.LABEL_CATEGORY);
+        v.add(Log4jItem.LABEL_MESSAGE);
+        v.add(Log4jItem.LABEL_LINE_NUMBER);
+        v.add(Log4jItem.LABEL_DATE);
+        v.add(Log4jItem.LABEL_NDC);
+        v.add(Log4jItem.LABEL_THROWABLE);
+        return v.iterator();
+    }
 
-	/**
-	 * Get the string label
-	 * 
-	 * @param col
-	 * @return String
-	 */
-	static public String getLabelText(int col) {
-		switch (col) {
-		case Log4jItem.LEVEL:
-			return Log4jItem.LABEL_LEVEL;
-		case Log4jItem.CATEGORY:
-			return Log4jItem.LABEL_CATEGORY;
-		case Log4jItem.MESSAGE:
-			return Log4jItem.LABEL_MESSAGE;
-		case Log4jItem.LINE_NUMBER:
-			return Log4jItem.LABEL_LINE_NUMBER;
-		case Log4jItem.DATE:
-			return Log4jItem.LABEL_DATE;
-		case Log4jItem.NDC:
-			return Log4jItem.LABEL_NDC;
-		case Log4jItem.THROWABLE:
-			return Log4jItem.LABEL_THROWABLE;
-		default:
-			return Log4jItem.LABEL_UNKNOWN;
-		}
-	}
+    /**
+     * Get the string label
+     * 
+     * @param col
+     * @return String
+     */
+    static public String getLabelText(int col) {
+        switch (col) {
+            case Log4jItem.LEVEL:
+                return Log4jItem.LABEL_LEVEL;
+            case Log4jItem.CATEGORY:
+                return Log4jItem.LABEL_CATEGORY;
+            case Log4jItem.MESSAGE:
+                return Log4jItem.LABEL_MESSAGE;
+            case Log4jItem.LINE_NUMBER:
+                return Log4jItem.LABEL_LINE_NUMBER;
+            case Log4jItem.DATE:
+                return Log4jItem.LABEL_DATE;
+            case Log4jItem.NDC:
+                return Log4jItem.LABEL_NDC;
+            case Log4jItem.THROWABLE:
+                return Log4jItem.LABEL_THROWABLE;
+            default:
+                return Log4jItem.LABEL_UNKNOWN;
+        }
+    }
 
-	/**
-	 * This is used to convert a string column label to it's int counterpart
-	 * 
-	 * @param colLabel
-	 *            The column label
-	 * @return int
-	 */
-	static public int convertColumnToInt(String colLabel) {
-		if (colLabel.equals(Log4jItem.LABEL_LEVEL)) {
-			return Log4jItem.LEVEL;
-		} else if (colLabel.equals(Log4jItem.LABEL_CATEGORY)) {
-			return Log4jItem.CATEGORY;
-		} else if (colLabel.equals(Log4jItem.LABEL_MESSAGE)) {
-			return Log4jItem.MESSAGE;
-		} else if (colLabel.equals(Log4jItem.LABEL_LINE_NUMBER)) {
-			return Log4jItem.LINE_NUMBER;
-		} else if (colLabel.equals(Log4jItem.LABEL_DATE)) {
-			return Log4jItem.DATE;
-		} else if (colLabel.equals(Log4jItem.LABEL_NDC)) {
-			return Log4jItem.NDC;
-		} else if (colLabel.equals(Log4jItem.LABEL_THROWABLE)) {
-			return Log4jItem.THROWABLE;
-		} else {
-			return Log4jItem.UNKNOWN;
-		}
-	}
+    /**
+     * This is used to convert a string column label to it's int counterpart
+     * 
+     * @param colLabel
+     *            The column label
+     * @return int
+     */
+    static public int convertColumnToInt(String colLabel) {
+        if (colLabel.equals(Log4jItem.LABEL_LEVEL)) {
+            return Log4jItem.LEVEL;
+        } else if (colLabel.equals(Log4jItem.LABEL_CATEGORY)) {
+            return Log4jItem.CATEGORY;
+        } else if (colLabel.equals(Log4jItem.LABEL_MESSAGE)) {
+            return Log4jItem.MESSAGE;
+        } else if (colLabel.equals(Log4jItem.LABEL_LINE_NUMBER)) {
+            return Log4jItem.LINE_NUMBER;
+        } else if (colLabel.equals(Log4jItem.LABEL_DATE)) {
+            return Log4jItem.DATE;
+        } else if (colLabel.equals(Log4jItem.LABEL_NDC)) {
+            return Log4jItem.NDC;
+        } else if (colLabel.equals(Log4jItem.LABEL_THROWABLE)) {
+            return Log4jItem.THROWABLE;
+        } else {
+            return Log4jItem.UNKNOWN;
+        }
+    }
 
-	static public Log4jItem Log4jItemFactory(int type, LoggingEvent e) {
-		switch (type) {
-		case Log4jItem.LEVEL:
-			return new Log4jLevel(e);
-		case Log4jItem.CATEGORY:
-			return new Log4jCategory(e);
-		case Log4jItem.MESSAGE:
-			return new Log4jMessage(e);
-		case Log4jItem.LINE_NUMBER:
-			return new Log4jLineNumber(e);
-		case Log4jItem.DATE:
-			return new Log4jDate(e);
-		case Log4jItem.NDC:
-			return new Log4jNDC(e);
-		case Log4jItem.THROWABLE:
-			return new Log4jThrowable(e);
-		default:
-			return null;
-		}
-	}
+    static public Log4jItem Log4jItemFactory(int type, LoggingEvent e) {
+        switch (type) {
+            case Log4jItem.LEVEL:
+                return new Log4jLevel(e);
+            case Log4jItem.CATEGORY:
+                return new Log4jCategory(e);
+            case Log4jItem.MESSAGE:
+                return new Log4jMessage(e);
+            case Log4jItem.LINE_NUMBER:
+                return new Log4jLineNumber(e);
+            case Log4jItem.DATE:
+                return new Log4jDate(e);
+            case Log4jItem.NDC:
+                return new Log4jNDC(e);
+            case Log4jItem.THROWABLE:
+                return new Log4jThrowable(e);
+            default:
+                return null;
+        }
+    }
 
-	static public void setTable(Table table) {
-		GanymedeUtilities.table = table;
-	}
+    static public void setTable(Table table) {
+        GanymedeUtilities.table = table;
+    }
 
-	static public Table getTable() {
-		return GanymedeUtilities.table;
-	}
+    static public Table getTable() {
+        return GanymedeUtilities.table;
+    }
 
-	/**
-	 * Sets the defaults. This needs to be called before you can update widths
-	 * or save any
-	 */
-	static public void setTableColumnWidthDefaults() {
-		IPreferenceStore store = Ganymede.getDefault().getPreferenceStore();
-		store.setDefault("colWidth." + Log4jItem.LEVEL, 75);
-		store.setDefault("colWidth." + Log4jItem.CATEGORY, 75);
-		store.setDefault("colWidth." + Log4jItem.DATE, 75);
-		store.setDefault("colWidth." + Log4jItem.LINE_NUMBER, 75);
-		store.setDefault("colWidth." + Log4jItem.MESSAGE, 75);
-		store.setDefault("colWidth." + Log4jItem.NDC, 75);
-		store.setDefault("colWidth." + Log4jItem.THROWABLE, 75);
-		store.setDefault("colWidth." + Log4jItem.UNKNOWN, 75);
-	}
+    /**
+     * Sets the defaults. This needs to be called before you can update widths
+     * or save any
+     */
+    static public void setTableColumnWidthDefaults() {
+        IPreferenceStore store = Ganymede.getDefault().getPreferenceStore();
+        store.setDefault("colWidth." + Log4jItem.LEVEL, 75);
+        store.setDefault("colWidth." + Log4jItem.CATEGORY, 75);
+        store.setDefault("colWidth." + Log4jItem.DATE, 75);
+        store.setDefault("colWidth." + Log4jItem.LINE_NUMBER, 75);
+        store.setDefault("colWidth." + Log4jItem.MESSAGE, 75);
+        store.setDefault("colWidth." + Log4jItem.NDC, 75);
+        store.setDefault("colWidth." + Log4jItem.THROWABLE, 75);
+        store.setDefault("colWidth." + Log4jItem.UNKNOWN, 75);
+    }
 
-	/**
-	 * Saves column widths
-	 */
-	static public void saveTableColumnWidths() {
-		if (isShowing()) {
-			setTableColumnWidthDefaults();
-			IPreferenceStore store = Ganymede.getDefault().getPreferenceStore();
-			TableColumn[] tc = getTable().getColumns();
-			ColumnList list = ColumnList.getInstance();
-			Iterator iter = list.getList();
-			for (int i = 0; i < list.getColumnCount(); i++) {
-				int val = ((Integer) iter.next()).intValue();
-				store.setValue("colWidth." + val, tc[i].getWidth());
-			}
-		}
-	}
+    /**
+     * Saves column widths
+     */
+    static public void saveTableColumnWidths() {
+        if (isShowing()) {
+            setTableColumnWidthDefaults();
+            IPreferenceStore store = Ganymede.getDefault().getPreferenceStore();
+            TableColumn[] tc = getTable().getColumns();
+            ColumnList list = ColumnList.getInstance();
+            Iterator iter = list.getList();
+            for (int i = 0; i < list.getColumnCount(); i++) {
+                int val = ((Integer) iter.next()).intValue();
+                store.setValue("colWidth." + val, tc[i].getWidth());
+            }
+        }
+    }
 
-	/**
-	 * Used to refresh their widths [on startup usually]
-	 */
-	static public void updateTableColumnWidths() {
-		if (isShowing()) {
-			setTableColumnWidthDefaults();
-			IPreferenceStore store = Ganymede.getDefault().getPreferenceStore();
-			TableColumn[] tc = getTable().getColumns();
-			ColumnList list = ColumnList.getInstance();
-			Iterator iter = list.getList();
-			for (int i = 0; i < list.getColumnCount(); i++) {
-				int val = ((Integer) iter.next()).intValue();
-				int width = store.getInt("colWidth." + val);
-				tc[i].setWidth(width);
-			}
-		}
-	}
+    /**
+     * Used to refresh their widths [on startup usually]
+     */
+    static public void updateTableColumnWidths() {
+        if (isShowing()) {
+            setTableColumnWidthDefaults();
+            IPreferenceStore store = Ganymede.getDefault().getPreferenceStore();
+            TableColumn[] tc = getTable().getColumns();
+            ColumnList list = ColumnList.getInstance();
+            Iterator iter = list.getList();
+            for (int i = 0; i < list.getColumnCount(); i++) {
+                int val = ((Integer) iter.next()).intValue();
+                int width = store.getInt("colWidth." + val);
+                tc[i].setWidth(width);
+            }
+        }
+    }
 
-	static public void updateTableColumns() {
-		if (isShowing()) {
-			TableColumn[] tc = getTable().getColumns();
-			ColumnList list = ColumnList.getInstance();
-			Iterator iter = list.getList();
-			for (int i = 0; i < list.getColumnCount(); i++) {
-				int val = ((Integer) iter.next()).intValue();
-				tc[i].setText(GanymedeUtilities.getLabelText(val));
-				updateTableColumnWidths();
-			}
+    static public void updateTableColumns() {
+        if (isShowing()) {
+            TableColumn[] tc = getTable().getColumns();
+            ColumnList list = ColumnList.getInstance();
+            Iterator iter = list.getList();
+            for (int i = 0; i < list.getColumnCount(); i++) {
+                int val = ((Integer) iter.next()).intValue();
+                tc[i].setText(GanymedeUtilities.getLabelText(val));
+                updateTableColumnWidths();
+            }
 
-			resetTableRows();
-		}
-	}
+            resetTableRows();
+        }
+    }
 
-	static public String handleNull(String string) {
-		if (string == null) {
-			return "";
-		} else {
-			return string;
-		}
-	}
+    static public String handleNull(String string) {
+        if (string == null) {
+            return "";
+        } else {
+            return string;
+        }
+    }
 
-	public static String getColumnText(Object aLoggingEvent, int aColumnIndex) {
-		if (aLoggingEvent instanceof LoggingEvent) {
-			LoggingEvent le = (LoggingEvent) aLoggingEvent;
-			return ColumnList.getInstance().getText(aColumnIndex, le);
-		}
+    public static String getColumnText(Object aLoggingEvent, int aColumnIndex) {
+        if (aLoggingEvent instanceof LoggingEvent) {
+            LoggingEvent le = (LoggingEvent) aLoggingEvent;
+            return ColumnList.getInstance().getText(aColumnIndex, le);
+        }
 
-		return "Not a valid logging event";
-	}
+        return "Not a valid logging event";
+    }
 
-	/**
-	 * The filter has been updated, so we need to refresh display
-	 */
-	public static void filterUpdated() {
-		LogSet.getInstance().revalidateAll();
-		resetTableRows();
-	}
+    /**
+     * The filter has been updated, so we need to refresh display
+     */
+    public static void filterUpdated() {
+        LogSet.getInstance().revalidateAll();
+        resetTableRows();
+    }
 
-	/**
-	 * @return
-	 */
-	public static GanymedeView getView() {
-		return mView;
-	}
+    /**
+     * @return
+     */
+    public static GanymedeView getView() {
+        return mView;
+    }
 
-	/**
-	 * @param aView
-	 */
-	public static void setView(GanymedeView aView) {
-		mView = aView;
-	}
+    /**
+     * @param aView
+     */
+    public static void setView(GanymedeView aView) {
+        mView = aView;
+    }
 
-	/**
-	 * @return
-	 */
-	public static Log4jServer getSocketServer() {
-		return mSocketServer;
-	}
+    /**
+     * @return
+     */
+    public static Log4jServer getSocketServer() {
+        return mSocketServer;
+    }
 
-	/**
-	 * @param aServer
-	 */
-	public static void setSocketServer(Log4jServer aServer) {
-		mSocketServer = aServer;
-	}
+    /**
+     * @param aServer
+     */
+    public static void setSocketServer(Log4jServer aServer) {
+        mSocketServer = aServer;
+    }
 
-	/**
-	 * Show a message box
-	 * 
-	 * @param message
-	 */
-	static public void showMessage(String message) {
-		MessageDialog.openInformation(getTable().getParent().getShell(),
-				"Ganymede Log4j View", message + "...");
-	}
+    /**
+     * Show a message box
+     * 
+     * @param message
+     */
+    static public void showMessage(String message) {
+        MessageDialog.openInformation(getTable().getParent().getShell(),
+                "Ganymede Log4j View", message + "...");
+    }
 
-	/**
-	 * @return
-	 */
-	public static ShowDetailAction getShowDetailAction() {
-		return mShowDetailAction;
-	}
+    /**
+     * @return
+     */
+    public static ShowDetailAction getShowDetailAction() {
+        return mShowDetailAction;
+    }
 
-	/**
-	 * @param aAction
-	 */
-	public static void setShowDetailAction(ShowDetailAction aAction) {
-		mShowDetailAction = aAction;
-	}
+    /**
+     * @param aAction
+     */
+    public static void setShowDetailAction(ShowDetailAction aAction) {
+        mShowDetailAction = aAction;
+    }
 
-	static public void updateColors() {
-		IPreferenceStore store = Ganymede.getDefault().getPreferenceStore();
+    static public void updateColors() {
+        IPreferenceStore store = Ganymede.getDefault().getPreferenceStore();
 
-		colors.clear();
-		colors.put(Level.DEBUG.toString(), new Color(Display.getCurrent(),
-				PreferenceConverter.getColor(store,
-						ColorPreferencePage.DEBUG_COLOR_KEY)));
-		colors.put(Level.INFO.toString(), new Color(Display.getCurrent(),
-				PreferenceConverter.getColor(store,
-						ColorPreferencePage.INFO_COLOR_KEY)));
-		colors.put(Level.WARN.toString(), new Color(Display.getCurrent(),
-				PreferenceConverter.getColor(store,
-						ColorPreferencePage.WARN_COLOR_KEY)));
-		colors.put(Level.ERROR.toString(), new Color(Display.getCurrent(),
-				PreferenceConverter.getColor(store,
-						ColorPreferencePage.ERROR_COLOR_KEY)));
-		colors.put(Level.FATAL.toString(), new Color(Display.getCurrent(),
-				PreferenceConverter.getColor(store,
-						ColorPreferencePage.FATAL_COLOR_KEY)));
+        colors.clear();
+        colors.put(Level.DEBUG.toString(), new Color(Display.getCurrent(),
+                    PreferenceConverter.getColor(store,
+                        ColorPreferencePage.DEBUG_COLOR_KEY)));
+        colors.put(Level.INFO.toString(), new Color(Display.getCurrent(),
+                    PreferenceConverter.getColor(store,
+                        ColorPreferencePage.INFO_COLOR_KEY)));
+        colors.put(Level.WARN.toString(), new Color(Display.getCurrent(),
+                    PreferenceConverter.getColor(store,
+                        ColorPreferencePage.WARN_COLOR_KEY)));
+        colors.put(Level.ERROR.toString(), new Color(Display.getCurrent(),
+                    PreferenceConverter.getColor(store,
+                        ColorPreferencePage.ERROR_COLOR_KEY)));
+        colors.put(Level.FATAL.toString(), new Color(Display.getCurrent(),
+                    PreferenceConverter.getColor(store,
+                        ColorPreferencePage.FATAL_COLOR_KEY)));
 
-		// reset display
-		if (isShowing()) {
-			LogSet logSet = LogSet.getInstance();
-			Collection validLogs = logSet.getValidLogs();
-			TableItem[] items = getTable().getItems();
-			int idx = 0;
-			for (Iterator logIter = validLogs.iterator(); logIter.hasNext(); idx++) {
-				LoggingEvent le = (LoggingEvent) logIter.next();
-				items[idx].setForeground(GanymedeUtilities.getColor(le
-						.getLevel()));
-			}
-		}
-	}
+        // reset display
+        if (isShowing()) {
+            LogSet logSet = LogSet.getInstance();
+            Collection validLogs = logSet.getValidLogs();
+            TableItem[] items = getTable().getItems();
+            int idx = 0;
+            for (Iterator logIter = validLogs.iterator(); logIter.hasNext(); idx++) {
+                LoggingEvent le = (LoggingEvent) logIter.next();
+                items[idx].setForeground(GanymedeUtilities.getColor(le
+                            .getLevel()));
+            }
+        }
+    }
 
-	static public Color getColor(Level level) {
-		return (Color) colors.get(level.toString());
-	}
+    static public Color getColor(Level level) {
+        return (Color) colors.get(level.toString());
+    }
 
-	static public void initColorDefaults() {
-		IPreferenceStore store = Ganymede.getDefault().getPreferenceStore();
-		PreferenceConverter.setDefault(store,
-				ColorPreferencePage.DEBUG_COLOR_KEY, new RGB(0, 0, 0));
-		PreferenceConverter.setDefault(store,
-				ColorPreferencePage.INFO_COLOR_KEY, new RGB(0, 255, 0));
-		PreferenceConverter.setDefault(store,
-				ColorPreferencePage.WARN_COLOR_KEY, new RGB(255, 128, 0));
-		PreferenceConverter.setDefault(store,
-				ColorPreferencePage.ERROR_COLOR_KEY, new RGB(255, 0, 0));
-		PreferenceConverter.setDefault(store,
-				ColorPreferencePage.FATAL_COLOR_KEY, new RGB(255, 0, 0));
-	}
+    static public void initColorDefaults() {
+        IPreferenceStore store = Ganymede.getDefault().getPreferenceStore();
+        PreferenceConverter.setDefault(store,
+                ColorPreferencePage.DEBUG_COLOR_KEY, new RGB(0, 0, 0));
+        PreferenceConverter.setDefault(store,
+                ColorPreferencePage.INFO_COLOR_KEY, new RGB(0, 255, 0));
+        PreferenceConverter.setDefault(store,
+                ColorPreferencePage.WARN_COLOR_KEY, new RGB(255, 128, 0));
+        PreferenceConverter.setDefault(store,
+                ColorPreferencePage.ERROR_COLOR_KEY, new RGB(255, 0, 0));
+        PreferenceConverter.setDefault(store,
+                ColorPreferencePage.FATAL_COLOR_KEY, new RGB(255, 0, 0));
+    }
 
-	/**
-	 * Is the view active? Use this in preference pages to see if you need to
-	 * call back to update view.
-	 * 
-	 * @return
-	 */
-	static public boolean isShowing() {
-		Table table = GanymedeUtilities.getTable();
-		return (table != null && !table.isDisposed());
-	}
+    /**
+     * Is the view active? Use this in preference pages to see if you need to
+     * call back to update view.
+     * 
+     * @return
+     */
+    static public boolean isShowing() {
+        Table table = GanymedeUtilities.getTable();
+        return (table != null && !table.isDisposed());
+    }
 
-	/**
-	 * 
-	 */
-	public static void resetTableRows() {
-		// refresh display
-		if (isShowing()) {
-			boolean visible = getTable().getVisible();
-			getTable().setVisible(false);
-			LogSet logSet = LogSet.getInstance();
-			Collection validLogs = logSet.getValidLogs();
-			int itemCount = getTable().getItemCount();
-			TableItem[] items = getTable().getItems();
-			TableItem thisItem;
-			int idx = 0;
-			for (Iterator logIter = validLogs.iterator(); logIter.hasNext(); idx++) {
-				LoggingEvent le = (LoggingEvent) logIter.next();
-				if (idx < itemCount) // reuse if possible
-				{
-					thisItem = items[idx];
-				} else {
-					thisItem = createTableItem(idx);
-				}
+    /**
+     * 
+     */
+    public static void resetTableRows() {
+        // refresh display
+        if (isShowing()) {
+            boolean visible = getTable().getVisible();
+            getTable().setVisible(false);
+            LogSet logSet = LogSet.getInstance();
+            Collection validLogs = logSet.getValidLogs();
+            int itemCount = getTable().getItemCount();
+            TableItem[] items = getTable().getItems();
+            TableItem thisItem;
+            int idx = 0;
+            for (Iterator logIter = validLogs.iterator(); logIter.hasNext(); idx++) {
+                LoggingEvent le = (LoggingEvent) logIter.next();
+                if (idx < itemCount) // reuse if possible
+                {
+                    thisItem = items[idx];
+                } else {
+                    thisItem = createTableItem(idx);
+                }
 
-				int colCount = getTable().getColumnCount();
-				for (int colIdx = 0; colIdx < colCount; colIdx++) {
-					String text = GanymedeUtilities.getColumnText(le, colIdx);
-					thisItem.setText(colIdx, text);
-					thisItem.setForeground(GanymedeUtilities.getColor(le
-							.getLevel()));
-				}
-			}
+                int colCount = getTable().getColumnCount();
+                for (int colIdx = 0; colIdx < colCount; colIdx++) {
+                    String text = GanymedeUtilities.getColumnText(le, colIdx);
+                    thisItem.setText(colIdx, text);
+                    thisItem.setForeground(GanymedeUtilities.getColor(le
+                                .getLevel()));
+                }
+            }
 
-			// get rid of any now open spaces
-			if (idx < itemCount) {
-				getTable().remove(idx, itemCount - 1);
-			}
+            // get rid of any now open spaces
+            if (idx < itemCount) {
+                getTable().remove(idx, itemCount - 1);
+            }
 
-			getTable().setVisible(visible);
-		}
-	}
+            getTable().setVisible(visible);
+        }
+    }
 
-	/**
-	 * @return
-	 */
-	private static TableItem createTableItem(int index) {
-		return new TableItem(getTable(), SWT.NONE, index);
-	}
+    /**
+     * @return
+     */
+    private static TableItem createTableItem(int index) {
+        return new TableItem(getTable(), SWT.NONE, index);
+    }
 
-	/**
-	 * @return
-	 */
-	public static IAction getStartAction() {
-		if (!isActionsInited()) {
-			initActions();
-		}
-		return mStartAction;
-	}
+    /**
+     * @return
+     */
+    public static IAction getStartAction() {
+        if (!isActionsInited()) {
+            initActions();
+        }
+        return mStartAction;
+    }
 
-	/**
-	 * @return
-	 */
-	public static IAction getStopAction() {
-		if (!isActionsInited()) {
-			initActions();
-		}
-		return mStopAction;
-	}
+    /**
+     * @return
+     */
+    public static IAction getStopAction() {
+        if (!isActionsInited()) {
+            initActions();
+        }
+        return mStopAction;
+    }
 
-	/**
-	 * @param aAction
-	 */
-	public static void setStartAction(IAction aAction) {
-		mStartAction = aAction;
-	}
+    /**
+     * @param aAction
+     */
+    public static void setStartAction(IAction aAction) {
+        mStartAction = aAction;
+    }
 
-	/**
-	 * @param aAction
-	 */
-	public static void setStopAction(IAction aAction) {
-		mStopAction = aAction;
-	}
+    /**
+     * @param aAction
+     */
+    public static void setStopAction(IAction aAction) {
+        mStopAction = aAction;
+    }
 
-	/**
-	 * 
-	 */
-	public static void initActions() {
-		setActionsInited(true);
-		GanymedeUtilities.setStartAction(((ActionContributionItem) getSite()
-				.getActionBars().getToolBarManager().find(
-						"Ganymede.StartAction")).getAction());
+    /**
+     * 
+     */
+    public static void initActions() {
+        setActionsInited(true);
+        GanymedeUtilities.setStartAction(((ActionContributionItem) getSite()
+                    .getActionBars().getToolBarManager().find(
+                        "Ganymede.StartAction")).getAction());
 
-		GanymedeUtilities.setStopAction(((ActionContributionItem) getSite()
-				.getActionBars().getToolBarManager()
-				.find("Ganymede.StopAction")).getAction());
+        GanymedeUtilities.setStopAction(((ActionContributionItem) getSite()
+                    .getActionBars().getToolBarManager()
+                    .find("Ganymede.StopAction")).getAction());
 
-		Log4jServer instance = Log4jServer.getLog4jServer();
-		if (instance != null && instance.isServerUp()) {
-			getStartAction().setEnabled(false);
-			getStopAction().setEnabled(true);
-		} else {
-			getStartAction().setEnabled(true);
-			getStopAction().setEnabled(false);
-		}
-	}
+        Log4jServer instance = Log4jServer.getLog4jServer();
+        if (instance != null && instance.isServerUp()) {
+            getStartAction().setEnabled(false);
+            getStopAction().setEnabled(true);
+        } else {
+            getStartAction().setEnabled(true);
+            getStopAction().setEnabled(false);
+        }
+    }
 
-	/**
-	 * @return
-	 */
-	static public boolean isActionsInited() {
-		return mActionsInited;
-	}
+    /**
+     * @return
+     */
+    static public boolean isActionsInited() {
+        return mActionsInited;
+    }
 
-	/**
-	 * @param aB
-	 */
-	static public void setActionsInited(boolean aB) {
-		mActionsInited = aB;
-	}
+    /**
+     * @param aB
+     */
+    static public void setActionsInited(boolean aB) {
+        mActionsInited = aB;
+    }
 
-	/**
-	 * @return
-	 */
-	public static IViewSite getSite() {
-		return mSite;
-	}
+    /**
+     * @return
+     */
+    public static IViewSite getSite() {
+        return mSite;
+    }
 
-	/**
-	 * @param aSite
-	 */
-	public static void setSite(IViewSite aSite) {
-		mSite = aSite;
-	}
+    /**
+     * @param aSite
+     */
+    public static void setSite(IViewSite aSite) {
+        mSite = aSite;
+    }
 
-	/**
-	 * @return
-	 */
-	public static String getViewTitle() {
-		return sViewTitle;
-	}
+    /**
+     * @return
+     */
+    public static String getViewTitle() {
+        return sViewTitle;
+    }
 
-	/**
-	 * @param aString
-	 */
-	public static void setViewTitle(String aString) {
-		sViewTitle = aString;
-	}
+    /**
+     * @param aString
+     */
+    public static void setViewTitle(String aString) {
+        sViewTitle = aString;
+    }
 
-	/**
-	 * @param le
-	 */
-	public static void addTableItem(LoggingEvent le) {
-		TableItem tableItem = createTableItem(0);
+    /**
+     * @param le
+     */
+    public static void addTableItem(LoggingEvent le) {
+        TableItem tableItem = createTableItem(0);
 
-		for (int i = 0; i < getTable().getColumnCount(); i++) {
-			tableItem.setText(i, getColumnText(le, i));
-		}
+        for (int i = 0; i < getTable().getColumnCount(); i++) {
+            tableItem.setText(i, getColumnText(le, i));
+        }
 
-		tableItem.setForeground(GanymedeUtilities.getColor(le.getLevel()));
+        tableItem.setForeground(GanymedeUtilities.getColor(le.getLevel()));
 
-		table.setSelection(0);
-	}
+        table.setSelection(0);
+    }
 
-	public static void updateTitleBar(String filterText) {
-		if (filterText == null || filterText.equals("")) {
-			filterText = "No Filter";
-		}
-		GanymedeUtilities.getView().getFilterLabel().setText(filterText);
-	}
+    public static void updateTitleBar(String filterText) {
+        if (filterText == null || filterText.equals("")) {
+            filterText = "No Filter";
+        }
+        GanymedeUtilities.getView().getFilterLabel().setText(filterText);
+    }
 
-	public static int getServerType() {
-		return mServerType;
-	}
+    public static int getServerType() {
+        return mServerType;
+    }
 
-	public static void setServerType(int serverType) {
-		
-		System.out.println("Changing server type [" + serverType + "]");
-		mServerType = serverType;
-		
-		// restart
-		// TODO -Check to see if it's running first.
-		Log4jServer.stopListener();
-		Log4jServer.startListener();
-	}
+    public static void setServerType(int serverType) {
+
+        System.out.println("Changing server type [" + serverType + "]");
+        mServerType = serverType;
+
+        // restart
+        // TODO -Check to see if it's running first.
+        Log4jServer.stopListener();
+        Log4jServer.startListener();
+    }
 
 }

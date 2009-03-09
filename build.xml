@@ -16,9 +16,6 @@
 
         <!-- Create the directory for the jar file -->
         <mkdir dir="${lib}" />
-
-        <!-- Create the dist directory -->
-        <mkdir dir="${dist}" />
     </target>
 
     <target name="compile" depends="init">
@@ -80,7 +77,7 @@
         </unjar>
 
         <!-- Make a jar file -->
-        <jar jarfile="${lib}/ftf.jar" basedir="${bin}/">
+        <jar jarfile="${lib}/ganymede.jar" basedir="${bin}/">
             <manifest>
 
                 <!-- Default to launching the GUI interface -->

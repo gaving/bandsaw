@@ -18,7 +18,6 @@ import org.apache.log4j.spi.*;
 
 import org.apache.log4j.spi.LoggingEvent;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Table;
 
 /**
  * @author Brandon
@@ -26,34 +25,17 @@ import org.eclipse.swt.widgets.Table;
 public class Log4jServer extends Thread
 {
 
-    /**
-     * java.net
-     */
-    static ServerSocket mServerSocket;
-
-    /**
-     * The GUI thread, used to look up display and tell
-     * it to fire off our updates
-     */
-    static Thread mPrimary;
-
-    /**
-     * The viewer
-     */
-    static Table table;
-
-    /**
-     * Again, communication across threads
-     */
-    static boolean mServerUp = false;
-
     private static Log4jServer mLog4jServer;
 
-    static Category cat = Category.getInstance(SimpleSocketServer.class.getName());
+    private static ServerSocket mServerSocket;
+    private static Thread mPrimary;
+    private static boolean mServerUp = false;
+
+    private static Category cat = Category.getInstance(SimpleSocketServer.class.getName());
     private static final Object repositorySelectorGuard = new Object();
     private static final LoggerRepositoryExImpl repositoryExImpl = new LoggerRepositoryExImpl(LogManager.getLoggerRepository());
 
-    static int port;
+    private static int port;
 
     static public void init()
     {
@@ -65,7 +47,7 @@ public class Log4jServer extends Thread
                 return repositoryExImpl;
             }}, repositorySelectorGuard);
 
-            new DOMConfigurator().configure("test.xml");
+        new DOMConfigurator().configure("server.xml");
     }
 
     /**
@@ -74,31 +56,11 @@ public class Log4jServer extends Thread
      */
     static public boolean startListener()
     {
-        //              System.out.println(
-        //                      "I am trying to start on port: "
-        //                              + Ganymede.getDefault().getPreferenceStore().getInt(
-        //                                      Log4jPreferencePage.P_PORT));
+        int port = Ganymede.getDefault().getPreferenceStore().getInt(Log4jPreferencePage.P_PORT);
 
-        //
-
-
-        //try
-        //{
-        System.out.println("Hello tim rogers!");
-            int port =
-                Ganymede.getDefault().getPreferenceStore().getInt(
-                        Log4jPreferencePage.P_PORT);
-            setLog4jServer(new Log4jServer());
-            getLog4jServer().setServerUp(true);
-            //setServerSocket(new ServerSocket(port));
-            //getServerSocket().setReuseAddress(true);
-            getLog4jServer().start();
-        //}
-        //catch (IOException ioe)
-        //{
-            //ioe.printStackTrace();
-            //return false;
-        //}
+        Log4jServer.mLog4jServer = new Log4jServer();
+        Log4jServer.mLog4jServer.setServerUp(true);
+        Log4jServer.mLog4jServer.start();
 
         GanymedeUtilities.getStartAction().setEnabled(false);
         GanymedeUtilities.getStopAction().setEnabled(true);
@@ -110,27 +72,6 @@ public class Log4jServer extends Thread
      */
     static public void stopListener()
     {
-        if (getLog4jServer() != null)
-        {
-            getLog4jServer().setServerUp(false);
-            try
-            {
-                // close socket if it's open
-                if (getServerSocket() != null && !getServerSocket().isClosed())
-                {
-                    getServerSocket().close();
-                }
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        else
-        {
-            //System.out.println("Nothing to stop");
-        }
-
         GanymedeUtilities.getStartAction().setEnabled(true);
         GanymedeUtilities.getStopAction().setEnabled(false);
     }
@@ -144,12 +85,10 @@ public class Log4jServer extends Thread
     static synchronized public void newMessage(LoggingEvent le)
     {
         final LoggingEvent thisEvent = le;
-        Display.findDisplay(getPrimary()).asyncExec(new Runnable()
-                {
-                    public void run()
-        {
-            LogSet.getInstance().addLoggingEvent(thisEvent);
-        }
+        Display.findDisplay(getPrimary()).asyncExec(new Runnable() {
+            public void run() {
+                LogSet.getInstance().addLoggingEvent(thisEvent);
+            }
         });
     }
 
@@ -160,69 +99,22 @@ public class Log4jServer extends Thread
     public void run()
     {
 
-            try {
-                cat.info("Listening on port " + port);
-                ServerSocket serverSocket = new ServerSocket(port);
-                while(true) {
-                    cat.info("Waiting to accept a new client.");
-                    Socket socket = serverSocket.accept();
-                    cat.info("Connected to client at " + socket.getInetAddress());
-                    cat.info("Starting new socket node.");
-                    new Thread(new SocketNode(socket,
-                                LogManager.getLoggerRepository())).start();
-                }
-            } catch(Exception e) {
-                e.printStackTrace();
+        ClientConn client_conn = null;
+        try {
+            ServerSocket serverSocket = new ServerSocket(port);
+            while(true) {
+                Socket socket = serverSocket.accept();
+                client_conn = new ClientConn(socket);
             }
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
 
-        //Socket s = null;
-        //ClientConn client_conn = null;
-        //try
-        //{
-            //while (isServerUp())
-            //{
-                //s = mServerSocket.accept();
-                //s.setSoLinger(false, -1);
-                //s.setReuseAddress(false);
-                //client_conn = new ClientConn(s);
-                //client_conn.start();
-            //}
-        //}
-        //catch (java.io.EOFException e)
-        //{
-        //}
-        //catch (IOException e)
-        //{
-            //// closed from above (ServerSocket closed, so it is thrown here)
-        //}
-        //catch (Exception e)
-        //{
-        //}
-        //finally
-        //{
-            //try
-            //{
-                //// shut down client correctly
-                //if (client_conn != null)
-                //{
-                    //client_conn.setActive(false);
-                //}
-
-                //// close down socket if it's open
-                //if (s != null && !s.isClosed())
-                //{
-                    //s.shutdownOutput();
-                    //s.shutdownInput();
-                    //s.close();
-                //}
-            //}
-            //catch (IOException e)
-            //{
-                //e.printStackTrace();
-            //}
-
-            ////System.out.println("Server exited");
-        //}
+            // shut down client correctly
+            if (client_conn != null) {
+                client_conn.setActive(false);
+            }
+        }
     }
 
     /**
@@ -234,74 +126,23 @@ public class Log4jServer extends Thread
     class ClientConn extends Thread
     {
 
-        public ClientConn(Socket s)
-        {
-            setSocket(s);
-        }
-
         private Socket socket;
 
+        public ClientConn(Socket s)
+        {
+            this.socket = s;
+        }
+
         private boolean mActive = false;
-
-        public Socket getSocket()
-        {
-            return socket;
-        }
-
-        public void setSocket(Socket s)
-        {
-            socket = s;
-        }
 
         /**
          * Pawn me off so I can handle some requests
          * @see java.lang.Runnable#run()
          */
-        public void run()
-        {
-            ObjectInputStream ois = null;
-            setActive(true);
-            try
-            {
-                ois =
-                    new ObjectInputStream(
-                            new BufferedInputStream(getSocket().getInputStream()));
-                while (mServerUp && isActive())
-                {
-
-                    LoggingEvent event = (LoggingEvent) ois.readObject();
-                    newMessage(event);
-                }
-            }
-            catch (java.io.IOException ioe)
-            {
-                // Connection Dropped
-            }
-            catch (ClassNotFoundException cnf)
-            {
-                cnf.printStackTrace();
-            }
-            finally
-            {
-                try
-                {
-                    ois.close();
-                    if (!getSocket().isClosed())
-                    {
-                        getSocket().shutdownOutput();
-                        getSocket().shutdownInput();
-                        getSocket().close();
-                    }
-                    setSocket(null); // GC
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-
-                //System.out.println("Client exited");
-            }
+        public void run() {
+            new SocketNode(socket, LogManager.getLoggerRepository());
         }
+
         /**
          * @return
          */
@@ -310,30 +151,9 @@ public class Log4jServer extends Thread
             return mActive;
         }
 
-        /**
-         * @param aB
-         */
-        public void setActive(boolean aB)
-        {
-            mActive = aB;
+        public void setActive(boolean active) {
+            this.mActive = active;
         }
-
-    }
-
-    /**
-     * @return
-     */
-    public static Table getTable()
-    {
-        return table;
-    }
-
-    /**
-     * @param aTable
-     */
-    public static void setTable(Table aTable)
-    {
-        table = aTable;
     }
 
     /**
@@ -350,38 +170,6 @@ public class Log4jServer extends Thread
     public void setServerUp(boolean aB)
     {
         mServerUp = aB;
-    }
-
-    /**
-     * @return
-     */
-    public static Log4jServer getLog4jServer()
-    {
-        return mLog4jServer;
-    }
-
-    /**
-     * @param aServer
-     */
-    static void setLog4jServer(Log4jServer aServer)
-    {
-        mLog4jServer = aServer;
-    }
-
-    /**
-     * @return
-     */
-    public static ServerSocket getServerSocket()
-    {
-        return mServerSocket;
-    }
-
-    /**
-     * @param aSocket
-     */
-    public static void setServerSocket(ServerSocket aSocket)
-    {
-        mServerSocket = aSocket;
     }
 
     /**

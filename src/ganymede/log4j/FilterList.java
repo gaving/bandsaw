@@ -12,19 +12,19 @@ import org.eclipse.swt.widgets.List;
  * Window>Preferences>Java>Code Generation.
  */
 public class FilterList extends List {
-	
-	public FilterList (Composite parent, int style) {
-		super(parent, style);
-	}
+
+    public FilterList (Composite parent, int style) {
+        super(parent, style);
+    }
 
     /**
      * @see org.eclipse.swt.widgets.List#setItems(java.lang.String)
      */
     public void setItems(Filter[] items) {
-    	String[] rval = new String[items.length];
-    	for (int i=0; i<items.length; i++) {
-    		rval[i] = items[i].toString();
-    	}
+        String[] rval = new String[items.length];
+        for (int i=0; i<items.length; i++) {
+            rval[i] = items[i].toString();
+        }
         super.setItems(rval);
     }
 
@@ -34,7 +34,7 @@ public class FilterList extends List {
     public void setItem(int index, Filter filter) {
         super.setItem(index, filter.toString());
     }
-    
+
     /**
      * @see org.eclipse.swt.widgets.List#indexOf(java.lang.String, int)
      */

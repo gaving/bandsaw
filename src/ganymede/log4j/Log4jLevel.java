@@ -11,11 +11,12 @@ import org.apache.log4j.spi.LoggingEvent;
  * Window>Preferences>Java>Code Generation.
  */
 public class Log4jLevel implements Log4jItem {
-	LoggingEvent le;
-	
-	public Log4jLevel(LoggingEvent event) {
-		le = event;
-	}
+
+    private LoggingEvent le;
+
+    public Log4jLevel(LoggingEvent event) {
+        le = event;
+    }
 
     /**
      * @see ganymede.log4j.LogItem#getText()
