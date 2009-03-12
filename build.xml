@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 
-<project name="logfork" default="jar" basedir=".">
+<project name="bandsaw" default="jar" basedir=".">
 
     <!-- Key directories -->
     <property name="bin" value="bin"/>
@@ -77,7 +77,7 @@
         </unjar>
 
         <!-- Make a jar file -->
-        <jar jarfile="${lib}/ganymede.jar" basedir="${bin}/">
+        <jar jarfile="${lib}/bandsaw.jar" basedir="${bin}/">
             <manifest>
 
                 <!-- Default to launching the GUI interface -->

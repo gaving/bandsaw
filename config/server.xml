@@ -7,7 +7,7 @@
             <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
         </layout>
     </appender>
-    <appender name="SERVER" class="ganymede.log4j.CustomAppender">
+    <appender name="SERVER" class="net.brokentrain.bandsaw.log4j.CustomAppender">
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
         </layout>
