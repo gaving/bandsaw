@@ -83,10 +83,8 @@ public class Log4jFilterPreferencePage
         data = new GridData(GridData.FILL_HORIZONTAL);
         combo1 = new Combo(entryTable, SWT.DROP_DOWN | SWT.READ_ONLY);
         
-        Iterator i = BandsawUtilities.getColumnLabels();
-        
-        while ( i.hasNext() ) {
-        	combo1.add((String)i.next());
+        for (String label : BandsawUtilities.getColumnLabels()) {
+            combo1.add(label);
         }
         combo1.select(0);
         combo1.setLayoutData(data);

@@ -1,21 +1,22 @@
 package net.brokentrain.bandsaw.log4j;
 
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.net.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 import net.brokentrain.bandsaw.Bandsaw;
 import net.brokentrain.bandsaw.BandsawUtilities;
 import net.brokentrain.bandsaw.preferences.Log4jPreferencePage;
 
-import org.apache.log4j.*;
-import org.apache.log4j.xml.*;
-import org.apache.log4j.net.*;
-import org.apache.log4j.spi.*;
-
+import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.LoggerRepositoryExImpl;
+import org.apache.log4j.net.SimpleSocketServer;
+import org.apache.log4j.net.SocketNode;
+import org.apache.log4j.spi.LoggerRepository;
 import org.apache.log4j.spi.LoggingEvent;
+import org.apache.log4j.spi.RepositorySelector;
+import org.apache.log4j.xml.DOMConfigurator;
 import org.eclipse.swt.widgets.Display;
 
 

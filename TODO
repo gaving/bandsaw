@@ -1,6 +1,14 @@
-andsaw
+Bandsaw
 
 0.1
 ===
 
-[_] TODO item
+[_] Make the icons a bit more web 2
+[_] Tidy up the preferences page
+[_] Tidy up the dialogs, make them a bit nicer with jface
+[_] Give the log icons for different levels
+[_] Populate the columns by default
+[_] Make the start/stop of the server actually work
+[_] Write rule to actually install the plugin
+[_] Silence the internal debug messages
+[_] Optionally allow the log to be stored somewhere

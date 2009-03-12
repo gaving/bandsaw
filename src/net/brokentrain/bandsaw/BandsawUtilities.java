@@ -4,7 +4,7 @@ package net.brokentrain.bandsaw;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import net.brokentrain.bandsaw.actions.ShowDetailAction;
 import net.brokentrain.bandsaw.log4j.ColumnList;
@@ -51,7 +51,7 @@ public class BandsawUtilities {
 
     private static ShowDetailAction mShowDetailAction;
 
-    private static Hashtable colors = new Hashtable(5);
+    private static Hashtable<String, Color> colors = new Hashtable<String, Color>(5);
 
     private static IAction mStartAction;
 
@@ -65,16 +65,16 @@ public class BandsawUtilities {
 
     private static int mServerType = Bandsaw.P_SERVER_TYPE_SOCKET_APPENDER;
 
-    static public Iterator getColumnLabels() {
-        Vector v = new Vector();
-        v.add(Log4jItem.LABEL_LEVEL);
-        v.add(Log4jItem.LABEL_CATEGORY);
-        v.add(Log4jItem.LABEL_MESSAGE);
-        v.add(Log4jItem.LABEL_LINE_NUMBER);
-        v.add(Log4jItem.LABEL_DATE);
-        v.add(Log4jItem.LABEL_NDC);
-        v.add(Log4jItem.LABEL_THROWABLE);
-        return v.iterator();
+    public static ArrayList<String> getColumnLabels() {
+        ArrayList<String> columnLabels = new ArrayList<String>();
+        columnLabels.add(Log4jItem.LABEL_LEVEL);
+        columnLabels.add(Log4jItem.LABEL_CATEGORY);
+        columnLabels.add(Log4jItem.LABEL_MESSAGE);
+        columnLabels.add(Log4jItem.LABEL_LINE_NUMBER);
+        columnLabels.add(Log4jItem.LABEL_DATE);
+        columnLabels.add(Log4jItem.LABEL_NDC);
+        columnLabels.add(Log4jItem.LABEL_THROWABLE);
+        return columnLabels;
     }
 
     /**
@@ -83,7 +83,7 @@ public class BandsawUtilities {
      * @param col
      * @return String
      */
-    static public String getLabelText(int col) {
+    public static String getLabelText(int col) {
         switch (col) {
             case Log4jItem.LEVEL:
                 return Log4jItem.LABEL_LEVEL;
@@ -111,7 +111,7 @@ public class BandsawUtilities {
      *            The column label
      * @return int
      */
-    static public int convertColumnToInt(String colLabel) {
+    public static int convertColumnToInt(String colLabel) {
         if (colLabel.equals(Log4jItem.LABEL_LEVEL)) {
             return Log4jItem.LEVEL;
         } else if (colLabel.equals(Log4jItem.LABEL_CATEGORY)) {
@@ -131,7 +131,7 @@ public class BandsawUtilities {
         }
     }
 
-    static public Log4jItem Log4jItemFactory(int type, LoggingEvent e) {
+    public static Log4jItem Log4jItemFactory(int type, LoggingEvent e) {
         switch (type) {
             case Log4jItem.LEVEL:
                 return new Log4jLevel(e);
@@ -152,11 +152,11 @@ public class BandsawUtilities {
         }
     }
 
-    static public void setTable(Table table) {
+    public static void setTable(Table table) {
         BandsawUtilities.table = table;
     }
 
-    static public Table getTable() {
+    public static Table getTable() {
         return BandsawUtilities.table;
     }
 
@@ -164,7 +164,7 @@ public class BandsawUtilities {
      * Sets the defaults. This needs to be called before you can update widths
      * or save any
      */
-    static public void setTableColumnWidthDefaults() {
+    public static void setTableColumnWidthDefaults() {
         IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
         store.setDefault("colWidth." + Log4jItem.LEVEL, 75);
         store.setDefault("colWidth." + Log4jItem.CATEGORY, 75);
@@ -179,7 +179,7 @@ public class BandsawUtilities {
     /**
      * Saves column widths
      */
-    static public void saveTableColumnWidths() {
+    public static void saveTableColumnWidths() {
         if (isShowing()) {
             setTableColumnWidthDefaults();
             IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
@@ -196,7 +196,7 @@ public class BandsawUtilities {
     /**
      * Used to refresh their widths [on startup usually]
      */
-    static public void updateTableColumnWidths() {
+    public static void updateTableColumnWidths() {
         if (isShowing()) {
             setTableColumnWidthDefaults();
             IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
@@ -211,7 +211,7 @@ public class BandsawUtilities {
         }
     }
 
-    static public void updateTableColumns() {
+    public static void updateTableColumns() {
         if (isShowing()) {
             TableColumn[] tc = getTable().getColumns();
             ColumnList list = ColumnList.getInstance();
@@ -226,7 +226,7 @@ public class BandsawUtilities {
         }
     }
 
-    static public String handleNull(String string) {
+    public static String handleNull(String string) {
         if (string == null) {
             return "";
         } else {
@@ -284,7 +284,7 @@ public class BandsawUtilities {
      * 
      * @param message
      */
-    static public void showMessage(String message) {
+    public static void showMessage(String message) {
         MessageDialog.openInformation(getTable().getParent().getShell(),
                 "Ganymede Log4j View", message + "...");
     }
@@ -303,7 +303,7 @@ public class BandsawUtilities {
         mShowDetailAction = aAction;
     }
 
-    static public void updateColors() {
+    public static void updateColors() {
         IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
 
         colors.clear();
@@ -337,11 +337,11 @@ public class BandsawUtilities {
         }
     }
 
-    static public Color getColor(Level level) {
+    public static Color getColor(Level level) {
         return (Color) colors.get(level.toString());
     }
 
-    static public void initColorDefaults() {
+    public static void initColorDefaults() {
         IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
         PreferenceConverter.setDefault(store,
                 ColorPreferencePage.DEBUG_COLOR_KEY, new RGB(0, 0, 0));
@@ -361,7 +361,7 @@ public class BandsawUtilities {
      * 
      * @return
      */
-    static public boolean isShowing() {
+    public static boolean isShowing() {
         Table table = BandsawUtilities.getTable();
         return (table != null && !table.isDisposed());
     }
@@ -474,14 +474,14 @@ public class BandsawUtilities {
     /**
      * @return
      */
-    static public boolean isActionsInited() {
+    public static boolean isActionsInited() {
         return mActionsInited;
     }
 
     /**
      * @param aB
      */
-    static public void setActionsInited(boolean aB) {
+    public static void setActionsInited(boolean aB) {
         mActionsInited = aB;
     }
 

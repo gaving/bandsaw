@@ -1,12 +1,5 @@
 <!DOCTYPE log4j:configuration SYSTEM 'log4j.dtd'>
-<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="true">
-    <appender name="FILE" class="org.apache.log4j.FileAppender">
-        <param name="Append" value="true"/>
-        <param name="File" value="log.txt"/>
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
-        </layout>
-    </appender>
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
     <appender name="SERVER" class="net.brokentrain.bandsaw.log4j.CustomAppender">
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}] %m%n"/>
@@ -22,7 +15,6 @@
     </plugin>
     <root>
         <level value="DEBUG"/>
-        <appender-ref ref="FILE"/>
         <appender-ref ref="SERVER"/>
     </root>
 </log4j:configuration>

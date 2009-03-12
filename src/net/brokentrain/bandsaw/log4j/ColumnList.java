@@ -19,13 +19,13 @@ import org.eclipse.swt.widgets.TableColumn;
 public class ColumnList
 {
 
-    Vector columns = new Vector();
+    Vector<Integer> columns = new Vector<Integer>();
 
     static private boolean notInit = true;
 
     static private ColumnList cl;
 
-    static public final int COL_COUNT = 10;
+    public static final int COL_COUNT = 10;
 
     public static final char delimiter = ':';
 
@@ -33,7 +33,7 @@ public class ColumnList
     {
     }
 
-    static public ColumnList getInstance()
+    public static ColumnList getInstance()
     {
         if (notInit)
         {
@@ -120,7 +120,7 @@ public class ColumnList
         return list;
     }
 
-    static public int[] deSerialize(String object)
+    public static int[] deSerialize(String object)
     {
         StringTokenizer st =
             new StringTokenizer(object, Character.toString(delimiter));
@@ -136,7 +136,7 @@ public class ColumnList
         return j;
     }
 
-    static public String serialize(int[] columns)
+    public static String serialize(int[] columns)
     {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < columns.length; i++)
@@ -152,7 +152,7 @@ public class ColumnList
 
     public void setColList(int[] list)
     {
-        columns = new Vector();
+        columns = new Vector<Integer>();
         for (int i = 0; i < list.length; i++)
         {
             columns.add(new Integer(list[i]));

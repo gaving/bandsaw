@@ -1,7 +1,7 @@
 package net.brokentrain.bandsaw.log4j;
 
 import java.util.Iterator;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import org.apache.log4j.spi.LoggingEvent;
 
@@ -11,7 +11,7 @@ import org.apache.log4j.spi.LoggingEvent;
 public class FilterSet
 {
 
-    private Vector filters = new Vector(1);
+    private ArrayList<Filter> filters = new ArrayList<Filter>(1);
 
     private Filter mQuickFilter;
 
@@ -26,12 +26,8 @@ public class FilterSet
 
     public void removeFilter(Filter filter)
     {
-        Iterator i = filters.iterator();
-        while (i.hasNext())
-        {
-            Filter f = (Filter) i.next();
-            if (filter.equals(f))
-            {
+        for (Filter f : filters) {
+            if (filter.equals(f)) {
                 filters.remove(f);
                 return;
             }
@@ -50,10 +46,7 @@ public class FilterSet
 
     public boolean isValidForShow(LoggingEvent le)
     {
-        Iterator i = iterator();
-        while (i.hasNext())
-        {
-            Filter filter = (Filter) i.next();
+        for (Filter filter : filters) {
             if (!filter.isValid(le))
             {
                 return false;

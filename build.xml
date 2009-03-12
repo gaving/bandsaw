@@ -32,7 +32,9 @@
             target="1.5"
             includeAntRuntime="no"
             debug="true"
+            deprecation="true"
             debuglevel="lines,vars,source">
+            <compilerarg value="-Xlint"/>
             <classpath>
                 <!-- Include all jar files  -->
                 <fileset dir="${include}">
@@ -49,7 +51,6 @@
                 </dirset>
             </classpath>
         </javac>
-
     </target>
 
     <target name="clean">

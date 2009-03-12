@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IPluginDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -14,9 +13,8 @@ import org.osgi.framework.BundleContext;
  */
 public class Bandsaw extends AbstractUIPlugin
 {
-    //The shared instance.
     private static Bandsaw plugin;
-    //Resource bundle.
+
     private ResourceBundle resourceBundle;
 
     public static final int P_SERVER_TYPE_SOCKET_APPENDER = 1;
@@ -26,9 +24,8 @@ public class Bandsaw extends AbstractUIPlugin
     /**
      * The constructor.
      */
-    public Bandsaw(IPluginDescriptor desc)
+    public Bandsaw()
     {
-        super();
         plugin = this;
         try
         {

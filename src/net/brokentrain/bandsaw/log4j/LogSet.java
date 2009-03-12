@@ -16,10 +16,9 @@ import org.apache.log4j.spi.LoggingEvent;
  */
 public class LogSet {
 
-    Vector mAllLogs = new Vector();
-    Vector mShowingLogs = new Vector();
-    Vector mHiddenLogs = new Vector();
-    Vector mListeners = new Vector();
+    Vector<LoggingEvent> mAllLogs = new Vector<LoggingEvent>();
+    Vector<LoggingEvent> mShowingLogs = new Vector<LoggingEvent>();
+    Vector<LoggingEvent> mHiddenLogs = new Vector<LoggingEvent>();
     FilterSet mFilterset = new FilterSet();
 
     static private LogSet mInstance = null;
@@ -82,7 +81,7 @@ public class LogSet {
 
     public Collection getValidLogs()
     {
-        Vector rSet = new Vector();
+        Vector<LoggingEvent> rSet = new Vector<LoggingEvent>();
 
         if (!PauseAction.isPaused())
         {

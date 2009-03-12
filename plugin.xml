@@ -11,7 +11,6 @@
     </runtime>
     <requires>
         <import plugin="org.eclipse.core.resources"/>
-        <import plugin="org.eclipse.core.runtime.compatibility"/>
         <import plugin="org.junit"/>
         <import plugin="org.eclipse.ui.views"/>
         <import plugin="org.eclipse.ui"/>
