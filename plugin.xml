@@ -6,17 +6,8 @@
     version="0.1"
     provider-name="brokentrain.net"
     class="net.brokentrain.bandsaw.Bandsaw">
-
     <runtime>
-        <library name="lib/jakarta-regexp-1.2.jar">
-            <export name="*"/>
-        </library>
-        <library name="lib/junit.jar">
-            <export name="*"/>
-        </library>
-        <library name="lib/log4j-1.2.8.jar">
-            <export name="*"/>
-        </library>
+        <library name="bandsaw.jar" />
     </runtime>
     <requires>
         <import plugin="org.eclipse.core.resources"/>
@@ -25,18 +16,17 @@
         <import plugin="org.eclipse.ui.views"/>
         <import plugin="org.eclipse.ui"/>
     </requires>
-
     <extension
         id="Bandsaw.views"
         name="org.eclipse.ui.views"
         point="org.eclipse.ui.views">
         <category
-            name="Logging"
-            id="BandsawEclipseProject.Logging"/>
+            name="Bandsaw"
+            id="BandsawEclipseProject.Bandsaw"/>
         <view
-            name="Bandsaw Log4j View"
-            icon="icons/net.brokentrain.bandsaw.gif"
-            category="BandsawEclipseProject.Logging"
+            name="Log"
+            icon="icons/bandsaw.gif"
+            category="BandsawEclipseProject.Bandsaw"
             class="net.brokentrain.bandsaw.views.BandsawView"
             id="net.brokentrain.bandsaw.views.BandsawView">
         </view>
@@ -57,7 +47,7 @@
     <extension
         point="org.eclipse.ui.preferencePages">
         <page
-            name="Bandsaw Log4j Viewer"
+            name="Bandsaw"
             class="net.brokentrain.bandsaw.preferences.Log4jPreferencePage"
             id="net.brokentrain.bandsaw.preferences.Log4jPreferencePage">
         </page>

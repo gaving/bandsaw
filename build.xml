@@ -4,9 +4,12 @@
 
     <!-- Key directories -->
     <property name="bin" value="bin"/>
+    <property name="dist" value="dist"/>
+    <property name="cfg" value="cfg"/>
     <property name="include" value="include"/>
     <property name="lib" value="lib"/>
-    <property name="config" value="config"/>
+    <property name="icons" value="icons"/>
+    <property name="cfg" value="cfg"/>
     <property name="src" value="src"/>
 
     <target name="init">
@@ -16,6 +19,9 @@
 
         <!-- Create the directory for the jar file -->
         <mkdir dir="${lib}" />
+
+        <!-- Create the dist directory -->
+        <mkdir dir="${dist}" />
     </target>
 
     <target name="compile" depends="init">
@@ -52,6 +58,7 @@
         <!-- Delete non-essential dirs -->
         <delete dir="${bin}"/>
         <delete dir="${lib}"/>
+        <delete dir="${dist}"/>
 
         <!-- Delete rogue class files in src dir -->
         <delete quiet="true">
@@ -62,7 +69,7 @@
     <target name="jar" depends="compile">
 
         <copy todir="${bin}">
-            <fileset dir="${config}">
+            <fileset dir="${cfg}">
                 <include name="**/*"/>
             </fileset>
         </copy>
@@ -78,12 +85,31 @@
 
         <!-- Make a jar file -->
         <jar jarfile="${lib}/bandsaw.jar" basedir="${bin}/">
-            <manifest>
-
-                <!-- Default to launching the GUI interface -->
-                <attribute name="Main-Class" value="${runclass}"/>
-            </manifest>
         </jar>
+    </target>
+
+    <target name="dist" depends="jar">
+
+        <!-- Copy the lib directory containing the main jar file -->
+        <copy todir="${dist}">
+            <fileset dir="${lib}">
+                <include name="**/*.jar"/>
+            </fileset>
+        </copy>
+
+        <!-- Copy user configuration over -->
+        <copy todir="${dist}/">
+            <fileset dir=".">
+                <include name="plugin.xml"/>
+            </fileset>
+        </copy>
+
+        <!-- Copy icons over -->
+        <copy todir="${dist}/${icons}">
+            <fileset dir="${icons}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
     </target>
 
 </project>
