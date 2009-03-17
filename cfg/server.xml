@@ -6,15 +6,19 @@
         </layout>
     </appender>
 
-    <plugin name="SocketReceiver" class="org.apache.log4j.net.SocketReceiver">
-        <param name="Port" value="4447"/>
-    </plugin>
-
     <plugin name="XMLSocketReceiver" class="org.apache.log4j.net.XMLSocketReceiver">
         <param name="Port" value="4448"/>
     </plugin>
+
+    <logger name="org.apache.log4j.net.XMLSocketNode">
+        <level value="OFF" />
+    </logger>
+
+    <logger name="org.apache.log4j.net.XMLSocketReceiver">
+        <level value="OFF" />
+    </logger>
+
     <root>
-        <level value="DEBUG"/>
         <appender-ref ref="SERVER"/>
     </root>
 </log4j:configuration>

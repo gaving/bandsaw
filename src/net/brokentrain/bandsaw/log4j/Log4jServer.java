@@ -2,6 +2,8 @@ package net.brokentrain.bandsaw.log4j;
 
 
 import java.net.ServerSocket;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.net.Socket;
 
 import net.brokentrain.bandsaw.Bandsaw;
@@ -13,6 +15,9 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.LoggerRepositoryExImpl;
 import org.apache.log4j.net.SimpleSocketServer;
 import org.apache.log4j.net.SocketNode;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Appender;
+import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggerRepository;
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.RepositorySelector;
@@ -32,13 +37,12 @@ public class Log4jServer extends Thread
     private static Thread mPrimary;
     private static boolean mServerUp = false;
 
-    private static Category cat = Category.getInstance(SimpleSocketServer.class.getName());
     private static final Object repositorySelectorGuard = new Object();
     private static final LoggerRepositoryExImpl repositoryExImpl = new LoggerRepositoryExImpl(LogManager.getLoggerRepository());
 
     private static int port;
 
-    static public void init()
+    public static void init()
     {
         setPrimary(Thread.currentThread());
 
@@ -55,13 +59,12 @@ public class Log4jServer extends Thread
      * Stop the Log4j Socket Server
      * @return boolean
      */
-    static public boolean startListener()
+    public static boolean startListener()
     {
-        int port = Bandsaw.getDefault().getPreferenceStore().getInt(Log4jPreferencePage.P_PORT);
+        Logger rootLogger = LogManager.getRootLogger();
+        rootLogger.setLevel(Level.toLevel("DEBUG"));
 
-        Log4jServer.mLog4jServer = new Log4jServer();
-        Log4jServer.mLog4jServer.setServerUp(true);
-        Log4jServer.mLog4jServer.start();
+        mServerUp = true;
 
         BandsawUtilities.getStartAction().setEnabled(false);
         BandsawUtilities.getStopAction().setEnabled(true);
@@ -71,8 +74,20 @@ public class Log4jServer extends Thread
     /**
      * Stop the Log4j Socket Server
      */
-    static public void stopListener()
+    public static void stopListener()
     {
+        Logger rootLogger = LogManager.getRootLogger();
+        rootLogger.setLevel(Level.toLevel("OFF"));
+
+        mServerUp = false;
+
+        //Enumeration appenders = LogManager.getCurrentLoggers();
+        //while (appenders.hasMoreElements()) {
+            //Logger appender = (Logger) appenders.nextElement();
+            ////appender.close();
+            //System.out.println(appender.getName());
+        //}
+
         BandsawUtilities.getStartAction().setEnabled(true);
         BandsawUtilities.getStopAction().setEnabled(false);
     }
@@ -91,70 +106,6 @@ public class Log4jServer extends Thread
                 LogSet.getInstance().addLoggingEvent(thisEvent);
             }
         });
-    }
-
-    /**
-     * Kick off the runner thread
-     * @see java.lang.Runnable#run()
-     */
-    public void run()
-    {
-
-        ClientConn client_conn = null;
-        try {
-            ServerSocket serverSocket = new ServerSocket(port);
-            while(true) {
-                Socket socket = serverSocket.accept();
-                client_conn = new ClientConn(socket);
-            }
-        } catch(Exception e) {
-            e.printStackTrace();
-        } finally {
-
-            // shut down client correctly
-            if (client_conn != null) {
-                client_conn.setActive(false);
-            }
-        }
-    }
-
-    /**
-     * Quick Encapsulation of the client runner
-     * - made it seperate so many servers/conns could be active
-     *   at once, each in their own thread
-     * @author Brandon
-     */
-    class ClientConn extends Thread
-    {
-
-        private Socket socket;
-
-        public ClientConn(Socket s)
-        {
-            this.socket = s;
-        }
-
-        private boolean mActive = false;
-
-        /**
-         * Pawn me off so I can handle some requests
-         * @see java.lang.Runnable#run()
-         */
-        public void run() {
-            new SocketNode(socket, LogManager.getLoggerRepository());
-        }
-
-        /**
-         * @return
-         */
-        public boolean isActive()
-        {
-            return mActive;
-        }
-
-        public void setActive(boolean active) {
-            this.mActive = active;
-        }
     }
 
     /**

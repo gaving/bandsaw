@@ -8,7 +8,11 @@ Bandsaw
 [_] Tidy up the dialogs, make them a bit nicer with jface
 [_] Give the log icons for different levels
 [_] Populate the columns by default
-[_] Make the start/stop of the server actually work
+[x] Make the start/stop of the server actually work
 [_] Write rule to actually install the plugin
-[_] Silence the internal debug messages
+[x] Silence the internal debug messages
 [_] Optionally allow the log to be stored somewhere
+
+Resources
+=========
+http://logging.apache.org/log4j/companions/receivers/apidocs/org/apache/log4j/net/XMLSocketReceiver.html#shutdown()
