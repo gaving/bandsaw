@@ -27,7 +27,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class Log4jFilterPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
     /**
-     * List is stored as one string, need a seperator for storing
+     * List is stored as one string, need a separator for storing
      */
     private static final String ENCODING_SEPERATOR = ";;;";
 

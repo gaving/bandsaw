@@ -2,23 +2,18 @@ package net.brokentrain.bandsaw.log4j;
 
 
 import java.net.ServerSocket;
-import java.util.ArrayList;
 import java.util.Enumeration;
-import java.net.Socket;
 
 import net.brokentrain.bandsaw.Bandsaw;
 import net.brokentrain.bandsaw.BandsawUtilities;
 import net.brokentrain.bandsaw.preferences.Log4jPreferencePage;
 
-import org.apache.log4j.Category;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.LoggerRepositoryExImpl;
-import org.apache.log4j.net.SimpleSocketServer;
-import org.apache.log4j.net.SocketNode;
-import org.apache.log4j.Logger;
-import org.apache.log4j.net.SocketAppender;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.LoggerRepositoryExImpl;
+import org.apache.log4j.net.SocketAppender;
 import org.apache.log4j.spi.LoggerRepository;
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.RepositorySelector;
@@ -34,14 +29,11 @@ public class Log4jServer extends Thread
 
     private static Log4jServer mLog4jServer;
 
-    private static ServerSocket mServerSocket;
     private static Thread mPrimary;
     private static boolean mServerUp = false;
 
     private static final Object repositorySelectorGuard = new Object();
     private static final LoggerRepositoryExImpl repositoryExImpl = new LoggerRepositoryExImpl(LogManager.getLoggerRepository());
-
-    private static int port;
 
     public static void init()
     {

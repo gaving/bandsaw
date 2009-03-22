@@ -40,7 +40,7 @@ public class BandsawView extends ViewPart
         BandsawUtilities.setView(this);
     }
 
-    public void createPartControl(Composite parent)
+    public void createPartControl(final Composite parent)
     {
 
         IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
