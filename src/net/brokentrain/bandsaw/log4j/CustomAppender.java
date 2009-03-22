@@ -13,7 +13,6 @@ public class CustomAppender extends AppenderSkeleton {
     public static void register() {
         CustomAppender appender = new CustomAppender();
         Logger.getRootLogger().addAppender(appender);
-        Logger.getLogger("StackTrace").addAppender(appender);
     }
 
     /**

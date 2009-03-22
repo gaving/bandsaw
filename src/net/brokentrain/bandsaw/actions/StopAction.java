@@ -13,32 +13,33 @@ import org.eclipse.ui.IViewPart;
  * TODO: Provide description for "StopAction".
  * @see IViewActionDelegate
  */
-public class StopAction implements IViewActionDelegate {
-	/**
-	 * TODO: Implement the "StopAction" constructor.
-	 */
-	public StopAction() {
-	}
+public class StopAction implements IViewActionDelegate {;
 
-	/**
-	 * TODO: Implement "run".
-	 * @see IViewActionDelegate#run
-	 */
-	public void run(IAction action)  {
+    /**
+     * TODO: Implement the "StopAction" constructor.
+     */
+    public StopAction() {
+    }
+
+    /**
+     * TODO: Implement "run".
+     * @see IViewActionDelegate#run
+     */
+    public void run(IAction action)  {
         Log4jServer.stopListener();
-	}
+    }
 
-	/**
-	 * TODO: Implement "selectionChanged".
-	 * @see IViewActionDelegate#selectionChanged
-	 */
-	public void selectionChanged(IAction action, ISelection selection)  {
-	}
+    /**
+     * TODO: Implement "selectionChanged".
+     * @see IViewActionDelegate#selectionChanged
+     */
+    public void selectionChanged(IAction action, ISelection selection)  {
+    }
 
-	/**
-	 * TODO: Implement "init".
-	 * @see IViewActionDelegate#init
-	 */
-	public void init(IViewPart view)  {
-	}
+    /**
+     * TODO: Implement "init".
+     * @see IViewActionDelegate#init
+     */
+    public void init(IViewPart view)  {
+    }
 }

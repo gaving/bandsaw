@@ -27,13 +27,9 @@ public class Bandsaw extends AbstractUIPlugin
     public Bandsaw()
     {
         plugin = this;
-        try
-        {
-            resourceBundle =
-                ResourceBundle.getBundle("net.brokentrain.bandsaw.BandsawResources");
-        }
-        catch (MissingResourceException x)
-        {
+        try {
+            resourceBundle = ResourceBundle.getBundle("net.brokentrain.bandsaw.BandsawResources");
+        } catch (MissingResourceException x) {
             resourceBundle = null;
         }
     }
@@ -75,12 +71,9 @@ public class Bandsaw extends AbstractUIPlugin
     public static String getResourceString(String key)
     {
         ResourceBundle bundle = Bandsaw.getDefault().getResourceBundle();
-        try
-        {
+        try {
             return bundle.getString(key);
-        }
-        catch (MissingResourceException e)
-        {
+        } catch (MissingResourceException e) {
             return key;
         }
     }

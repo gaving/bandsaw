@@ -16,6 +16,7 @@ import org.apache.log4j.LoggerRepositoryExImpl;
 import org.apache.log4j.net.SimpleSocketServer;
 import org.apache.log4j.net.SocketNode;
 import org.apache.log4j.Logger;
+import org.apache.log4j.net.SocketAppender;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggerRepository;
@@ -61,6 +62,10 @@ public class Log4jServer extends Thread
      */
     public static boolean startListener()
     {
+
+        int port = Bandsaw.getDefault().getPreferenceStore().getInt( Log4jPreferencePage.P_PORT);
+        System.out.println(port);
+
         Logger rootLogger = LogManager.getRootLogger();
         rootLogger.setLevel(Level.toLevel("DEBUG"));
 
@@ -68,6 +73,7 @@ public class Log4jServer extends Thread
 
         BandsawUtilities.getStartAction().setEnabled(false);
         BandsawUtilities.getStopAction().setEnabled(true);
+
         return true;
     }
 
@@ -80,6 +86,20 @@ public class Log4jServer extends Thread
         rootLogger.setLevel(Level.toLevel("OFF"));
 
         mServerUp = false;
+
+        //Logger logger = LogManager.getLogger("org.apache.log4j.net.XMLSocketReceiver");
+        //Enumeration appenders = logger.getAllAppenders();
+        //while (appenders.hasMoreElements()) {
+            //Appender appender = (Appender) appenders.nextElement();
+            ////appender.close();
+            //System.out.println(appender.getName());
+        //}
+        //
+        Enumeration appenders = LogManager.getRootLogger().getAllAppenders();
+        while (appenders.hasMoreElements()) {
+            Appender appender = (Appender) appenders.nextElement();
+            System.out.println("Appender:" + ((SocketAppender)appender).getPort());
+        }
 
         //Enumeration appenders = LogManager.getCurrentLoggers();
         //while (appenders.hasMoreElements()) {

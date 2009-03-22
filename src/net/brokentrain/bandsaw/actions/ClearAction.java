@@ -16,42 +16,39 @@ import org.eclipse.ui.IViewPart;
  */
 public class ClearAction implements IViewActionDelegate
 {
-	/**
-	 * TODO: Implement the "ClearAction" constructor.
-	 */
-	public ClearAction()
-	{
-	}
+    /**
+     * TODO: Implement the "ClearAction" constructor.
+     */
+    public ClearAction()
+    {
+    }
 
-	/**
-	 * TODO: Implement "run".
-	 * @see IViewActionDelegate#run
-	 */
-	public void run(IAction action)
-	{
-		LogSet.getInstance().clear();
-		int item_count = BandsawUtilities.getTable().getItemCount();
-		if (item_count > 0)
-		{
-			BandsawUtilities.getTable().remove(
-				0,
-				BandsawUtilities.getTable().getItemCount()-1);
-		}
-	}
+    /**
+     * TODO: Implement "run".
+     * @see IViewActionDelegate#run
+     */
+    public void run(IAction action)
+    {
+        LogSet.getInstance().clear();
+        int item_count = BandsawUtilities.getTable().getItemCount();
+        if (item_count > 0) {
+            BandsawUtilities.getTable().remove(0,BandsawUtilities.getTable().getItemCount()-1);
+        }
+    }
 
-	/**
-	 * TODO: Implement "selectionChanged".
-	 * @see IViewActionDelegate#selectionChanged
-	 */
-	public void selectionChanged(IAction action, ISelection selection)
-	{
-	}
+    /**
+     * TODO: Implement "selectionChanged".
+     * @see IViewActionDelegate#selectionChanged
+     */
+    public void selectionChanged(IAction action, ISelection selection)
+    {
+    }
 
-	/**
-	 * TODO: Implement "init".
-	 * @see IViewActionDelegate#init
-	 */
-	public void init(IViewPart view)
-	{
-	}
+    /**
+     * TODO: Implement "init".
+     * @see IViewActionDelegate#init
+     */
+    public void init(IViewPart view)
+    {
+    }
 }

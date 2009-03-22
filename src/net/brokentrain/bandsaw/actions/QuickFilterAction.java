@@ -16,38 +16,36 @@ import org.eclipse.ui.IViewActionDelegate;
  */
 public class QuickFilterAction implements IViewActionDelegate
 {
-	/**
-	 * TODO: Implement the "QuickFilterAction" constructor.
-	 */
-	public QuickFilterAction()
-	{
-	}
+    /**
+     * TODO: Implement the "QuickFilterAction" constructor.
+     */
+    public QuickFilterAction()
+    {
+    }
 
-	/**
-	 * TODO: Implement "run".
-	 * @see IViewActionDelegate#run
-	 */
-	public void run(IAction action)
-	{
-		QuickFilterDialog dialog =
-			new QuickFilterDialog(BandsawUtilities.getTable().getShell());
-		dialog.open();
-        //System.out.println(""+dialog.getReturnCode());
-	}
+    /**
+     * TODO: Implement "run".
+     * @see IViewActionDelegate#run
+     */
+    public void run(IAction action)
+    {
+        QuickFilterDialog dialog = new QuickFilterDialog(BandsawUtilities.getTable().getShell());
+        dialog.open();
+    }
 
-	/**
-	 * TODO: Implement "selectionChanged".
-	 * @see IViewActionDelegate#selectionChanged
-	 */
-	public void selectionChanged(IAction action, ISelection selection)
-	{
-	}
+    /**
+     * TODO: Implement "selectionChanged".
+     * @see IViewActionDelegate#selectionChanged
+     */
+    public void selectionChanged(IAction action, ISelection selection)
+    {
+    }
 
-	/**
-	 * TODO: Implement "init".
-	 * @see IViewActionDelegate#init
-	 */
-	public void init(IViewPart view)
-	{
-	}
+    /**
+     * TODO: Implement "init".
+     * @see IViewActionDelegate#init
+     */
+    public void init(IViewPart view)
+    {
+    }
 }

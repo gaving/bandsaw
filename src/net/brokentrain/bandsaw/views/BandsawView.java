@@ -40,10 +40,6 @@ public class BandsawView extends ViewPart
         BandsawUtilities.setView(this);
     }
 
-    /**
-     * This is a cal lback that will allow us to create the viewer and
-     * initialize it.
-     */
     public void createPartControl(Composite parent)
     {
 

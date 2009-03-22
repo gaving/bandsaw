@@ -24,10 +24,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-
-public class Log4jFilterPreferencePage
-    extends PreferencePage
-    implements IWorkbenchPreferencePage {
+public class Log4jFilterPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
     /**
      * List is stored as one string, need a seperator for storing
@@ -46,11 +43,11 @@ public class Log4jFilterPreferencePage
      * Sets the default values of the preferences.
      */
     private void initializeDefaults() {
-    	Iterator i = LogSet.getInstance().getFilterset().iterator();
-    	while ( i.hasNext() ) {
-    		Filter filter = (Filter)i.next();
-    		filterList.add(filter.toString());
-    	}
+        Iterator i = LogSet.getInstance().getFilterset().iterator();
+        while ( i.hasNext() ) {
+            Filter filter = (Filter)i.next();
+            filterList.add(filter.toString());
+        }
     }
 
     /*
@@ -72,9 +69,9 @@ public class Log4jFilterPreferencePage
 
         filterList = new List(entryTable, SWT.BORDER);
         filterList.setItems(
-            convert(
-                Bandsaw.getDefault().getPreferenceStore().getString(
-                    P_FILTERS)));
+                convert(
+                    Bandsaw.getDefault().getPreferenceStore().getString(
+                        P_FILTERS)));
 
         //Create a data that takes up the extra space in the dialog and spans both columns.
         data = new GridData(GridData.FILL_BOTH);
@@ -82,7 +79,7 @@ public class Log4jFilterPreferencePage
         // Type
         data = new GridData(GridData.FILL_HORIZONTAL);
         combo1 = new Combo(entryTable, SWT.DROP_DOWN | SWT.READ_ONLY);
-        
+
         for (String label : BandsawUtilities.getColumnLabels()) {
             combo1.add(label);
         }
@@ -108,15 +105,15 @@ public class Log4jFilterPreferencePage
         addButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
                 String filter =
-                    combo1.getText()
-                        + " "
-                        + combo2.getText()
-                        + " "
-                        + criteriaText.getText();
-                filterList.add(filter, filterList.getItemCount());
-                Filter filtere = Filter.composeFromForm(filter);
-                LogSet.getInstance().getFilterset().addFilter(filtere);
-                BandsawUtilities.filterUpdated();
+            combo1.getText()
+            + " "
+            + combo2.getText()
+            + " "
+            + criteriaText.getText();
+        filterList.add(filter, filterList.getItemCount());
+        Filter filtere = Filter.composeFromForm(filter);
+        LogSet.getInstance().getFilterset().addFilter(filtere);
+        BandsawUtilities.filterUpdated();
             }
         });
 
@@ -125,14 +122,14 @@ public class Log4jFilterPreferencePage
         removeButton.setText("Remove From List"); //$NON-NLS-1$
         removeButton.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
-            	String selection = filterList.getSelection()[0];
-            	Filter filter = Filter.composeFromForm(selection);
-            	LogSet.getInstance().getFilterset().removeFilter(filter);
-            	filterList.remove(filterList.getSelectionIndex());
+                String selection = filterList.getSelection()[0];
+                Filter filter = Filter.composeFromForm(selection);
+                LogSet.getInstance().getFilterset().removeFilter(filter);
+                filterList.remove(filterList.getSelectionIndex());
                 BandsawUtilities.filterUpdated();
             }
         });
-        
+
         initializeDefaults();
 
         return entryTable;

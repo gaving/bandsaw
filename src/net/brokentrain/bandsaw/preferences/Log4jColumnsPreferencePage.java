@@ -22,18 +22,16 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage
-{
+public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
     public static final String P_COLUMNS = "P_COLUMNS";
-
-    List columnList;
-    Button btnRemove;
-    Button btnMoveUp;
-    Button btnAdd;
-    Combo cmboAddList;
-    Button btnMoveDown;
-    Label label;
+    private List columnList;
+    private Button btnRemove;
+    private Button btnMoveUp;
+    private Button btnAdd;
+    private Combo cmboAddList;
+    private Button btnMoveDown;
+    private Label label;
 
     public void init(IWorkbench workbench)
     {
@@ -62,8 +60,7 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
         label.setLayoutData(gData);
 
         // LIST
-        columnList =
-            new List(entryTable, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+        columnList = new List(entryTable, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
         gData = new GridData();
         gData.verticalSpan = 3;
         columnList.setLayoutData(gData);
@@ -71,16 +68,14 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
         // MOVE UP
         btnMoveUp = new Button(entryTable, SWT.PUSH | SWT.CENTER);
         btnMoveUp.setText("Move Up"); //$NON-NLS-1$
-        btnMoveUp.addSelectionListener(new SelectionAdapter()
-                {
-                    public void widgetSelected(SelectionEvent event)
-        {
-            int index = columnList.getSelectionIndex();
-            ColumnList.getInstance().moveUp(index);
-            refreshList();
-            columnList.select(index - 1);
-            BandsawUtilities.updateTableColumns();
-        }
+        btnMoveUp.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent event) {
+                int index = columnList.getSelectionIndex();
+                ColumnList.getInstance().moveUp(index);
+                refreshList();
+                columnList.select(index - 1);
+                BandsawUtilities.updateTableColumns();
+            }
         });
         gData = new GridData();
         gData.horizontalSpan = 1;
@@ -89,16 +84,14 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
         // MOVE DOWN
         btnMoveDown = new Button(entryTable, SWT.PUSH | SWT.CENTER);
         btnMoveDown.setText("Move Down"); //$NON-NLS-1$
-        btnMoveDown.addSelectionListener(new SelectionAdapter()
-                {
-                    public void widgetSelected(SelectionEvent event)
-        {
-            int index = columnList.getSelectionIndex();
-            ColumnList.getInstance().moveDown(index);
-            refreshList();
-            columnList.select(index + 1);
-            BandsawUtilities.updateTableColumns();
-        }
+        btnMoveDown.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent event) {
+                int index = columnList.getSelectionIndex();
+                ColumnList.getInstance().moveDown(index);
+                refreshList();
+                columnList.select(index + 1);
+                BandsawUtilities.updateTableColumns();
+            }
         });
         gData = new GridData();
         gData.horizontalSpan = 1;
@@ -107,14 +100,12 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
         // REMOVE
         btnRemove = new Button(entryTable, SWT.PUSH | SWT.CENTER);
         btnRemove.setText("Remove"); //$NON-NLS-1$
-        btnRemove.addSelectionListener(new SelectionAdapter()
-                {
-                    public void widgetSelected(SelectionEvent event)
-        {
-            ColumnList.getInstance().remove(columnList.getSelectionIndex());
-            refreshList();
-            BandsawUtilities.updateTableColumns();
-        }
+        btnRemove.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent event) {
+                ColumnList.getInstance().remove(columnList.getSelectionIndex());
+                refreshList();
+                BandsawUtilities.updateTableColumns();
+            }
         });
         gData = new GridData();
         gData.horizontalSpan = 1;
@@ -133,17 +124,15 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
         // ADD IT BUTTON
         btnAdd = new Button(entryTable, SWT.PUSH | SWT.CENTER);
         btnAdd.setText("Add Column"); //$NON-NLS-1$
-        btnAdd.addSelectionListener(new SelectionAdapter()
-                {
-                    public void widgetSelected(SelectionEvent event)
-        {
-            int col =
-            BandsawUtilities.convertColumnToInt(cmboAddList.getText());
-        ColumnList.getInstance().add(col);
-        refreshList();
-        BandsawUtilities.updateTableColumns();
-        }
+        btnAdd.addSelectionListener(new SelectionAdapter() {
+            public void widgetSelected(SelectionEvent event) {
+                int col = BandsawUtilities.convertColumnToInt(cmboAddList.getText());
+                ColumnList.getInstance().add(col);
+                refreshList();
+                BandsawUtilities.updateTableColumns();
+            }
         });
+
         gData = new GridData();
         gData.horizontalSpan = 1;
         btnAdd.setLayoutData(gData);
