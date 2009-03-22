@@ -48,7 +48,7 @@ public class Log4jPreferencePage extends FieldEditorPreferencePage implements IW
     /**
      * Sets the default values of the preferences.
      */
-    static public void initializeDefaults() {
+    public static void initializeDefaults() {
         IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
         store.setDefault(P_PORT, 4445);
         if (store.getString(P_TYPE).equals(P_TYPE_SOCKET_APPENDER_VAL)

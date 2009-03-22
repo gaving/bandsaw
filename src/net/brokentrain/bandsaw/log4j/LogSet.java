@@ -21,12 +21,12 @@ public class LogSet {
     Vector<LoggingEvent> mHiddenLogs = new Vector<LoggingEvent>();
     FilterSet mFilterset = new FilterSet();
 
-    static private LogSet mInstance = null;
+    private static LogSet mInstance = null;
 
     private LogSet() {
     }
 
-    static public LogSet getInstance() {
+    public static LogSet getInstance() {
         if (mInstance == null) {
             mInstance = new LogSet();
         }

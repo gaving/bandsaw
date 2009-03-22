@@ -21,9 +21,9 @@ public class ColumnList
 
     Vector<Integer> columns = new Vector<Integer>();
 
-    static private boolean notInit = true;
+    private static boolean notInit = true;
 
-    static private ColumnList cl;
+    private static ColumnList cl;
 
     public static final int COL_COUNT = 10;
 

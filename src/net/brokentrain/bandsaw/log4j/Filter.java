@@ -176,7 +176,7 @@ public class Filter implements Serializable
      * @return Filter
      * @throws IOException
      */
-    static public String serialize(Filter filter)
+    public static String serialize(Filter filter)
     {
         StringBuffer sb = new StringBuffer();
         sb.append(String.valueOf(filter.getType()));
@@ -193,7 +193,7 @@ public class Filter implements Serializable
      * @return Filter
      * @throws IOException
      */
-    static public Filter deSerialize(String serializedFilter)
+    public static Filter deSerialize(String serializedFilter)
         throws IOException
     {
         try
@@ -217,7 +217,7 @@ public class Filter implements Serializable
         }
     }
 
-    static public Filter composeFromForm(String input)
+    public static Filter composeFromForm(String input)
     {
         StringTokenizer st = new StringTokenizer(input, " ");
 

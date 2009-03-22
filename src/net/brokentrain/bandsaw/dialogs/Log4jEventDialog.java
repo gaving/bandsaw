@@ -273,7 +273,7 @@ public class Log4jEventDialog extends Dialog
      * @param le
      * @return String
      */
-    static public String getTitleText(LoggingEvent le)
+    public static String getTitleText(LoggingEvent le)
     {
         if (le.getLocationInformation() != null)
         {
