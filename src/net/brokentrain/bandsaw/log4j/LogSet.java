@@ -1,6 +1,5 @@
 package net.brokentrain.bandsaw.log4j;
 
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
@@ -11,16 +10,15 @@ import net.brokentrain.bandsaw.util.PaintUtil;
 
 import org.apache.log4j.spi.LoggingEvent;
 
-
-/**
- * @author Brandon
- */
 public class LogSet {
 
-    Vector<LoggingEvent> mAllLogs = new Vector<LoggingEvent>();
-    Vector<LoggingEvent> mShowingLogs = new Vector<LoggingEvent>();
-    Vector<LoggingEvent> mHiddenLogs = new Vector<LoggingEvent>();
-    FilterSet mFilterset = new FilterSet();
+    private Vector<LoggingEvent> mAllLogs = new Vector<LoggingEvent>();
+
+    private Vector<LoggingEvent> mShowingLogs = new Vector<LoggingEvent>();
+
+    private Vector<LoggingEvent> mHiddenLogs = new Vector<LoggingEvent>();
+
+    private FilterSet mFilterset = new FilterSet();
 
     private static LogSet mInstance = null;
 
@@ -54,8 +52,7 @@ public class LogSet {
      * Returns the filterset.
      * @return FilterSet
      */
-    public FilterSet getFilterset()
-    {
+    public FilterSet getFilterset() {
         return mFilterset;
     }
 
@@ -63,29 +60,24 @@ public class LogSet {
      * Sets the filterset.
      * @param filterset The filterset to set
      */
-    public void setFilterset(FilterSet filterset)
-    {
+    public void setFilterset(FilterSet filterset) {
         this.mFilterset = filterset;
     }
 
-    public void clear()
-    {
+    public void clear() {
         mAllLogs.clear();
         mShowingLogs.clear();
         mHiddenLogs.clear();
     }
 
-    public LoggingEvent getLoggingEventShowingAt(int idx)
-    {
+    public LoggingEvent getLoggingEventShowingAt(int idx) {
         return (LoggingEvent) mShowingLogs.get(idx);
     }
 
-    public Collection getValidLogs()
-    {
+    public Collection getValidLogs() {
         Vector<LoggingEvent> rSet = new Vector<LoggingEvent>();
 
-        if (!PauseAction.isPaused())
-        {
+        if (!PauseAction.isPaused()) {
             rSet.addAll(mHiddenLogs);
         }
         rSet.addAll(mShowingLogs);
@@ -93,22 +85,18 @@ public class LogSet {
         return rSet;
     }
 
-    public int getValidLogCount()
-    {
+    public int getValidLogCount() {
         return mShowingLogs.size();
     }
 
-    public void revalidateAll()
-    {
+    public void revalidateAll() {
         mShowingLogs.clear();
         mHiddenLogs.clear();
         Iterator allLogs = mAllLogs.iterator();
         LoggingEvent thisEvent;
-        while (allLogs.hasNext())
-        {
+        while (allLogs.hasNext()) {
             thisEvent = (LoggingEvent) allLogs.next();
-            if (getFilterset().isValidForShow(thisEvent))
-            {
+            if (getFilterset().isValidForShow(thisEvent)) {
                 mShowingLogs.insertElementAt(thisEvent, 0);
             }
         }

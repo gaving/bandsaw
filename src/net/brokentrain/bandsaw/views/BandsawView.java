@@ -1,8 +1,11 @@
 package net.brokentrain.bandsaw.views;
 
+import java.util.ArrayList;
+
 import net.brokentrain.bandsaw.Bandsaw;
 import net.brokentrain.bandsaw.BandsawUtilities;
 import net.brokentrain.bandsaw.actions.QuickFilterAction;
+import net.brokentrain.bandsaw.util.PaintUtil;
 import net.brokentrain.bandsaw.actions.ShowDetailAction;
 import net.brokentrain.bandsaw.listeners.IMouseListener;
 import net.brokentrain.bandsaw.listeners.LifecycleListener;
@@ -11,6 +14,13 @@ import net.brokentrain.bandsaw.log4j.Log4jServer;
 import net.brokentrain.bandsaw.preferences.Log4jColumnsPreferencePage;
 import net.brokentrain.bandsaw.preferences.Log4jPreferencePage;
 
+import org.apache.log4j.helpers.CyclicBuffer;
+import org.apache.log4j.helpers.LogLog;
+import org.apache.log4j.Priority;
+import org.apache.log4j.Category;
+import org.apache.log4j.Layout;
+import org.apache.log4j.PatternLayout;
+import org.apache.log4j.spi.LoggingEvent;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -24,10 +34,40 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITableLabelProvider;
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.ViewPart;
 
-public class BandsawView extends ViewPart
-{
+public class BandsawView extends ViewPart {
+
+    private TableViewer viewer;
     private Table table;
+
+    private GridData gridData;
+    private Label filterBaseLabel;
     private Label filterLabel;
 
     /**
@@ -40,23 +80,26 @@ public class BandsawView extends ViewPart
         BandsawUtilities.setView(this);
     }
 
-    public void createPartControl(final Composite parent)
-    {
+    public void createPartControl(final Composite parent) {
 
         IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
 
         GridLayout layout = new GridLayout(2, false);
         parent.setLayout(layout);
 
-        Label filterBaseLabel = new Label(parent,SWT.NONE);
+        Composite labelArea = new Composite(parent, SWT.NONE);
+        gridData = new GridData(GridData.FILL_HORIZONTAL);
+        gridData.exclude = false;
+        labelArea.setLayout(new GridLayout(2, false));
+        labelArea.setLayoutData(gridData);
+
+        filterBaseLabel = new Label(labelArea,SWT.NONE);
         filterBaseLabel.setText("Quick Filter: ");
-        GridData gridData = new GridData();
+        gridData = new GridData();
         filterBaseLabel.setLayoutData(gridData);
 
-        filterLabel = new Label(parent,SWT.NONE);
-        BandsawUtilities.updateTitleBar(null);
-        gridData =
-            new GridData(GridData.FILL_HORIZONTAL);
+        filterLabel = new Label(labelArea,SWT.NONE);
+        gridData = new GridData(GridData.FILL_HORIZONTAL);
         filterLabel.setLayoutData(gridData);
 
         filterLabel.addMouseListener(new MouseListener() {
@@ -75,31 +118,39 @@ public class BandsawView extends ViewPart
             }
         });
 
-        table =
-            new Table(
-                    parent,
-                    SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION| SWT.BORDER | SWT.VIRTUAL);
+        BandsawUtilities.updateTitleBar(null);
 
-        table.setHeaderVisible(true);
+        viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+        viewer.setContentProvider(new BandsawViewContentProvider());
+        viewer.setLabelProvider(new BandsawViewLabelProvider());
+        viewer.setSorter(new BandsawViewSorter());
+        viewer.setInput(getViewSite());
 
-        gridData =
-            new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL);
+        gridData = new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL);
         gridData.horizontalSpan = 3;
+        gridData.grabExcessHorizontalSpace = true;
+        gridData.grabExcessVerticalSpace = true;
+        gridData.horizontalAlignment = GridData.FILL;
+        gridData.verticalAlignment = GridData.FILL;
+
+        Table table = viewer.getTable();
         table.setLayoutData(gridData);
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
 
         BandsawUtilities.setTable(table);
+        BandsawUtilities.setTableViewer(viewer);
 
         ColumnList.getInstance().setColList(
                 ColumnList.deSerialize(
                     store.getString(Log4jColumnsPreferencePage.P_COLUMNS)));
 
         // Create ColumnList.COL_COUNT columns
-        for (int i = 0; i < ColumnList.getInstance().getColumnCount(); i++)
-        {
+        for (int i = 0; i < ColumnList.getInstance().getColumnCount(); i++) {
             new TableColumn(table, SWT.NONE);
         }
 
-        // things that happen to use throughout our life
+        //// things that happen to use throughout our life
         getSite().getPage().addPartListener(new LifecycleListener());
 
         Log4jServer.init(); // needs workspace thread info
@@ -118,52 +169,52 @@ public class BandsawView extends ViewPart
         BandsawUtilities.setViewTitle(table.getParent().getShell().getText());
 
         hookDoubleClickAction(); // to bring up details
-
     }
 
-    private void hookDoubleClickAction()
-    {
+    private void hookDoubleClickAction() {
         BandsawUtilities.setShowDetailAction(new ShowDetailAction());
 
-        table.addMouseListener(new IMouseListener()
-                {
-                    public void mouseDoubleClick(MouseEvent e)
-        {
-            BandsawUtilities.getShowDetailAction().run();
-        }
+        viewer.getTable().addMouseListener(new IMouseListener() {
+            public void mouseDoubleClick(MouseEvent e) {
+                BandsawUtilities.getShowDetailAction().run();
+            }
         });
     }
 
     /**
      * Passing the focus request to the viewer's control.
      */
-    public void setFocus()
-    {
-        if (BandsawUtilities.isShowing())
-        {
-            table.getParent().setFocus();
+    public void setFocus() {
+        if (BandsawUtilities.isShowing()) {
+            viewer.getTable().getParent().setFocus();
         }
     }
 
     /* (non-Javadoc)
      * @see org.eclipse.ui.IViewPart#init(org.eclipse.ui.IViewSite)
      */
-    public void init(IViewSite site) throws PartInitException
-    {
+    public void init(IViewSite site) throws PartInitException {
         super.init(site);
         BandsawUtilities.setSite(site);
     }
 
     /**
-     * @return Returns the filterLabel.
-     */
-    public Label getFilterLabel() {
-        return filterLabel;
-    }
-    /**
      * @param filterLabel The filterLabel to set.
      */
-    public void setFilterLabel(Label filterLabel) {
-        this.filterLabel = filterLabel;
+    public void updateFilterLabel(String text) {
+        GridData labelData = (GridData) this.filterBaseLabel.getParent().getLayoutData();
+        if (text == null || text.equals("")) {
+            labelData.exclude = true;
+            this.filterBaseLabel.setVisible(false);
+            this.filterLabel.setVisible(false);
+            this.filterLabel.getParent().setVisible(false);
+        } else {
+            labelData.exclude = false;
+            this.filterBaseLabel.setVisible(true);
+            this.filterLabel.setVisible(true);
+            this.filterLabel.setText(text);
+            this.filterLabel.getParent().setVisible(true);
+        }
+        this.filterBaseLabel.getParent().getParent().layout();
     }
 }

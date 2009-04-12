@@ -54,7 +54,7 @@ public class Log4jServer extends Thread
     public static boolean startListener()
     {
 
-        int port = Bandsaw.getDefault().getPreferenceStore().getInt( Log4jPreferencePage.P_PORT);
+        int port = Bandsaw.getDefault().getPreferenceStore().getInt(Log4jPreferencePage.P_PORT);
 
         /* TODO: Should really work out how to change the port of the custom
          * appender here */

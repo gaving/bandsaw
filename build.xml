@@ -1,4 +1,4 @@
-<?xml version='1.0'?>
+<?xml version='1.0' encoding="UTF-8"?>
 
 <project name="bandsaw" default="jar" basedir=".">
 
@@ -11,6 +11,46 @@
     <property name="icons" value="icons"/>
     <property name="cfg" value="cfg"/>
     <property name="src" value="src"/>
+
+    <path id="ant-contrib-classpath">
+        <fileset dir="${include}/" includes="ant-contrib-*.jar"/>
+    </path>
+
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties"
+            classpathref="ant-contrib-classpath"/>
+
+    <taskdef classname="net.sf.antcontrib.logic.For" name="for"
+            classpathref="ant-contrib-classpath"/>
+
+    <!-- require ant 1.7.0 or greater -->
+    <if>
+        <not> <antversion atleast="1.7.0"/> </not>
+        <then>
+            <echo>
+                To build bandsaw, you must have ant 1.7.0 or greater.
+            </echo>
+            <fail message="incompatible ant version."/>
+        </then>
+    </if>
+
+    <!-- determine if eclipse home is set -->
+    <if>
+        <or>
+            <equals arg1="${eclipse.home}" arg2=""/>
+            <equals arg1="${eclipse.home}" arg2="$${env.BANDSAW_ECLIPSE_HOME}"/>
+        </or>
+        <then>
+            <echo>
+                $${eclipse.home} not set.
+                Please set via system arg (ant -Declipse.home=...) or
+                via environment variable (export BANDSAW_ECLIPSE_HOME="...").
+            </echo>
+            <fail message="missing required property (see above)"/>
+        </then>
+        <else>
+            <echo>what</echo>
+        </else>
+    </if>
 
     <target name="init">
 
@@ -82,7 +122,6 @@
         </copy>
 
         <!-- Unpackage all our dependences so we can jar them up -->
-        <!-- NOTE: This does not overwrite anything that may already exist -->
         <unjar dest="${bin}" overwrite="false">
             <fileset dir="${include}">
                 <include name="**/*.jar"/>

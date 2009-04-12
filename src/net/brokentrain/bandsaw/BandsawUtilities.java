@@ -33,6 +33,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IViewSite;
@@ -44,6 +45,8 @@ import org.eclipse.ui.IViewSite;
 public class BandsawUtilities {
 
     private static Table table;
+
+    private static TableViewer tableViewer;
 
     private static BandsawView mView;
 
@@ -152,8 +155,16 @@ public class BandsawUtilities {
         }
     }
 
+    public static void setTableViewer(TableViewer tableViewer) {
+        BandsawUtilities.tableViewer = tableViewer;
+    }
+
     public static void setTable(Table table) {
         BandsawUtilities.table = table;
+    }
+
+    public static TableViewer getViewer() {
+        return BandsawUtilities.tableViewer;
     }
 
     public static Table getTable() {
@@ -331,8 +342,7 @@ public class BandsawUtilities {
             int idx = 0;
             for (Iterator logIter = validLogs.iterator(); logIter.hasNext(); idx++) {
                 LoggingEvent le = (LoggingEvent) logIter.next();
-                items[idx].setForeground(BandsawUtilities.getColor(le
-                            .getLevel()));
+                items[idx].setForeground(BandsawUtilities.getColor(le.getLevel()));
             }
         }
     }
@@ -380,6 +390,7 @@ public class BandsawUtilities {
             TableItem[] items = getTable().getItems();
             TableItem thisItem;
             int idx = 0;
+
             for (Iterator logIter = validLogs.iterator(); logIter.hasNext(); idx++) {
                 LoggingEvent le = (LoggingEvent) logIter.next();
                 if (idx < itemCount) // reuse if possible
@@ -393,8 +404,7 @@ public class BandsawUtilities {
                 for (int colIdx = 0; colIdx < colCount; colIdx++) {
                     String text = BandsawUtilities.getColumnText(le, colIdx);
                     thisItem.setText(colIdx, text);
-                    thisItem.setForeground(BandsawUtilities.getColor(le
-                                .getLevel()));
+                    thisItem.setForeground(BandsawUtilities.getColor(le.getLevel()));
                 }
             }
 
@@ -517,23 +527,22 @@ public class BandsawUtilities {
      * @param le
      */
     public static void addTableItem(LoggingEvent le) {
-        TableItem tableItem = createTableItem(0);
+        //TableItem tableItem = createTableItem(0);
 
-        tableItem.setImage(0, PaintUtil.getIcon(le.getLevel().toInt()));
-        tableItem.setForeground(BandsawUtilities.getColor(le.getLevel()));
+        //tableItem.setImage(0, PaintUtil.getIcon(le.getLevel().toInt()));
+        //tableItem.setForeground(BandsawUtilities.getColor(le.getLevel()));
 
-        for (int i = 0; i < getTable().getColumnCount(); i++) {
-            tableItem.setText(i, getColumnText(le, i));
-        }
+        //for (int i = 0; i < getTable().getColumnCount(); i++) {
+            //tableItem.setText(i, getColumnText(le, i));
+        //}
 
-        table.setSelection(0);
+        //table.setSelection(0);
+
+        getViewer().add(le);
     }
 
     public static void updateTitleBar(String filterText) {
-        if (filterText == null || filterText.equals("")) {
-            filterText = "No Filter";
-        }
-        BandsawUtilities.getView().getFilterLabel().setText(filterText);
+        BandsawUtilities.getView().updateFilterLabel(filterText);
     }
 
     public static int getServerType() {

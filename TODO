@@ -1,19 +1,33 @@
-Bandsaw
+Bandsaw TODO list
+=================
+
+0.2+
+----
+
+- [_] Revive the unit testing
+- [_] Integrate checkstyle into the ant task
+- [_] Javadoc and lots of formatting updates
+- [_] Improve the filter dialog
 
 0.1
-===
+---
 
-[x] Make the icons a bit more web 2
-[_] Tidy up the preferences page
-[_] Tidy up the dialogs, make them a bit nicer with jface
-[x] Give the log icons for different levels
-[_] Make it use the fancy tables that the other views do
-[_] Populate the columns by default
-[x] Make the start/stop of the server actually work
-[_] Write rule to actually install the plugin
-[x] Silence the internal debug messages
-[_] Optionally allow the log to be stored somewhere
+- [x] Make the icons a bit more web 2
+- [_] Tidy up the preferences page, remove redundant prefs
+- [_] Tidy up the dialogs, make them a bit nicer with jface
+- [x] Give the log icons for different levels
+- [_] Use a TableViewer instead of the table
+    * [_] Allow sorting of the columns
+    * [x] Include icons on the first column
+    * [x] Rehook the double click action in
+- [_] Populate the columns by default
+- [x] Make the start/stop of the server actually work
+- [_] Write rule to actually install the plugin
+- [x] Silence the internal debug messages
+- [_] Optionally allow the log to be stored somewhere
+- [x] Hide the filter label unless it a filter is actually active
+- [_] Drop the colour stuff entirely in favour of the icons (also from preferences)
 
 Resources
 =========
-http://logging.apache.org/log4j/companions/receivers/apidocs/org/apache/log4j/net/XMLSocketReceiver.html#shutdown()
+- http://logging.apache.org/log4j/companions/receivers/apidocs/org/apache/log4j/net/XMLSocketReceiver.html#shutdown()

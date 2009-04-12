@@ -19,12 +19,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-
-/**
- * @author Brandon
- */
-public class Log4jEventDialog extends Dialog
-{
+public class Log4jEventDialog extends Dialog {
     private LoggingEvent mLoggingEvent;
 
     private Composite topComposite;
