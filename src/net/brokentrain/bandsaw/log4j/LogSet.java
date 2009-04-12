@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import net.brokentrain.bandsaw.BandsawUtilities;
 import net.brokentrain.bandsaw.actions.PauseAction;
+import net.brokentrain.bandsaw.util.PaintUtil;
 
 import org.apache.log4j.spi.LoggingEvent;
 

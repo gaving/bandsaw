@@ -20,9 +20,6 @@ import org.apache.regexp.RESyntaxException;
 public class Filter implements Serializable
 {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
 
     private static final String ENCODING_SEPERATOR = ":::";
@@ -47,16 +44,12 @@ public class Filter implements Serializable
         this.type = type;
         this.criteria = criteria;
         this.inclusive = inclusive;
-        try
-        {
+        try {
             REProgram program = new RECompiler().compile(criteria);
             mExpression = new RE(program);
             mRegExpValid = true;
-        }
-        catch (RESyntaxException e)
-        {
-            System.out.println(
-                    "Could not compile regular expression, will use java contains");
+        } catch (RESyntaxException e) {
+            System.out.println("Could not compile regular expression, will use java contains");
             mRegExpValid = false;
         }
 

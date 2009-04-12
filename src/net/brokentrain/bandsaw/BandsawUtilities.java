@@ -1,6 +1,5 @@
 package net.brokentrain.bandsaw;
 
-
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -20,6 +19,7 @@ import net.brokentrain.bandsaw.log4j.Log4jThrowable;
 import net.brokentrain.bandsaw.log4j.LogSet;
 import net.brokentrain.bandsaw.preferences.ColorPreferencePage;
 import net.brokentrain.bandsaw.views.BandsawView;
+import net.brokentrain.bandsaw.util.PaintUtil;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
@@ -286,7 +286,7 @@ public class BandsawUtilities {
      */
     public static void showMessage(String message) {
         MessageDialog.openInformation(getTable().getParent().getShell(),
-                "Ganymede Log4j View", message + "...");
+                "Bandsaw", message + "...");
     }
 
     /**
@@ -519,11 +519,12 @@ public class BandsawUtilities {
     public static void addTableItem(LoggingEvent le) {
         TableItem tableItem = createTableItem(0);
 
+        tableItem.setImage(0, PaintUtil.getIcon(le.getLevel().toInt()));
+        tableItem.setForeground(BandsawUtilities.getColor(le.getLevel()));
+
         for (int i = 0; i < getTable().getColumnCount(); i++) {
             tableItem.setText(i, getColumnText(le, i));
         }
-
-        tableItem.setForeground(BandsawUtilities.getColor(le.getLevel()));
 
         table.setSelection(0);
     }
@@ -540,12 +541,8 @@ public class BandsawUtilities {
     }
 
     public static void setServerType(int serverType) {
-
-        System.out.println("Changing server type [" + serverType + "]");
         mServerType = serverType;
 
-        // restart
-        // TODO -Check to see if it's running first.
         Log4jServer.stopListener();
         Log4jServer.startListener();
     }

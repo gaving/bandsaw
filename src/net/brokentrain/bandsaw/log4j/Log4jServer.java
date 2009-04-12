@@ -1,6 +1,5 @@
 package net.brokentrain.bandsaw.log4j;
 
-
 import java.net.ServerSocket;
 import java.util.Enumeration;
 
@@ -56,8 +55,9 @@ public class Log4jServer extends Thread
     {
 
         int port = Bandsaw.getDefault().getPreferenceStore().getInt( Log4jPreferencePage.P_PORT);
-        System.out.println(port);
 
+        /* TODO: Should really work out how to change the port of the custom
+         * appender here */
         Logger rootLogger = LogManager.getRootLogger();
         rootLogger.setLevel(Level.toLevel("DEBUG"));
 

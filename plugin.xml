@@ -22,8 +22,8 @@
             name="Bandsaw"
             id="BandsawEclipseProject.Bandsaw"/>
         <view
-            name="Log"
-            icon="icons/bandsaw.gif"
+            name="Bandsaw"
+            icon="icons/bandsaw.png"
             category="BandsawEclipseProject.Bandsaw"
             class="net.brokentrain.bandsaw.views.BandsawView"
             id="net.brokentrain.bandsaw.views.BandsawView">
@@ -76,7 +76,7 @@
             id="Bandsaw.ViewContribution">
             <action
                 label="&amp;Quick Filter"
-                icon="icons/filter.gif"
+                icon="icons/filter.png"
                 tooltip="Add a &amp;Quick filter"
                 class="net.brokentrain.bandsaw.actions.QuickFilterAction"
                 menubarPath="Bandsaw.FilterMenu/Bandsaw.FilterGroup1"
@@ -90,7 +90,7 @@
                 toolbarPath="Group1"
                 class="net.brokentrain.bandsaw.actions.PauseAction"
                 enablesFor="*"
-                icon="icons/pause.gif"
+                icon="icons/pause.png"
                 label="Pause Display"
                 menubarPath="Bandsaw.DisplayMenu/Bandsaw.DisplayGroup1"
                 tooltip="&amp;Pause">
@@ -101,7 +101,7 @@
                 toolbarPath="Group1"
                 class="net.brokentrain.bandsaw.actions.ClearAction"
                 enablesFor="*"
-                icon="icons/clear.gif"
+                icon="icons/clear.png"
                 label="&amp;Clear Display"
                 menubarPath="Bandsaw.DisplayMenu/Bandsaw.DisplayGroup1"
                 tooltip="&amp;Clear">
@@ -112,7 +112,7 @@
                 toolbarPath="Group2"
                 class="net.brokentrain.bandsaw.actions.StopAction"
                 enablesFor="*"
-                icon="icons/stop.gif"
+                icon="icons/stop.png"
                 label="S&amp;top Log4j Server"
                 menubarPath="Bandsaw.Log4jServerMenu/Bandsaw.Log4jServerGroup1"
                 tooltip="S&amp;top  Log4j Server">
@@ -123,7 +123,7 @@
                 toolbarPath="Group2"
                 class="net.brokentrain.bandsaw.actions.StartAction"
                 enablesFor="*"
-                icon="icons/start.gif"
+                icon="icons/start.png"
                 label="&amp;Start Log4j Server"
                 menubarPath="Bandsaw.Log4jServerMenu/Bandsaw.Log4jServerGroup1"
                 tooltip="&amp;Start Log4j Server">

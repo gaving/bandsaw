@@ -3,10 +3,11 @@ Bandsaw
 0.1
 ===
 
-[_] Make the icons a bit more web 2
+[x] Make the icons a bit more web 2
 [_] Tidy up the preferences page
 [_] Tidy up the dialogs, make them a bit nicer with jface
-[_] Give the log icons for different levels
+[x] Give the log icons for different levels
+[_] Make it use the fancy tables that the other views do
 [_] Populate the columns by default
 [x] Make the start/stop of the server actually work
 [_] Write rule to actually install the plugin

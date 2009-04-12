@@ -75,6 +75,12 @@
             </fileset>
         </copy>
 
+        <copy todir="${bin}/${icons}">
+            <fileset dir="${icons}">
+                <include name="**/*"/>
+            </fileset>
+        </copy>
+
         <!-- Unpackage all our dependences so we can jar them up -->
         <!-- NOTE: This does not overwrite anything that may already exist -->
         <unjar dest="${bin}" overwrite="false">

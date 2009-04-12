@@ -8,6 +8,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import net.brokentrain.bandsaw.util.PaintUtil;
+
 /**
  * The main plugin class to be used in the desktop.
  */
@@ -39,6 +41,8 @@ public class Bandsaw extends AbstractUIPlugin
      */
     public void start(BundleContext context) throws Exception {
         super.start(context);
+
+        PaintUtil.initIcons();
     }
 
     /**
