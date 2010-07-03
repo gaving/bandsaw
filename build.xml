@@ -7,7 +7,6 @@
     <property name="dist" value="dist"/>
     <property name="cfg" value="cfg"/>
     <property name="include" value="include"/>
-    <property name="lib" value="lib"/>
     <property name="icons" value="icons"/>
     <property name="cfg" value="cfg"/>
     <property name="src" value="src"/>
@@ -59,16 +58,13 @@
         <!-- Create the bin directory structure used by compile -->
         <mkdir dir="${bin}" />
 
-        <!-- Create the directory for the jar file -->
-        <mkdir dir="${lib}" />
-
         <!-- Create the dist directory -->
         <mkdir dir="${dist}" />
     </target>
 
     <target name="compile" depends="init">
         <javac
-            srcdir="${src}" 
+            srcdir="${src}"
             destdir="${bin}"
             source="1.5"
             target="1.5"
@@ -100,7 +96,6 @@
 
         <!-- Delete non-essential dirs -->
         <delete dir="${bin}"/>
-        <delete dir="${lib}"/>
         <delete dir="${dist}"/>
 
         <!-- Delete rogue class files in src dir -->
@@ -137,21 +132,10 @@
 
         <!-- Make a jar file -->
         <jar
-            jarfile="${lib}/net.brokentrain.bandsaw_${version}.jar"
+            jarfile="${dist}/net.brokentrain.bandsaw_${version}.jar"
             basedir="${bin}/"
             manifest="META-INF/MANIFEST.MF">
         </jar>
-    </target>
-
-    <target name="dist" depends="jar">
-
-        <!-- Copy the lib directory containing the main jar file -->
-        <copy todir="${dist}">
-            <fileset dir="${lib}">
-                <include name="**/*.jar"/>
-            </fileset>
-        </copy>
-
     </target>
 
 </project>

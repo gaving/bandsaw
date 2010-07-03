@@ -14,25 +14,19 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * @author Brandon
- */
-public class QuickFilterDialog extends Dialog
-{
+public class QuickFilterDialog extends Dialog {
 
     private Text mInput;
 
     /**
      * @param parentShell
      */
-    public QuickFilterDialog(Shell parentShell)
-    {
+    public QuickFilterDialog(Shell parentShell) {
         super(parentShell);
         setShellStyle(SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
     }
 
-    public Control createDialogArea(Composite parent)
-    {
+    public Control createDialogArea(Composite parent) {
         Composite composite = (Composite) super.createDialogArea(parent);
 
         // Create a data that takes up the extra space in the dialog .
@@ -53,8 +47,7 @@ public class QuickFilterDialog extends Dialog
         label.setLayoutData(gData);
 
         mInput = new Text(composite, SWT.BORDER);
-        if (LogSet.getInstance().getFilterset().getQuickFilter() != null)
-        {
+        if (LogSet.getInstance().getFilterset().getQuickFilter() != null) {
             mInput.setText(
                     LogSet
                     .getInstance()
@@ -69,8 +62,7 @@ public class QuickFilterDialog extends Dialog
         return composite;
     }
 
-    protected void configureShell(Shell newShell)
-    {
+    protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
         newShell.setText("Quick Filter");
     }
@@ -78,15 +70,11 @@ public class QuickFilterDialog extends Dialog
     /* (non-Javadoc)
      * @see org.eclipse.jface.dialogs.Dialog#okPressed()
      */
-    protected void okPressed()
-    {
-        if (getInput().getText() != null && !getInput().getText().equals(""))
-        {
+    protected void okPressed() {
+        if (getInput().getText() != null && !getInput().getText().equals("")) {
             Filter filter = new Filter(0, getInput().getText(), true);
             LogSet.getInstance().getFilterset().setQuickFilter(filter);
-        }
-        else
-        {
+        } else {
             LogSet.getInstance().getFilterset().setQuickFilter(null);
         }
         BandsawUtilities.filterUpdated();

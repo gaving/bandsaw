@@ -1,8 +1,5 @@
 package net.brokentrain.bandsaw.log4j;
 
-/**
- * @author Brandon
- */
 public interface Log4jItem {
 
     public static final int LEVEL = 0;

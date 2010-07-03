@@ -1,5 +1,6 @@
 package net.brokentrain.bandsaw.preferences;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -80,9 +81,11 @@ public class Log4jFilterPreferencePage extends PreferencePage implements IWorkbe
         data = new GridData(GridData.FILL_HORIZONTAL);
         combo1 = new Combo(entryTable, SWT.DROP_DOWN | SWT.READ_ONLY);
 
-        for (String label : BandsawUtilities.getColumnLabels()) {
-            combo1.add(label);
+        HashMap<Integer, String> labels = BandsawUtilities.getColumnLabels();
+        for (Integer col : labels.keySet()) {
+            combo1.add(labels.get(col));
         }
+        
         combo1.select(0);
         combo1.setLayoutData(data);
 

@@ -4,9 +4,6 @@ import java.sql.Timestamp;
 
 import org.apache.log4j.spi.LoggingEvent;
 
-/**
- * @author Brandon
- */
 public class Log4jDate implements Log4jItem {
 
     private LoggingEvent le;

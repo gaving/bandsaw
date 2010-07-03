@@ -3,9 +3,6 @@ package net.brokentrain.bandsaw.listeners;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 
-/**
- * @author Brandon
- */
 abstract public class IMouseListener implements MouseListener
 {
 

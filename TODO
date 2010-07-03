@@ -8,6 +8,8 @@ Bandsaw TODO list
 - [_] Integrate checkstyle into the ant task
 - [_] Javadoc and lots of formatting updates
 - [_] Improve the filter dialog
+- [_] Optionally allow the log to be stored somewhere
+- [_] Write rule to actually install the plugin
 
 0.1
 ---
@@ -20,15 +22,14 @@ Bandsaw TODO list
     * [_] Allow sorting of the columns
     * [x] Include icons on the first column
     * [x] Rehook the double click action in
-- [_] Populate the columns by default
+- [x] Populate the columns by default
 - [x] Make the start/stop of the server actually work
-- [_] Write rule to actually install the plugin
 - [x] Silence the internal debug messages
-- [_] Optionally allow the log to be stored somewhere
 - [x] Hide the filter label unless it a filter is actually active
-- [_] Drop the colour stuff entirely in favour of the icons (also from preferences)
 - [_] Remove socket hub appender stuff
+- [_] Copy table item message on ctrl+c
 
 Resources
 =========
+
 - http://logging.apache.org/log4j/companions/receivers/apidocs/org/apache/log4j/net/XMLSocketReceiver.html#shutdown()

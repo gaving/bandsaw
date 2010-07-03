@@ -14,9 +14,6 @@ import org.apache.regexp.REProgram;
 import org.apache.regexp.RESyntaxException;
 
 
-/**
- * @author Brandon
- */
 public class Filter implements Serializable
 {
 

@@ -3,14 +3,6 @@ package net.brokentrain.bandsaw.log4j;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.List;
 
-/**
- * @author Brandon
- *
- * To change this generated comment edit the template variable "typecomment":
- * Window>Preferences>Java>Templates.
- * To enable and disable the creation of type comments go to
- * Window>Preferences>Java>Code Generation.
- */
 public class FilterList extends List {
 
     public FilterList (Composite parent, int style) {

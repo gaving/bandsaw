@@ -2,9 +2,6 @@ package net.brokentrain.bandsaw.log4j;
 
 import org.apache.log4j.spi.LoggingEvent;
 
-/**
- * @author Brandon
- */
 public class Log4jNDC implements Log4jItem {
 
     private LoggingEvent le;

@@ -1,5 +1,7 @@
 package net.brokentrain.bandsaw.views;
 
+import java.util.List;
+
 import net.brokentrain.bandsaw.Bandsaw;
 import net.brokentrain.bandsaw.actions.QuickFilterAction;
 import net.brokentrain.bandsaw.actions.ShowDetailAction;
@@ -11,9 +13,16 @@ import net.brokentrain.bandsaw.preferences.Log4jColumnsPreferencePage;
 import net.brokentrain.bandsaw.preferences.Log4jPreferencePage;
 import net.brokentrain.bandsaw.util.BandsawUtilities;
 
+import org.apache.log4j.spi.LoggingEvent;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.layout.GridData;
@@ -95,10 +104,40 @@ public class BandsawView extends ViewPart {
         gridData.horizontalAlignment = GridData.FILL;
         gridData.verticalAlignment = GridData.FILL;
 
-        Table table = viewer.getTable();
+        final Table table = viewer.getTable();
         table.setLayoutData(gridData);
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
+
+        table.addKeyListener(new KeyListener() {
+            public void keyPressed(KeyEvent arg0) {
+                if (arg0.keyCode == 'c' && arg0.stateMask == SWT.CTRL) {
+
+                    TableViewer viewer = BandsawUtilities.getViewer();
+                    @SuppressWarnings("rawtypes")
+                    List leList = ((IStructuredSelection)viewer.getSelection()).toList();
+
+                    if (leList.isEmpty()) {
+                        return;
+                    }
+
+                    Clipboard clipboard = new Clipboard(parent.getDisplay());
+                    for (Object obj : leList) {
+                        LoggingEvent le = (LoggingEvent) obj;
+
+                        String renderedMessage = le.getRenderedMessage();
+                        System.out.println("Copying to clipboard:" + renderedMessage);
+
+                        clipboard.setContents(new Object[] { renderedMessage }, new Transfer[] { TextTransfer.getInstance() });
+                    }
+                    clipboard.dispose();
+                }
+            }
+
+            public void keyReleased(KeyEvent arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
 
         BandsawUtilities.setTable(table);
         BandsawUtilities.setTableViewer(viewer);
@@ -112,25 +151,23 @@ public class BandsawView extends ViewPart {
             new TableColumn(table, SWT.NONE);
         }
 
-        //// things that happen to use throughout our life
         getSite().getPage().addPartListener(new LifecycleListener());
 
-        Log4jServer.init(); // needs workspace thread info
+        Log4jServer.init();
 
-        BandsawUtilities.updateTableColumns(); // init cols
+        BandsawUtilities.updateTableColumns();
 
-        BandsawUtilities.initColorDefaults(); // needed for updateColors
+        BandsawUtilities.initColorDefaults();
 
-        BandsawUtilities.resetTableRows(); // just in case we are re-opening
+        BandsawUtilities.resetTableRows();
 
-        BandsawUtilities.updateColors(); // needed so color cache is ready
+        BandsawUtilities.updateColors();
 
-        BandsawUtilities.updateTableColumnWidths(); // reset col widths
+        BandsawUtilities.updateTableColumnWidths();
 
-        // set the title in memory
         BandsawUtilities.setViewTitle(table.getParent().getShell().getText());
 
-        hookDoubleClickAction(); // to bring up details
+        hookDoubleClickAction();
     }
 
     private void hookDoubleClickAction() {

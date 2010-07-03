@@ -6,12 +6,12 @@ require_once(LOG4PHP_DIR . '/LoggerManager.php');
 
 $logger =& LoggerManager::getLogger('Log4PHPTestLogger');
 
-foreach($argv as $arg) {
-    $logger->debug("This is a debug for $arg!");
-    $logger->warn("This is a warning for $arg");
-    $logger->info("This is a info for $arg");
-    $logger->error("This is an error for $arg");
-    $logger->fatal("This is a fatal for $arg");
-}
+$logger->debug("This is a debug for $argv[0]!");
+$logger->warn("This is a warning for $argv[0]");
+$logger->info("This is a info for $argv[0]");
+$logger->error("This is an error for $argv[0]");
+$logger->fatal("This is a fatal for $argv[0]");
+
+$logger->info(implode(' ', $argv));
 
 ?>

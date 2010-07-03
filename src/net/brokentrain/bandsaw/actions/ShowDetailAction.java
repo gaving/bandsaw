@@ -18,7 +18,8 @@ public class ShowDetailAction extends Action {
         TableViewer viewer = BandsawUtilities.getViewer();
 
         /* Retrieve all the currently highlighted items of the viewer */
-        List leList = ((IStructuredSelection)viewer.getSelection()).toList();
+        @SuppressWarnings("rawtypes")
+		List leList = ((IStructuredSelection)viewer.getSelection()).toList();
         for (Object obj : leList) {
 
             /* Pass the LoggingEvent from the model over to the dialog */

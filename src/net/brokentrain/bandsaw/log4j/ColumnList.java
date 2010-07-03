@@ -49,14 +49,13 @@ public class ColumnList {
     }
 
     public void clear() {
-        columns.clear();
-
-        if (BandsawUtilities.isShowing()) {
-            System.out.println("yeah it is showing apparently");
-            // Table table = BandsawUtilities.getTable();
-            // TableColumn col = table.getColumn(table.getColumnCount() - 1);
-            // col.dispose();
+        Table table = BandsawUtilities.getTable();
+        while (table.getColumnCount() > 0) {
+            int lastOne = table.getColumnCount() - 1;
+            table.getColumn(lastOne).dispose();
         }
+
+        columns.clear();
     }
 
     public void remove(int index) {
@@ -66,24 +65,6 @@ public class ColumnList {
             TableColumn col = table.getColumn(table.getColumnCount() - 1);
             col.dispose();
         }
-    }
-
-    public void moveUp(int index) {
-        if (index == 0 || index < 0) {
-            return;
-        } // border condition
-        Integer i = columns.get(index);
-        columns.remove(index);
-        columns.insertElementAt(i, index - 1);
-    }
-
-    public void moveDown(int index) {
-        if (index == columns.size() || index < 0) {
-            return;
-        } // border condition
-        Integer i = columns.get(index);
-        columns.remove(index);
-        columns.insertElementAt(i, index + 1);
     }
 
     public Iterator<Integer> getList() {
