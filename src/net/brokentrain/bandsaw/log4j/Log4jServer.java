@@ -6,6 +6,7 @@ import java.util.Enumeration;
 import net.brokentrain.bandsaw.Bandsaw;
 import net.brokentrain.bandsaw.BandsawUtilities;
 import net.brokentrain.bandsaw.preferences.Log4jPreferencePage;
+import net.brokentrain.bandsaw.log4j.CustomAppender;
 
 import org.apache.log4j.Appender;
 import org.apache.log4j.Level;
@@ -19,12 +20,9 @@ import org.apache.log4j.spi.RepositorySelector;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.eclipse.swt.widgets.Display;
 
+public class Log4jServer extends Thread {
 
-/**
- * @author Brandon
- */
-public class Log4jServer extends Thread
-{
+    private static final Class<Log4jServer> clazz = Log4jServer.class;
 
     private static Log4jServer mLog4jServer;
 
@@ -34,8 +32,7 @@ public class Log4jServer extends Thread
     private static final Object repositorySelectorGuard = new Object();
     private static final LoggerRepositoryExImpl repositoryExImpl = new LoggerRepositoryExImpl(LogManager.getLoggerRepository());
 
-    public static void init()
-    {
+    public static void init() {
         setPrimary(Thread.currentThread());
 
         LogManager.setRepositorySelector(new RepositorySelector() {
@@ -44,15 +41,14 @@ public class Log4jServer extends Thread
                 return repositoryExImpl;
             }}, repositorySelectorGuard);
 
-        new DOMConfigurator().configure("server.xml");
+        new DOMConfigurator().configure(clazz.getResource("/cfg/server.xml"));
     }
 
     /**
      * Stop the Log4j Socket Server
      * @return boolean
      */
-    public static boolean startListener()
-    {
+    public static boolean startListener() {
 
         int port = Bandsaw.getDefault().getPreferenceStore().getInt(Log4jPreferencePage.P_PORT);
 
@@ -72,33 +68,11 @@ public class Log4jServer extends Thread
     /**
      * Stop the Log4j Socket Server
      */
-    public static void stopListener()
-    {
+    public static void stopListener() {
         Logger rootLogger = LogManager.getRootLogger();
         rootLogger.setLevel(Level.toLevel("OFF"));
 
         mServerUp = false;
-
-        //Logger logger = LogManager.getLogger("org.apache.log4j.net.XMLSocketReceiver");
-        //Enumeration appenders = logger.getAllAppenders();
-        //while (appenders.hasMoreElements()) {
-            //Appender appender = (Appender) appenders.nextElement();
-            ////appender.close();
-            //System.out.println(appender.getName());
-        //}
-        //
-        Enumeration appenders = LogManager.getRootLogger().getAllAppenders();
-        while (appenders.hasMoreElements()) {
-            Appender appender = (Appender) appenders.nextElement();
-            System.out.println("Appender:" + ((SocketAppender)appender).getPort());
-        }
-
-        //Enumeration appenders = LogManager.getCurrentLoggers();
-        //while (appenders.hasMoreElements()) {
-            //Logger appender = (Logger) appenders.nextElement();
-            ////appender.close();
-            //System.out.println(appender.getName());
-        //}
 
         BandsawUtilities.getStartAction().setEnabled(true);
         BandsawUtilities.getStopAction().setEnabled(false);
@@ -110,8 +84,7 @@ public class Log4jServer extends Thread
      * off updates to the GUI.
      * @param le The logging event to add
      */
-    static synchronized public void newMessage(LoggingEvent le)
-    {
+    static synchronized public void newMessage(LoggingEvent le) {
         final LoggingEvent thisEvent = le;
         Display.findDisplay(getPrimary()).asyncExec(new Runnable() {
             public void run() {
@@ -123,40 +96,35 @@ public class Log4jServer extends Thread
     /**
      * @return
      */
-    public boolean isServerUp()
-    {
+    public boolean isServerUp() {
         return mServerUp;
     }
 
     /**
      * @param aB
      */
-    public void setServerUp(boolean aB)
-    {
+    public void setServerUp(boolean aB) {
         mServerUp = aB;
     }
 
     /**
      * @return
      */
-    public static Log4jServer getLog4jServer()
-    {
+    public static Log4jServer getLog4jServer() {
         return mLog4jServer;
     }
 
     /**
      * @return
      */
-    public static Thread getPrimary()
-    {
+    public static Thread getPrimary() {
         return mPrimary;
     }
 
     /**
      * @param aThread
      */
-    public static void setPrimary(Thread aThread)
-    {
+    public static void setPrimary(Thread aThread) {
         mPrimary = aThread;
     }
 

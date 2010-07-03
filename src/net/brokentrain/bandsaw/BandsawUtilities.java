@@ -38,10 +38,6 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IViewSite;
 
-
-/**
- * @author Brandon
- */
 public class BandsawUtilities {
 
     private static Table table;
@@ -348,7 +344,7 @@ public class BandsawUtilities {
     }
 
     public static Color getColor(Level level) {
-        return (Color) colors.get(level.toString());
+        return colors.get(level.toString());
     }
 
     public static void initColorDefaults() {
@@ -465,11 +461,11 @@ public class BandsawUtilities {
         setActionsInited(true);
         BandsawUtilities.setStartAction(((ActionContributionItem) getSite()
                     .getActionBars().getToolBarManager().find(
-                        "Ganymede.StartAction")).getAction());
+                        "Bandsaw.StartAction")).getAction());
 
         BandsawUtilities.setStopAction(((ActionContributionItem) getSite()
                     .getActionBars().getToolBarManager()
-                    .find("Ganymede.StopAction")).getAction());
+                    .find("Bandsaw.StopAction")).getAction());
 
         Log4jServer instance = Log4jServer.getLog4jServer();
         if (instance != null && instance.isServerUp()) {

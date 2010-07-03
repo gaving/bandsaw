@@ -33,13 +33,11 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
     private Button btnMoveDown;
     private Label label;
 
-    public void init(IWorkbench workbench)
-    {
+    public void init(IWorkbench workbench) {
         setPreferenceStore(Bandsaw.getDefault().getPreferenceStore());
     }
 
-    protected Control createContents(Composite parent)
-    {
+    protected Control createContents(Composite parent) {
 
         Composite entryTable = new Composite(parent, SWT.NULL);
 
@@ -63,6 +61,7 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
         columnList = new List(entryTable, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
         gData = new GridData();
         gData.verticalSpan = 3;
+        gData.horizontalSpan = 3;
         columnList.setLayoutData(gData);
 
         // MOVE UP
@@ -145,12 +144,10 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
     /**
      * Refresh the main list
      */
-    protected void refreshList()
-    {
+    protected void refreshList() {
         columnList.removeAll();
         Iterator i = ColumnList.getInstance().getList();
-        while (i.hasNext())
-        {
+        while (i.hasNext()) {
             Integer col = (Integer) i.next();
             columnList.add(BandsawUtilities.getLabelText(col.intValue()));
         }
@@ -174,8 +171,7 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
     //		store.getString(P_COLUMNS);
     //	}
 
-    private void storeValues()
-    {
+    private void storeValues() {
         IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
         store.setValue(
                 P_COLUMNS,
@@ -185,8 +181,7 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
     /**
      * @see org.eclipse.jface.preference.PreferencePage#performApply()
      */
-    protected void performApply()
-    {
+    protected void performApply() {
         storeValues();
         super.performApply();
     }
@@ -194,8 +189,7 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
     /**
      * @see org.eclipse.jface.preference.IPreferencePage#performOk()
      */
-    public boolean performOk()
-    {
+    public boolean performOk() {
         storeValues();
         return super.performOk();
     }

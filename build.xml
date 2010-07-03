@@ -12,6 +12,8 @@
     <property name="cfg" value="cfg"/>
     <property name="src" value="src"/>
 
+    <property name="version" value="0.1" />
+
     <path id="ant-contrib-classpath">
         <fileset dir="${include}/" includes="ant-contrib-*.jar"/>
     </path>
@@ -48,7 +50,7 @@
             <fail message="missing required property (see above)"/>
         </then>
         <else>
-            <echo>what</echo>
+            <echo>Eclipse home set to ${eclipse.home}. Proceeding..</echo>
         </else>
     </if>
 
@@ -94,7 +96,7 @@
     </target>
 
     <target name="clean">
-        <echo message="Deleting non-essential dirs" />
+        <echo message="Cleaning up" />
 
         <!-- Delete non-essential dirs -->
         <delete dir="${bin}"/>
@@ -109,7 +111,7 @@
 
     <target name="jar" depends="compile">
 
-        <copy todir="${bin}">
+        <copy todir="${bin}/${cfg}">
             <fileset dir="${cfg}">
                 <include name="**/*"/>
             </fileset>
@@ -121,16 +123,23 @@
             </fileset>
         </copy>
 
-        <!-- Unpackage all our dependences so we can jar them up -->
-        <unjar dest="${bin}" overwrite="false">
+        <copy todir="${bin}/">
+            <fileset dir=".">
+                <include name="plugin.xml"/>
+            </fileset>
+        </copy>
+
+        <copy todir="${bin}/include">
             <fileset dir="${include}">
                 <include name="**/*.jar"/>
-                <exclude name="**/*swt*"/>
             </fileset>
-        </unjar>
+        </copy>
 
         <!-- Make a jar file -->
-        <jar jarfile="${lib}/bandsaw.jar" basedir="${bin}/">
+        <jar
+            jarfile="${lib}/net.brokentrain.bandsaw_${version}.jar"
+            basedir="${bin}/"
+            manifest="META-INF/MANIFEST.MF">
         </jar>
     </target>
 
@@ -143,19 +152,6 @@
             </fileset>
         </copy>
 
-        <!-- Copy user configuration over -->
-        <copy todir="${dist}/">
-            <fileset dir=".">
-                <include name="plugin.xml"/>
-            </fileset>
-        </copy>
-
-        <!-- Copy icons over -->
-        <copy todir="${dist}/${icons}">
-            <fileset dir="${icons}">
-                <include name="**/*"/>
-            </fileset>
-        </copy>
     </target>
 
 </project>

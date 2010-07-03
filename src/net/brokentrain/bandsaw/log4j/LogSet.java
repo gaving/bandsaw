@@ -71,7 +71,7 @@ public class LogSet {
     }
 
     public LoggingEvent getLoggingEventShowingAt(int idx) {
-        return (LoggingEvent) mShowingLogs.get(idx);
+        return mShowingLogs.get(idx);
     }
 
     public Collection getValidLogs() {

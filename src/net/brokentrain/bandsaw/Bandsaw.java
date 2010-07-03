@@ -13,8 +13,11 @@ import net.brokentrain.bandsaw.util.PaintUtil;
 /**
  * The main plugin class to be used in the desktop.
  */
-public class Bandsaw extends AbstractUIPlugin
-{
+public class Bandsaw extends AbstractUIPlugin {
+
+    // The plug-in ID
+    public static final String PLUGIN_ID = "net.brokentrain.bandsaw";
+
     private static Bandsaw plugin;
 
     private ResourceBundle resourceBundle;
@@ -26,14 +29,7 @@ public class Bandsaw extends AbstractUIPlugin
     /**
      * The constructor.
      */
-    public Bandsaw()
-    {
-        plugin = this;
-        try {
-            resourceBundle = ResourceBundle.getBundle("net.brokentrain.bandsaw.BandsawResources");
-        } catch (MissingResourceException x) {
-            resourceBundle = null;
-        }
+    public Bandsaw() {
     }
 
     /**
@@ -42,6 +38,13 @@ public class Bandsaw extends AbstractUIPlugin
     public void start(BundleContext context) throws Exception {
         super.start(context);
 
+        plugin = this;
+        try {
+            resourceBundle = ResourceBundle.getBundle("net.brokentrain.bandsaw.BandsawResources");
+        } catch (MissingResourceException x) {
+            resourceBundle = null;
+        }
+
         PaintUtil.initIcons();
     }
 
@@ -49,22 +52,21 @@ public class Bandsaw extends AbstractUIPlugin
      * This method is called when the plug-in is stopped
      */
     public void stop(BundleContext context) throws Exception {
+        plugin = null;
         super.stop(context);
     }
 
     /**
      * Returns the shared instance.
      */
-    public static Bandsaw getDefault()
-    {
+    public static Bandsaw getDefault() {
         return plugin;
     }
 
     /**
      * Returns the workspace instance.
      */
-    public static IWorkspace getWorkspace()
-    {
+    public static IWorkspace getWorkspace() {
         return ResourcesPlugin.getWorkspace();
     }
 
@@ -72,8 +74,7 @@ public class Bandsaw extends AbstractUIPlugin
      * Returns the string from the plugin's resource bundle,
      * or 'key' if not found.
      */
-    public static String getResourceString(String key)
-    {
+    public static String getResourceString(String key) {
         ResourceBundle bundle = Bandsaw.getDefault().getResourceBundle();
         try {
             return bundle.getString(key);
@@ -85,8 +86,7 @@ public class Bandsaw extends AbstractUIPlugin
     /**
      * Returns the plugin's resource bundle,
      */
-    public ResourceBundle getResourceBundle()
-    {
+    public ResourceBundle getResourceBundle() {
         return resourceBundle;
     }
 

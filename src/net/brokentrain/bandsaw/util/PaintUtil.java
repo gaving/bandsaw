@@ -91,7 +91,7 @@ public class PaintUtil {
                 try {
                     inS.close();
                 } catch (IOException ioe) {
-            ioe.printStackTrace();
+                    ioe.printStackTrace();
                 }
             }
         }

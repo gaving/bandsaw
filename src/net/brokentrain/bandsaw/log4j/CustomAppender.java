@@ -26,9 +26,9 @@ public class CustomAppender extends AppenderSkeleton {
      * {@inheritDoc}
      */
     @Override
-        public void append(final LoggingEvent event) {
-            Log4jServer.newMessage(event);
-        }
+    public void append(final LoggingEvent event) {
+        Log4jServer.newMessage(event);
+    }
 
     /**
      * {@inheritDoc}

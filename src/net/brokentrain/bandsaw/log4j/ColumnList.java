@@ -11,11 +11,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-/**
- * @author Brandon
- */
-public class ColumnList
-{
+public class ColumnList {
 
     Vector<Integer> columns = new Vector<Integer>();
 
@@ -27,106 +23,87 @@ public class ColumnList
 
     public static final char delimiter = ':';
 
-    private ColumnList()
-    {
+    private ColumnList() {
     }
 
-    public static ColumnList getInstance()
-    {
-        if (notInit)
-        {
+    public static ColumnList getInstance() {
+        if (notInit) {
             cl = new ColumnList();
             notInit = false;
         }
         return cl;
     }
 
-    public String getText(int col, LoggingEvent le)
-    {
+    public String getText(int col, LoggingEvent le) {
         return BandsawUtilities.handleNull(
                 BandsawUtilities
-                .Log4jItemFactory(((Integer) columns.get(col)).intValue(), le)
+                .Log4jItemFactory((columns.get(col)).intValue(), le)
                 .getText());
     }
 
-    public void add(int col)
-    {
+    public void add(int col) {
         columns.add(new Integer(col));
-        if (BandsawUtilities.isShowing())
-        {
+        if (BandsawUtilities.isShowing()) {
             new TableColumn(BandsawUtilities.getTable(), SWT.NONE);
         }
     }
 
-    public void remove(int index)
-    {
+    public void remove(int index) {
         columns.remove(index);
-        if (BandsawUtilities.isShowing())
-        {
+        if (BandsawUtilities.isShowing()) {
             Table table = BandsawUtilities.getTable();
             TableColumn col = table.getColumn(table.getColumnCount() - 1);
             col.dispose();
         }
     }
 
-    public void moveUp(int index)
-    {
-        if (index == 0 || index < 0)
-        {
+    public void moveUp(int index) {
+        if (index == 0 || index < 0) {
             return;
         } // border condition
-        Integer i = (Integer) columns.get(index);
+        Integer i = columns.get(index);
         columns.remove(index);
         columns.insertElementAt(i, index - 1);
     }
 
-    public void moveDown(int index)
-    {
-        if (index == columns.size() || index < 0)
-        {
+    public void moveDown(int index) {
+        if (index == columns.size() || index < 0) {
             return;
         } // border condition
-        Integer i = (Integer) columns.get(index);
+        Integer i = columns.get(index);
         columns.remove(index);
         columns.insertElementAt(i, index + 1);
     }
 
-    public Iterator getList()
-    {
+    public Iterator getList() {
         return columns.iterator();
     }
 
-    public int getColumnCount()
-    {
+    public int getColumnCount() {
         return columns.size();
     }
 
-    public int getColType(int index)
-    {
-        return ((Integer) columns.get(index)).intValue();
+    public int getColType(int index) {
+        return (columns.get(index)).intValue();
     }
 
     //TODO: Make this thread safe
-    public int[] getCols()
-    {
+    public int[] getCols() {
         int size = getColumnCount();
         int[] list = new int[size];
-        for (int i = 0; i < size; i++)
-        {
-            list[i] = ((Integer) columns.get(i)).intValue();
+        for (int i = 0; i < size; i++) {
+            list[i] = (columns.get(i)).intValue();
         }
         return list;
     }
 
-    public static int[] deSerialize(String object)
-    {
+    public static int[] deSerialize(String object) {
         StringTokenizer st =
             new StringTokenizer(object, Character.toString(delimiter));
         int size = st.countTokens();
         int[] j = new int[size];
         int i = 0;
-        while (st.hasMoreTokens())
-        {
+        while (st.hasMoreTokens()) {
             int thisVal = 99;
             thisVal = Integer.parseInt(st.nextToken());
             j[i++] = thisVal;
@@ -134,25 +111,20 @@ public class ColumnList
         return j;
     }
 
-    public static String serialize(int[] columns)
-    {
+    public static String serialize(int[] columns) {
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < columns.length; i++)
-        {
+        for (int i = 0; i < columns.length; i++) {
             sb.append(String.valueOf(columns[i]));
-            if (i != columns.length - 1)
-            {
+            if (i != columns.length - 1) {
                 sb.append(delimiter);
             }
         }
         return sb.toString();
     }
 
-    public void setColList(int[] list)
-    {
+    public void setColList(int[] list) {
         columns = new Vector<Integer>();
-        for (int i = 0; i < list.length; i++)
-        {
+        for (int i = 0; i < list.length; i++) {
             columns.add(new Integer(list[i]));
         }
     }

@@ -36,7 +36,7 @@ public class FilterSet
 
     public Filter[] getFilters()
     {
-        return (Filter[]) filters.toArray(new Filter[0]);
+        return filters.toArray(new Filter[0]);
     }
 
     public Iterator iterator()
