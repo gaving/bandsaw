@@ -6,10 +6,10 @@
 	<classpathentry exported="true" kind="lib" path="include/apache-log4j-extras-1.0.jar" sourcepath="bandsawsrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="include/apache-log4j-receivers-gump-22022009.jar" sourcepath="bandsawsrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="include/jakarta-regexp-1.2.jar" sourcepath="bandsawsrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="include/log4j-1.2.8.jar" sourcepath="bandsawsrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="include/log4j-gump-22022009.jar" sourcepath="bandsawsrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="include/ant-contrib-1.0b1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.eclipse.swt"/>
+	<classpathentry exported="true" kind="lib" path="include/log4j-1.2.16.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

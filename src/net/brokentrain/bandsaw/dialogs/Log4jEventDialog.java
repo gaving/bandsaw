@@ -1,6 +1,6 @@
 package net.brokentrain.bandsaw.dialogs;
 
-import net.brokentrain.bandsaw.BandsawUtilities;
+import net.brokentrain.bandsaw.util.BandsawUtilities;
 
 import org.apache.log4j.spi.LoggingEvent;
 import org.eclipse.jface.dialogs.Dialog;

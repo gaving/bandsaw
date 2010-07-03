@@ -1,10 +1,11 @@
 package net.brokentrain.bandsaw.preferences;
 
 import java.util.Iterator;
+import java.util.Vector;
 
 import net.brokentrain.bandsaw.Bandsaw;
-import net.brokentrain.bandsaw.BandsawUtilities;
 import net.brokentrain.bandsaw.log4j.ColumnList;
+import net.brokentrain.bandsaw.util.BandsawUtilities;
 
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferencePage;
@@ -33,6 +34,8 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
     private Button btnMoveDown;
     private Label label;
 
+    Vector<Integer> columns = new Vector<Integer>();
+
     public void init(IWorkbench workbench) {
         setPreferenceStore(Bandsaw.getDefault().getPreferenceStore());
     }
@@ -53,15 +56,15 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
 
         label = new Label(entryTable, SWT.NONE);
         label.setText("Table Columns");
-        gData = new GridData();
+        gData = new GridData(GridData.FILL_BOTH);
         gData.horizontalSpan = 2;
         label.setLayoutData(gData);
 
         // LIST
         columnList = new List(entryTable, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-        gData = new GridData();
+        gData = new GridData(GridData.FILL_BOTH);
+        gData.horizontalSpan = 1;
         gData.verticalSpan = 3;
-        gData.horizontalSpan = 3;
         columnList.setLayoutData(gData);
 
         // MOVE UP
@@ -73,11 +76,9 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
                 ColumnList.getInstance().moveUp(index);
                 refreshList();
                 columnList.select(index - 1);
-                BandsawUtilities.updateTableColumns();
             }
         });
         gData = new GridData();
-        gData.horizontalSpan = 1;
         btnMoveUp.setLayoutData(gData);
 
         // MOVE DOWN
@@ -89,11 +90,9 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
                 ColumnList.getInstance().moveDown(index);
                 refreshList();
                 columnList.select(index + 1);
-                BandsawUtilities.updateTableColumns();
             }
         });
         gData = new GridData();
-        gData.horizontalSpan = 1;
         btnMoveDown.setLayoutData(gData);
 
         // REMOVE
@@ -101,23 +100,23 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
         btnRemove.setText("Remove"); //$NON-NLS-1$
         btnRemove.addSelectionListener(new SelectionAdapter() {
             public void widgetSelected(SelectionEvent event) {
+                int index = columnList.getSelectionIndex();
                 ColumnList.getInstance().remove(columnList.getSelectionIndex());
                 refreshList();
-                BandsawUtilities.updateTableColumns();
+                columnList.select(index - 1);
             }
         });
         gData = new GridData();
-        gData.horizontalSpan = 1;
         btnRemove.setLayoutData(gData);
 
-        // ADD IT LIST
+        // LIST
         cmboAddList = new Combo(entryTable, SWT.DROP_DOWN | SWT.READ_ONLY);
         for (String label : BandsawUtilities.getColumnLabels()) {
             cmboAddList.add(label);
         }
         cmboAddList.select(0);
         gData = new GridData();
-        gData.horizontalSpan = 1;
+        gData.horizontalSpan = 2;
         cmboAddList.setLayoutData(gData);
 
         // ADD IT BUTTON
@@ -128,12 +127,10 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
                 int col = BandsawUtilities.convertColumnToInt(cmboAddList.getText());
                 ColumnList.getInstance().add(col);
                 refreshList();
-                BandsawUtilities.updateTableColumns();
             }
         });
 
         gData = new GridData();
-        gData.horizontalSpan = 1;
         btnAdd.setLayoutData(gData);
 
         refreshList(); // initial
@@ -146,35 +143,21 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
      */
     protected void refreshList() {
         columnList.removeAll();
-        Iterator i = ColumnList.getInstance().getList();
+        Iterator<Integer> i = ColumnList.getInstance().getList();
         while (i.hasNext()) {
-            Integer col = (Integer) i.next();
+            Integer col = i.next();
             columnList.add(BandsawUtilities.getLabelText(col.intValue()));
         }
     }
 
-    //	/**
-    //	 * Sets the default values of the preferences.
-    //	 */
-    //	private void initializeDefaults()
-    //	{
-    //		IPreferenceStore store = Ganymede.getDefault().getPreferenceStore();
-    //
-    //		int[] defaultCols =
-    //			{ Log4jItem.LEVEL, Log4jItem.CATEGORY, Log4jItem.MESSAGE };
-    //		store.setDefault(P_COLUMNS, ColumnList.serialize(defaultCols));
-    //	}
-    //
-    //	private void loadValues()
-    //	{
-    //		IPreferenceStore store = Ganymede.getDefault().getPreferenceStore();
-    //		store.getString(P_COLUMNS);
-    //	}
+    private int[] loadDefaultValues() {
+        IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
+        return ColumnList.deSerialize(store.getDefaultString(P_COLUMNS));
+    }
 
     private void storeValues() {
         IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
-        store.setValue(
-                P_COLUMNS,
+        store.setValue(P_COLUMNS,
                 ColumnList.serialize(ColumnList.getInstance().getCols()));
     }
 
@@ -183,14 +166,34 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
      */
     protected void performApply() {
         storeValues();
+        BandsawUtilities.updateTableColumns();
         super.performApply();
     }
+
+    /**
+     * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
+     */
+    protected void performDefaults() {
+        // store.setValue(P_COLUMNS, ColumnList.serialize(loadDefaultValues()));
+        // ColumnList.getInstance().add(col);
+        // ColumnList.getInstance().setColList(loadDefaultValues());
+            ColumnList.getInstance().clear();
+        for (int value : loadDefaultValues()) {
+            System.out.println(value);
+            ColumnList.getInstance().add(value);
+        }
+        refreshList();
+        // storeValues();
+        super.performDefaults();
+    }
+
 
     /**
      * @see org.eclipse.jface.preference.IPreferencePage#performOk()
      */
     public boolean performOk() {
         storeValues();
+        BandsawUtilities.updateTableColumns();
         return super.performOk();
     }
 

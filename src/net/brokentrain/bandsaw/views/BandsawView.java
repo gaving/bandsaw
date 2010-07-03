@@ -1,11 +1,7 @@
 package net.brokentrain.bandsaw.views;
 
-import java.util.ArrayList;
-
 import net.brokentrain.bandsaw.Bandsaw;
-import net.brokentrain.bandsaw.BandsawUtilities;
 import net.brokentrain.bandsaw.actions.QuickFilterAction;
-import net.brokentrain.bandsaw.util.PaintUtil;
 import net.brokentrain.bandsaw.actions.ShowDetailAction;
 import net.brokentrain.bandsaw.listeners.IMouseListener;
 import net.brokentrain.bandsaw.listeners.LifecycleListener;
@@ -13,15 +9,10 @@ import net.brokentrain.bandsaw.log4j.ColumnList;
 import net.brokentrain.bandsaw.log4j.Log4jServer;
 import net.brokentrain.bandsaw.preferences.Log4jColumnsPreferencePage;
 import net.brokentrain.bandsaw.preferences.Log4jPreferencePage;
+import net.brokentrain.bandsaw.util.BandsawUtilities;
 
-import org.apache.log4j.helpers.CyclicBuffer;
-import org.apache.log4j.helpers.LogLog;
-import org.apache.log4j.Priority;
-import org.apache.log4j.Category;
-import org.apache.log4j.Layout;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.spi.LoggingEvent;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -34,38 +25,10 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.ViewPart;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerSorter;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.part.ViewPart;
 
 public class BandsawView extends ViewPart {
 
     private TableViewer viewer;
-    private Table table;
-
     private GridData gridData;
     private Label filterBaseLabel;
     private Label filterLabel;
@@ -73,8 +36,7 @@ public class BandsawView extends ViewPart {
     /**
      * The constructor.
      */
-    public BandsawView()
-    {
+    public BandsawView() {
         super();
         Log4jPreferencePage.initializeDefaults();
         BandsawUtilities.setView(this);

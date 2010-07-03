@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.StringTokenizer;
 
-import net.brokentrain.bandsaw.BandsawUtilities;
+import net.brokentrain.bandsaw.util.BandsawUtilities;
 
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.regexp.RE;

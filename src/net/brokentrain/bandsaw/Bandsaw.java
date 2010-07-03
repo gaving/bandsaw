@@ -3,12 +3,15 @@ package net.brokentrain.bandsaw;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import net.brokentrain.bandsaw.log4j.ColumnList;
+import net.brokentrain.bandsaw.log4j.Log4jItem;
+import net.brokentrain.bandsaw.util.PaintUtil;
+
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-
-import net.brokentrain.bandsaw.util.PaintUtil;
 
 /**
  * The main plugin class to be used in the desktop.
@@ -26,6 +29,9 @@ public class Bandsaw extends AbstractUIPlugin {
 
     public static final int P_SERVER_TYPE_SOCKET_HUB_APPENDER = 2;
 
+    public static final String P_COLUMNS = "P_COLUMNS";
+
+    
     /**
      * The constructor.
      */
@@ -88,6 +94,16 @@ public class Bandsaw extends AbstractUIPlugin {
      */
     public ResourceBundle getResourceBundle() {
         return resourceBundle;
+    }
+
+    /** 
+     * Initialises a preference store with default preference values 
+     * for this plug-in.
+     * @param store the preference store to fill
+     */
+    protected void initializeDefaultPreferences(IPreferenceStore store) {
+        int[] defaultCols = { Log4jItem.LEVEL, Log4jItem.CATEGORY, Log4jItem.MESSAGE };
+        store.setDefault(P_COLUMNS, ColumnList.serialize(defaultCols));
     }
 
 }

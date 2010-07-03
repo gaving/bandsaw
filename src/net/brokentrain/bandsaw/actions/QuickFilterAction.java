@@ -1,7 +1,7 @@
 package net.brokentrain.bandsaw.actions;
 
-import net.brokentrain.bandsaw.BandsawUtilities;
 import net.brokentrain.bandsaw.dialogs.QuickFilterDialog;
+import net.brokentrain.bandsaw.util.BandsawUtilities;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;

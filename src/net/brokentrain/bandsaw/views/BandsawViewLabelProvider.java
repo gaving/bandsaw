@@ -1,16 +1,12 @@
 package net.brokentrain.bandsaw.views;
 
-import net.brokentrain.bandsaw.BandsawUtilities;
+import net.brokentrain.bandsaw.util.BandsawUtilities;
 import net.brokentrain.bandsaw.util.PaintUtil;
 
-import org.eclipse.swt.graphics.Image;
-
 import org.apache.log4j.spi.LoggingEvent;
-
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.swt.graphics.Image;
 
 public class BandsawViewLabelProvider extends LabelProvider implements ITableLabelProvider {
 

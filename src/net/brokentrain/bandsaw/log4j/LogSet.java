@@ -4,9 +4,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
-import net.brokentrain.bandsaw.BandsawUtilities;
 import net.brokentrain.bandsaw.actions.PauseAction;
-import net.brokentrain.bandsaw.util.PaintUtil;
+import net.brokentrain.bandsaw.util.BandsawUtilities;
 
 import org.apache.log4j.spi.LoggingEvent;
 
@@ -74,7 +73,7 @@ public class LogSet {
         return mShowingLogs.get(idx);
     }
 
-    public Collection getValidLogs() {
+    public Collection<LoggingEvent> getValidLogs() {
         Vector<LoggingEvent> rSet = new Vector<LoggingEvent>();
 
         if (!PauseAction.isPaused()) {
@@ -92,10 +91,10 @@ public class LogSet {
     public void revalidateAll() {
         mShowingLogs.clear();
         mHiddenLogs.clear();
-        Iterator allLogs = mAllLogs.iterator();
+        Iterator<LoggingEvent> allLogs = mAllLogs.iterator();
         LoggingEvent thisEvent;
         while (allLogs.hasNext()) {
-            thisEvent = (LoggingEvent) allLogs.next();
+            thisEvent = allLogs.next();
             if (getFilterset().isValidForShow(thisEvent)) {
                 mShowingLogs.insertElementAt(thisEvent, 0);
             }

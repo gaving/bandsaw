@@ -3,15 +3,13 @@ package net.brokentrain.bandsaw.util;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.log4j.Level;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.spi.LoggingEvent;
 
 public class PaintUtil {
 

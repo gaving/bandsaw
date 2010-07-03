@@ -1,8 +1,8 @@
 package net.brokentrain.bandsaw.dialogs;
 
-import net.brokentrain.bandsaw.BandsawUtilities;
 import net.brokentrain.bandsaw.log4j.Filter;
 import net.brokentrain.bandsaw.log4j.LogSet;
+import net.brokentrain.bandsaw.util.BandsawUtilities;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;

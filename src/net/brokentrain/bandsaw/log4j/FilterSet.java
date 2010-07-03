@@ -39,7 +39,7 @@ public class FilterSet
         return filters.toArray(new Filter[0]);
     }
 
-    public Iterator iterator()
+    public Iterator<Filter> iterator()
     {
         return filters.iterator();
     }

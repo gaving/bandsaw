@@ -1,19 +1,11 @@
 package net.brokentrain.bandsaw.log4j;
 
-import java.net.ServerSocket;
-import java.util.Enumeration;
+import net.brokentrain.bandsaw.util.BandsawUtilities;
 
-import net.brokentrain.bandsaw.Bandsaw;
-import net.brokentrain.bandsaw.BandsawUtilities;
-import net.brokentrain.bandsaw.preferences.Log4jPreferencePage;
-import net.brokentrain.bandsaw.log4j.CustomAppender;
-
-import org.apache.log4j.Appender;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.LoggerRepositoryExImpl;
-import org.apache.log4j.net.SocketAppender;
 import org.apache.log4j.spi.LoggerRepository;
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.RepositorySelector;
@@ -41,7 +33,8 @@ public class Log4jServer extends Thread {
                 return repositoryExImpl;
             }}, repositorySelectorGuard);
 
-        new DOMConfigurator().configure(clazz.getResource("/cfg/server.xml"));
+        new DOMConfigurator();
+		DOMConfigurator.configure(clazz.getResource("/cfg/server.xml"));
     }
 
     /**
@@ -50,7 +43,7 @@ public class Log4jServer extends Thread {
      */
     public static boolean startListener() {
 
-        int port = Bandsaw.getDefault().getPreferenceStore().getInt(Log4jPreferencePage.P_PORT);
+        //int port = Bandsaw.getDefault().getPreferenceStore().getInt(Log4jPreferencePage.P_PORT);
 
         /* TODO: Should really work out how to change the port of the custom
          * appender here */

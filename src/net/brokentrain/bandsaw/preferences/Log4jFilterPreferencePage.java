@@ -4,9 +4,9 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import net.brokentrain.bandsaw.Bandsaw;
-import net.brokentrain.bandsaw.BandsawUtilities;
 import net.brokentrain.bandsaw.log4j.Filter;
 import net.brokentrain.bandsaw.log4j.LogSet;
+import net.brokentrain.bandsaw.util.BandsawUtilities;
 
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
@@ -43,9 +43,9 @@ public class Log4jFilterPreferencePage extends PreferencePage implements IWorkbe
      * Sets the default values of the preferences.
      */
     private void initializeDefaults() {
-        Iterator i = LogSet.getInstance().getFilterset().iterator();
+        Iterator<Filter> i = LogSet.getInstance().getFilterset().iterator();
         while ( i.hasNext() ) {
-            Filter filter = (Filter)i.next();
+            Filter filter = i.next();
             filterList.add(filter.toString());
         }
     }

@@ -27,6 +27,7 @@ Bandsaw TODO list
 - [_] Optionally allow the log to be stored somewhere
 - [x] Hide the filter label unless it a filter is actually active
 - [_] Drop the colour stuff entirely in favour of the icons (also from preferences)
+- [_] Remove socket hub appender stuff
 
 Resources
 =========

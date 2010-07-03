@@ -1,7 +1,7 @@
 package net.brokentrain.bandsaw.preferences;
 
 import net.brokentrain.bandsaw.Bandsaw;
-import net.brokentrain.bandsaw.BandsawUtilities;
+import net.brokentrain.bandsaw.util.BandsawUtilities;
 
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;

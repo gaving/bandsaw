@@ -1,7 +1,7 @@
 package net.brokentrain.bandsaw.preferences;
 
 import net.brokentrain.bandsaw.Bandsaw;
-import net.brokentrain.bandsaw.BandsawUtilities;
+import net.brokentrain.bandsaw.util.BandsawUtilities;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -41,7 +41,7 @@ public class Log4jPreferencePage extends FieldEditorPreferencePage implements IW
     public Log4jPreferencePage() {
         super(GRID);
         setPreferenceStore(Bandsaw.getDefault().getPreferenceStore());
-        setDescription("Log4j Viewer (Ganymede)");
+        setDescription("Log4j Settings");
         initializeDefaults();
     }
 
@@ -127,7 +127,7 @@ public class Log4jPreferencePage extends FieldEditorPreferencePage implements IW
                     getFieldEditorParent().getShell().getParent().getShell(),
                     SWT.OK | SWT.ICON_WARNING);
             serverTypeWarningBox
-                .setMessage("You are attempting to switch server types.  This requires Ganymede to restart.");
+                .setMessage("You are attempting to switch server types.  This requires Bandsaw to restart.");
             serverTypeWarningBox.open();
             if (event.getNewValue().equals(
                         Log4jPreferencePage.P_TYPE_SOCKET_APPENDER_VAL)) {

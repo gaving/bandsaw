@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import net.brokentrain.bandsaw.BandsawUtilities;
+import net.brokentrain.bandsaw.util.BandsawUtilities;
 
 import org.apache.log4j.spi.LoggingEvent;
 import org.eclipse.swt.SWT;
@@ -48,6 +48,17 @@ public class ColumnList {
         }
     }
 
+    public void clear() {
+        columns.clear();
+
+        if (BandsawUtilities.isShowing()) {
+            System.out.println("yeah it is showing apparently");
+            // Table table = BandsawUtilities.getTable();
+            // TableColumn col = table.getColumn(table.getColumnCount() - 1);
+            // col.dispose();
+        }
+    }
+
     public void remove(int index) {
         columns.remove(index);
         if (BandsawUtilities.isShowing()) {
@@ -75,7 +86,7 @@ public class ColumnList {
         columns.insertElementAt(i, index + 1);
     }
 
-    public Iterator getList() {
+    public Iterator<Integer> getList() {
         return columns.iterator();
     }
 
@@ -106,6 +117,20 @@ public class ColumnList {
         while (st.hasMoreTokens()) {
             int thisVal = 99;
             thisVal = Integer.parseInt(st.nextToken());
+            j[i++] = thisVal;
+        }
+        return j;
+    }
+    
+    public static String[] strdeSerialize(String object) {
+        StringTokenizer st =
+            new StringTokenizer(object, Character.toString(delimiter));
+        int size = st.countTokens();
+        String[] j = new String[size];
+        int i = 0;
+        while (st.hasMoreTokens()) {
+            String thisVal = "";
+            thisVal = st.nextToken();
             j[i++] = thisVal;
         }
         return j;

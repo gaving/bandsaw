@@ -9,8 +9,8 @@ Bundle-ClassPath: .,
  include/apache-log4j-extras-1.0.jar,
  include/apache-log4j-receivers-gump-22022009.jar,
  include/jakarta-regexp-1.2.jar,
- include/log4j-1.2.8.jar,
- include/log4j-gump-22022009.jar
+ include/log4j-gump-22022009.jar,
+ include/log4j-1.2.16.jar
 Export-Package: net.brokentrain.bandsaw,
  net.brokentrain.bandsaw.actions,
  net.brokentrain.bandsaw.dialogs,

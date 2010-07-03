@@ -1,16 +1,14 @@
 package net.brokentrain.bandsaw.actions;
 
-import net.brokentrain.bandsaw.BandsawUtilities;
-import net.brokentrain.bandsaw.dialogs.Log4jEventDialog;
-import net.brokentrain.bandsaw.log4j.LogSet;
-
-import java.util.ArrayList;
 import java.util.List;
+
+import net.brokentrain.bandsaw.dialogs.Log4jEventDialog;
+import net.brokentrain.bandsaw.util.BandsawUtilities;
 
 import org.apache.log4j.spi.LoggingEvent;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 
 public class ShowDetailAction extends Action {
 
