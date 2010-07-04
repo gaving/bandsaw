@@ -11,13 +11,16 @@ Bandsaw TODO list
 - [_] Optionally allow the log to be stored somewhere
 - [_] Allow sorting of the columns
 - [_] Use the new preference handling stuff
+- [_] Jump to file and line when log items have location info
+- [!] Remove socket hub appender stuff
+- [_] Tidy up the dialogs, make them a bit nicer with jface
+- [_] Display ip address in prefs
 
 0.1
 ---
 
 - [x] Make the icons a bit more web 2
-- [_] Tidy up the preferences page, remove redundant prefs
-- [_] Tidy up the dialogs, make them a bit nicer with jface
+- [x] Tidy up the preferences page, remove redundant prefs
 - [x] Give the log icons for different levels
 - [x] Use a TableViewer instead of the table
     * [x] Include icons on the first column
@@ -26,7 +29,6 @@ Bandsaw TODO list
 - [x] Make the start/stop of the server actually work
 - [x] Silence the internal debug messages
 - [x] Hide the filter label unless it a filter is actually active
-- [!] Remove socket hub appender stuff
 - [x] Copy table item message on ctrl+c
 - [x] Write rule to actually install the plugin
 
