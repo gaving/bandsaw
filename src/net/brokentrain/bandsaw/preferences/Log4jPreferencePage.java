@@ -66,27 +66,27 @@ public class Log4jPreferencePage extends FieldEditorPreferencePage implements IW
     }
 
     public void createFieldEditors() {
-        RadioGroupFieldEditor radioEditor = new RadioGroupFieldEditor(P_TYPE,
-                "&Type", 2, getServerTypeFieldAndValues(),
-                getFieldEditorParent(), true);
-        StringFieldEditor serverEditor = new StringFieldEditor(P_SERVER,
-                "&Server", getFieldEditorParent());
-        addField(radioEditor);
-        addField(serverEditor);
-        addField(new IntegerFieldEditor(P_PORT, "Server &Port",
-                    getFieldEditorParent()));
-
-        setRadioEditor(radioEditor);
-        setServerEditor(serverEditor);
-
-        // initial active/inactive for server
-        if (getPreferenceStore().getString(P_TYPE).equals(
-                    P_TYPE_SOCKET_APPENDER_VAL)) {
-            getServerEditor().setEnabled(false, getFieldEditorParent());
-        } else if (getPreferenceStore().getString(P_TYPE).equals(
-                    P_TYPE_SOCKET_HUB_APPENDER_VAL)) {
-            getServerEditor().setEnabled(true, getFieldEditorParent());
-                    }
+//        RadioGroupFieldEditor radioEditor = new RadioGroupFieldEditor(P_TYPE,
+//                "&Type", 2, getServerTypeFieldAndValues(),
+//                getFieldEditorParent(), true);
+//        StringFieldEditor serverEditor = new StringFieldEditor(P_SERVER,
+//                "&Server", getFieldEditorParent());
+//        addField(radioEditor);
+//        addField(serverEditor);
+//        addField(new IntegerFieldEditor(P_PORT, "Server &Port",
+//                    getFieldEditorParent()));
+//
+//        setRadioEditor(radioEditor);
+//        setServerEditor(serverEditor);
+//
+//        // initial active/inactive for server
+//        if (getPreferenceStore().getString(P_TYPE).equals(
+//                    P_TYPE_SOCKET_APPENDER_VAL)) {
+//            getServerEditor().setEnabled(false, getFieldEditorParent());
+//        } else if (getPreferenceStore().getString(P_TYPE).equals(
+//                    P_TYPE_SOCKET_HUB_APPENDER_VAL)) {
+//            getServerEditor().setEnabled(true, getFieldEditorParent());
+//                    }
 
         addField(new BooleanFieldEditor(P_AUTOMATIC, "&Automatic start", getFieldEditorParent()));
     }
@@ -96,19 +96,19 @@ public class Log4jPreferencePage extends FieldEditorPreferencePage implements IW
      * this.
      */
     public boolean performOk() {
-        getRadioEditor().store();
+//        getRadioEditor().store();
 
-        if (getPreferenceStore().getString(P_TYPE).equals(
-                    P_TYPE_SOCKET_APPENDER_VAL)
-                && BandsawUtilities.getServerType() != Bandsaw.P_SERVER_TYPE_SOCKET_APPENDER) {
-            BandsawUtilities
-                .setServerType(Bandsaw.P_SERVER_TYPE_SOCKET_APPENDER);
-        } else if (getPreferenceStore().getString(P_TYPE).equals(
-                    P_TYPE_SOCKET_HUB_APPENDER_VAL)
-                && BandsawUtilities.getServerType() != Bandsaw.P_SERVER_TYPE_SOCKET_HUB_APPENDER) {
-            BandsawUtilities
-                .setServerType(Bandsaw.P_SERVER_TYPE_SOCKET_HUB_APPENDER);
-                }
+//        if (getPreferenceStore().getString(P_TYPE).equals(
+//                    P_TYPE_SOCKET_APPENDER_VAL)
+//                && BandsawUtilities.getServerType() != Bandsaw.P_SERVER_TYPE_SOCKET_APPENDER) {
+//            BandsawUtilities
+//                .setServerType(Bandsaw.P_SERVER_TYPE_SOCKET_APPENDER);
+//        } else if (getPreferenceStore().getString(P_TYPE).equals(
+//                    P_TYPE_SOCKET_HUB_APPENDER_VAL)
+//                && BandsawUtilities.getServerType() != Bandsaw.P_SERVER_TYPE_SOCKET_HUB_APPENDER) {
+//            BandsawUtilities
+//                .setServerType(Bandsaw.P_SERVER_TYPE_SOCKET_HUB_APPENDER);
+//                }
 
         return super.performOk();
     }
@@ -118,25 +118,25 @@ public class Log4jPreferencePage extends FieldEditorPreferencePage implements IW
         // TODO Auto-generated method stub
         super.propertyChange(event);
 
-        if (event.getSource() == getRadioEditor()
-                && !event.getNewValue().equals(
-                    getPreferenceStore().getString(P_TYPE))) // are they
-            // the same
-        {
-            MessageBox serverTypeWarningBox = new MessageBox(
-                    getFieldEditorParent().getShell().getParent().getShell(),
-                    SWT.OK | SWT.ICON_WARNING);
-            serverTypeWarningBox
-                .setMessage("You are attempting to switch server types.  This requires Bandsaw to restart.");
-            serverTypeWarningBox.open();
-            if (event.getNewValue().equals(
-                        Log4jPreferencePage.P_TYPE_SOCKET_APPENDER_VAL)) {
-                getServerEditor().setEnabled(false, getFieldEditorParent());
-            } else if (event.getNewValue().equals(
-                        Log4jPreferencePage.P_TYPE_SOCKET_HUB_APPENDER_VAL)) {
-                getServerEditor().setEnabled(true, getFieldEditorParent());
-                        }
-        }
+//        if (event.getSource() == getRadioEditor()
+//                && !event.getNewValue().equals(
+//                    getPreferenceStore().getString(P_TYPE))) // are they
+//            // the same
+//        {
+//            MessageBox serverTypeWarningBox = new MessageBox(
+//                    getFieldEditorParent().getShell().getParent().getShell(),
+//                    SWT.OK | SWT.ICON_WARNING);
+//            serverTypeWarningBox
+//                .setMessage("You are attempting to switch server types.  This requires Bandsaw to restart.");
+//            serverTypeWarningBox.open();
+//            if (event.getNewValue().equals(
+//                        Log4jPreferencePage.P_TYPE_SOCKET_APPENDER_VAL)) {
+//                getServerEditor().setEnabled(false, getFieldEditorParent());
+//            } else if (event.getNewValue().equals(
+//                        Log4jPreferencePage.P_TYPE_SOCKET_HUB_APPENDER_VAL)) {
+//                getServerEditor().setEnabled(true, getFieldEditorParent());
+//                        }
+//        }
     }
 
     protected void performApply() {

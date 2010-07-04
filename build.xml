@@ -138,4 +138,20 @@
         </jar>
     </target>
 
+    <target name="install" depends="jar">
+        <echo>Installing to ${eclipse.home}..</echo>
+
+        <!-- Delete rogue class files in src dir -->
+        <delete>
+            <fileset dir="${eclipse.home}/plugins/" includes="net.brokentrain*"/>
+        </delete>
+
+        <copy todir="${eclipse.home}/plugins/">
+            <fileset dir="${dist}">
+                <include name="**/*.jar"/>
+            </fileset>
+        </copy>
+
+    </target>
+
 </project>

@@ -9,7 +9,8 @@ Bandsaw TODO list
 - [_] Javadoc and lots of formatting updates
 - [_] Improve the filter dialog
 - [_] Optionally allow the log to be stored somewhere
-- [_] Write rule to actually install the plugin
+- [_] Allow sorting of the columns
+- [_] Use the new preference handling stuff
 
 0.1
 ---
@@ -18,16 +19,16 @@ Bandsaw TODO list
 - [_] Tidy up the preferences page, remove redundant prefs
 - [_] Tidy up the dialogs, make them a bit nicer with jface
 - [x] Give the log icons for different levels
-- [_] Use a TableViewer instead of the table
-    * [_] Allow sorting of the columns
+- [x] Use a TableViewer instead of the table
     * [x] Include icons on the first column
     * [x] Rehook the double click action in
 - [x] Populate the columns by default
 - [x] Make the start/stop of the server actually work
 - [x] Silence the internal debug messages
 - [x] Hide the filter label unless it a filter is actually active
-- [_] Remove socket hub appender stuff
-- [_] Copy table item message on ctrl+c
+- [!] Remove socket hub appender stuff
+- [x] Copy table item message on ctrl+c
+- [x] Write rule to actually install the plugin
 
 Resources
 =========
