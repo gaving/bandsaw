@@ -34,7 +34,7 @@ public class Log4jServer extends Thread {
             }}, repositorySelectorGuard);
 
         new DOMConfigurator();
-		DOMConfigurator.configure(clazz.getResource("/cfg/server.xml"));
+        DOMConfigurator.configure(clazz.getResource("/cfg/server.xml"));
     }
 
     /**

@@ -6,12 +6,9 @@ import net.brokentrain.bandsaw.util.BandsawUtilities;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.jface.preference.RadioGroupFieldEditor;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.jface.util.PropertyChangeEvent;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -144,15 +141,15 @@ public class Log4jPreferencePage extends FieldEditorPreferencePage implements IW
         super.performApply();
     }
 
-    private String[][] getServerTypeFieldAndValues() {
-        // TODO Auto-generated method stub
-        String[][] rVal = new String[2][2];
-        rVal[0][0] = "Socket Appender";
-        rVal[0][1] = P_TYPE_SOCKET_APPENDER_VAL;
-        rVal[1][0] = "Socket Hub Appender";
-        rVal[1][1] = P_TYPE_SOCKET_HUB_APPENDER_VAL;
-        return rVal;
-    }
+//    private String[][] getServerTypeFieldAndValues() {
+//        // TODO Auto-generated method stub
+//        String[][] rVal = new String[2][2];
+//        rVal[0][0] = "Socket Appender";
+//        rVal[0][1] = P_TYPE_SOCKET_APPENDER_VAL;
+//        rVal[1][0] = "Socket Hub Appender";
+//        rVal[1][1] = P_TYPE_SOCKET_HUB_APPENDER_VAL;
+//        return rVal;
+//    }
 
     public void init(IWorkbench workbench) {
     }

@@ -53,7 +53,20 @@
         </else>
     </if>
 
-    <target name="init">
+    <target name="clean">
+        <echo message="Cleaning up" />
+
+        <!-- Delete non-essential dirs -->
+        <delete dir="${bin}"/>
+        <delete dir="${dist}"/>
+
+        <!-- Delete rogue class files in src dir -->
+        <delete quiet="true">
+            <fileset dir="${src}" includes="**/*.class"/>
+        </delete>
+    </target>
+
+    <target name="init" depends="clean">
 
         <!-- Create the bin directory structure used by compile -->
         <mkdir dir="${bin}" />
@@ -61,6 +74,7 @@
         <!-- Create the dist directory -->
         <mkdir dir="${dist}" />
     </target>
+
 
     <target name="compile" depends="init">
         <javac
@@ -89,19 +103,6 @@
                 </dirset>
             </classpath>
         </javac>
-    </target>
-
-    <target name="clean">
-        <echo message="Cleaning up" />
-
-        <!-- Delete non-essential dirs -->
-        <delete dir="${bin}"/>
-        <delete dir="${dist}"/>
-
-        <!-- Delete rogue class files in src dir -->
-        <delete quiet="true">
-            <fileset dir="${src}" includes="**/*.class"/>
-        </delete>
     </target>
 
     <target name="jar" depends="compile">
