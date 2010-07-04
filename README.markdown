@@ -25,5 +25,4 @@ contact me.
 
 ## Credit
 
-Forked from the Ganymede eclipse project. The previous project is available at:
-http://sourceforge.net/projects/ganymede/[]
+Forked from the [Ganymede eclipse project](http://sourceforge.net/projects/ganymede/)
