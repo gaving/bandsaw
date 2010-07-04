@@ -12,6 +12,10 @@
     <property name="src" value="src"/>
 
     <property name="version" value="0.1" />
+    <tstamp />
+    <property name="date" value="${DSTAMP}" />
+    <property name="time" value="${TSTAMP}" />
+    <property name="timestamp" value="${date}${time}" />
 
     <path id="ant-contrib-classpath">
         <fileset dir="${include}/" includes="ant-contrib-*.jar"/>
@@ -133,7 +137,7 @@
 
         <!-- Make a jar file -->
         <jar
-            jarfile="${dist}/net.brokentrain.bandsaw_${version}.jar"
+            jarfile="${dist}/net.brokentrain.bandsaw_${version}.v${timestamp}.jar"
             basedir="${bin}/"
             manifest="META-INF/MANIFEST.MF">
         </jar>
