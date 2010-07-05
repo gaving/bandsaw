@@ -7,6 +7,7 @@ import net.brokentrain.bandsaw.log4j.ColumnList;
 import net.brokentrain.bandsaw.log4j.Log4jItem;
 import net.brokentrain.bandsaw.util.PaintUtil;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -31,6 +32,7 @@ public class Bandsaw extends AbstractUIPlugin {
 
     public static final String P_COLUMNS = "P_COLUMNS";
 
+    public static Logger log = Logger.getLogger(Bandsaw.class);
     
     /**
      * The constructor.

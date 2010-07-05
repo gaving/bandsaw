@@ -10,7 +10,7 @@ documentation for details on how to do this.
 
 ## Installation
 
-- Download release jar from the [releases page](http://github.com/gaving/tlaloc/downloads)
+- Download release jar from the [releases page](http://github.com/gaving/bandsaw/downloads)
 - Place in your $ECLIPE_HOME/plugins/ directory
 - Launch eclipse and open the bandsaw view and check out related preferences
 

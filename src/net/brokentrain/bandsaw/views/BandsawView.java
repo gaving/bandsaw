@@ -1,5 +1,6 @@
 package net.brokentrain.bandsaw.views;
 
+import java.io.File;
 import java.util.List;
 
 import net.brokentrain.bandsaw.Bandsaw;
@@ -13,9 +14,19 @@ import net.brokentrain.bandsaw.preferences.Log4jColumnsPreferencePage;
 import net.brokentrain.bandsaw.preferences.Log4jPreferencePage;
 import net.brokentrain.bandsaw.util.BandsawUtilities;
 
+import org.apache.log4j.spi.LocationInfo;
 import org.apache.log4j.spi.LoggingEvent;
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
@@ -29,10 +40,15 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewSite;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
 
 public class BandsawView extends ViewPart {
@@ -41,6 +57,8 @@ public class BandsawView extends ViewPart {
     private GridData gridData;
     private Label filterBaseLabel;
     private Label filterLabel;
+
+    Action viewItemAction, copyItemAction, selectAllAction, lineItemAction;
 
     /**
      * The constructor.
@@ -85,7 +103,6 @@ public class BandsawView extends ViewPart {
 
             public void mouseUp(MouseEvent e) {
                 // TODO Auto-generated method stub
-
             }
         });
 
@@ -112,25 +129,7 @@ public class BandsawView extends ViewPart {
         table.addKeyListener(new KeyListener() {
             public void keyPressed(KeyEvent arg0) {
                 if (arg0.keyCode == 'c' && arg0.stateMask == SWT.CTRL) {
-
-                    TableViewer viewer = BandsawUtilities.getViewer();
-                    @SuppressWarnings("rawtypes")
-                    List leList = ((IStructuredSelection)viewer.getSelection()).toList();
-
-                    if (leList.isEmpty()) {
-                        return;
-                    }
-
-                    Clipboard clipboard = new Clipboard(parent.getDisplay());
-                    for (Object obj : leList) {
-                        LoggingEvent le = (LoggingEvent) obj;
-
-                        String renderedMessage = le.getRenderedMessage();
-                        System.out.println("Copying to clipboard:" + renderedMessage);
-
-                        clipboard.setContents(new Object[] { renderedMessage }, new Transfer[] { TextTransfer.getInstance() });
-                    }
-                    clipboard.dispose();
+                    copyItem();
                 }
             }
 
@@ -155,6 +154,9 @@ public class BandsawView extends ViewPart {
 
         Log4jServer.init();
 
+        createActions();
+        createContextMenu();
+
         BandsawUtilities.updateTableColumns();
 
         BandsawUtilities.initColorDefaults();
@@ -168,6 +170,165 @@ public class BandsawView extends ViewPart {
         BandsawUtilities.setViewTitle(table.getParent().getShell().getText());
 
         hookDoubleClickAction();
+    }
+
+    public void createActions() {
+        viewItemAction = new Action("View Details") {
+            public void run() {
+                BandsawUtilities.getShowDetailAction().run();
+            }
+        };
+
+        // viewItemAction.setImageDescriptor(ImageDescriptor.createFromImage(PaintUtil.iconError));
+        viewItemAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_DEF_VIEW)); 
+
+        lineItemAction = new Action("Jump to file") {
+            public void run() {
+                jumpToFile();
+            }
+        };
+
+        // copyItemAction.setImageDescriptor(ImageDescriptor.createFromImage(PaintUtil.iconError));
+        lineItemAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_COPY)); 
+
+        copyItemAction = new Action("Copy") {
+            public void run() {
+                copyItem();
+            }
+        };
+        // copyItemAction.setImageDescriptor(ImageDescriptor.createFromImage(PaintUtil.iconError));
+        copyItemAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_COPY)); 
+
+        selectAllAction = new Action("Select All") {
+            public void run() {
+                selectAll();
+            }
+        };
+
+        // Add selection listener.
+        viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+            public void selectionChanged(SelectionChangedEvent event) {
+                updateActionEnablement();
+            }
+        });
+    }
+
+   /**
+    * Returns the image descriptor with the given relative path.
+    */
+//   private ImageDescriptor getImageDescriptor(String relativePath) {
+//       String iconPath = "icons/";
+//       try {
+//           Bandsaw plugin = Bandsaw.getDefault();
+//           URL installURL = plugin.getDescriptor().getInstallURL();
+//           URL url = new URL(installURL, iconPath + relativePath);
+//           return ImageDescriptor.createFromURL(url);
+//       }
+//       catch (MalformedURLException e) {
+//           // should not happen
+//           return ImageDescriptor.getMissingImageDescriptor();
+//       }
+//   }
+
+   private void updateActionEnablement() {
+       IStructuredSelection sel = (IStructuredSelection)viewer.getSelection();
+       copyItemAction.setEnabled(sel.size() > 0);
+   }
+
+    private void createContextMenu() {
+        // Create menu manager.
+        MenuManager menuMgr = new MenuManager();
+        menuMgr.setRemoveAllWhenShown(true);
+        menuMgr.addMenuListener(new IMenuListener() {
+            public void menuAboutToShow(IMenuManager mgr) {
+                fillContextMenu(mgr);
+            }
+        });
+
+        // Create menu.
+        Menu menu = menuMgr.createContextMenu(viewer.getControl());
+        viewer.getControl().setMenu(menu);
+
+        // Register menu for extension.
+        getSite().registerContextMenu(menuMgr, viewer);
+    }
+
+    private void fillContextMenu(IMenuManager mgr) {
+        mgr.add(viewItemAction);
+        mgr.add(lineItemAction);
+        mgr.add(new Separator());
+        mgr.add(copyItemAction);
+        mgr.add(new Separator());
+        mgr.add(selectAllAction);
+    }
+
+    private void copyItem() {
+
+        @SuppressWarnings("rawtypes")
+            List leList = ((IStructuredSelection)viewer.getSelection()).toList();
+
+        if (leList.isEmpty()) {
+            return;
+        }
+
+        Clipboard clipboard = new Clipboard(viewer.getControl().getDisplay());
+        for (Object obj : leList) {
+            LoggingEvent le = (LoggingEvent) obj;
+
+            String renderedMessage = le.getRenderedMessage();
+            System.out.println("Copying to clipboard:" + renderedMessage);
+
+            clipboard.setContents(new Object[] { renderedMessage }, new Transfer[] { TextTransfer.getInstance() });
+        }
+        clipboard.dispose();
+    }
+
+    private void jumpToFile() {
+
+        @SuppressWarnings("rawtypes")
+        List leList = ((IStructuredSelection)viewer.getSelection()).toList();
+
+        if (leList.isEmpty()) {
+            return;
+        }
+
+        for (Object obj : leList) {
+            LoggingEvent le = (LoggingEvent) obj;
+
+            if (le.locationInformationExists()) {
+
+                LocationInfo locationInfo = le.getLocationInformation();
+
+                String className = locationInfo.getClassName();
+                String fileName = locationInfo.getFileName();
+                String lineNumber = locationInfo.getLineNumber();
+
+                System.out.println(className);
+                System.out.println(fileName);
+                System.out.println(lineNumber);
+
+                File fileToOpen = new File(fileName);
+                if (fileToOpen.exists() && fileToOpen.isFile()) {
+
+                    IFileStore fileStore = EFS.getLocalFileSystem().getStore(fileToOpen.toURI());
+                    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+                    try {
+                        IDE.openEditorOnFileStore( page, fileStore );
+                    } catch ( PartInitException e ) {
+                        //Put your exception handler here if you wish to
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Select all items.
+     */
+    private void selectAll() {
+        ((Table) viewer.getTable()).selectAll();
+        updateActionEnablement();
     }
 
     private void hookDoubleClickAction() {
