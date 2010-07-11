@@ -16,7 +16,9 @@ documentation for details on how to do this.
 
 ## Screenshot
 
-![windows](http://github.com/gaving/bandsaw/raw/master/site/1.png)
+![view](http://github.com/gaving/bandsaw/raw/master/site/1.png)
+
+![marker](http://github.com/gaving/bandsaw/raw/master/site/2.png)
 
 ## Contact
 
