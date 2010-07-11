@@ -16,7 +16,11 @@ documentation for details on how to do this.
 
 ## Screenshot
 
+### View
+
 ![view](http://github.com/gaving/bandsaw/raw/master/site/1.png)
+
+### Editor (bookmarks and markers)
 
 ![marker](http://github.com/gaving/bandsaw/raw/master/site/2.png)
 
