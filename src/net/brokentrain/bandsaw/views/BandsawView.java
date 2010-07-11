@@ -1,9 +1,10 @@
 package net.brokentrain.bandsaw.views;
 
-import java.io.File;
-import java.util.List;
+import java.util.Iterator;
 
 import net.brokentrain.bandsaw.Bandsaw;
+import net.brokentrain.bandsaw.actions.CopyAction;
+import net.brokentrain.bandsaw.actions.JumpAction;
 import net.brokentrain.bandsaw.actions.QuickFilterAction;
 import net.brokentrain.bandsaw.actions.ShowDetailAction;
 import net.brokentrain.bandsaw.listeners.IMouseListener;
@@ -14,26 +15,19 @@ import net.brokentrain.bandsaw.preferences.Log4jColumnsPreferencePage;
 import net.brokentrain.bandsaw.preferences.Log4jPreferencePage;
 import net.brokentrain.bandsaw.util.BandsawUtilities;
 
-import org.apache.log4j.spi.LocationInfo;
 import org.apache.log4j.spi.LoggingEvent;
-import org.eclipse.core.filesystem.EFS;
-import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.dnd.Clipboard;
-import org.eclipse.swt.dnd.TextTransfer;
-import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.layout.GridData;
@@ -43,12 +37,15 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewSite;
-import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.contexts.IContextService;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 
 public class BandsawView extends ViewPart {
@@ -58,7 +55,7 @@ public class BandsawView extends ViewPart {
     private Label filterBaseLabel;
     private Label filterLabel;
 
-    Action viewItemAction, copyItemAction, selectAllAction, lineItemAction;
+    Action viewItemAction, copyItemAction, deleteItemAction, selectAllAction, jumpAction;
 
     /**
      * The constructor.
@@ -126,18 +123,6 @@ public class BandsawView extends ViewPart {
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
 
-        table.addKeyListener(new KeyListener() {
-            public void keyPressed(KeyEvent arg0) {
-                if (arg0.keyCode == 'c' && arg0.stateMask == SWT.CTRL) {
-                    copyItem();
-                }
-            }
-
-            public void keyReleased(KeyEvent arg0) {
-                // TODO Auto-generated method stub
-            }
-        });
-
         BandsawUtilities.setTable(table);
         BandsawUtilities.setTableViewer(viewer);
 
@@ -152,10 +137,13 @@ public class BandsawView extends ViewPart {
 
         getSite().getPage().addPartListener(new LifecycleListener());
 
+        activateContext();
+
         Log4jServer.init();
 
         createActions();
         createContextMenu();
+        hookGlobalActions();
 
         BandsawUtilities.updateTableColumns();
 
@@ -172,38 +160,58 @@ public class BandsawView extends ViewPart {
         hookDoubleClickAction();
     }
 
+    private void hookGlobalActions() {
+        IActionBars bars = getViewSite().getActionBars();
+        bars.setGlobalActionHandler(ActionFactory.COPY.getId(), copyItemAction);
+    }
+
+    /**
+     * Activate a context that this view uses. It will be tied to this view
+     * activation events and will be removed when the view is disposed.
+     * Copied from org.eclipse.ui.examples.contributions.InfoView.java
+     */
+    private void activateContext() {
+        IContextService contextService = (IContextService) getSite()
+        .getService(IContextService.class);
+        contextService.activateContext("net.brokentrain.view.context");
+    }
+
     public void createActions() {
-        viewItemAction = new Action("View Details") {
+
+        IHandlerService hs = (IHandlerService)getSite().getService(IHandlerService.class);
+
+        jumpAction = new JumpAction("Go to");
+        jumpAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_REDO));
+        jumpAction.setActionDefinitionId("net.brokentrain.commands.jump");
+        hs.activateHandler("net.brokentrain.commands.jump", new ActionHandler(jumpAction));
+
+        viewItemAction = new Action("View") {
             public void run() {
-                BandsawUtilities.getShowDetailAction().run();
+                new ShowDetailAction().run();
             }
         };
+        viewItemAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_DEF_VIEW));
+        viewItemAction.setActionDefinitionId("net.brokentrain.commands.view");
+        hs.activateHandler("net.brokentrain.commands.view", new ActionHandler(viewItemAction));
 
-        // viewItemAction.setImageDescriptor(ImageDescriptor.createFromImage(PaintUtil.iconError));
-        viewItemAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_DEF_VIEW)); 
+        copyItemAction = new CopyAction("Copy");
+        copyItemAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
+        copyItemAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_COPY);
 
-        lineItemAction = new Action("Jump to file") {
+        deleteItemAction = new Action("Delete") {
             public void run() {
-                jumpToFile();
+                deleteItem();
             }
         };
-
-        // copyItemAction.setImageDescriptor(ImageDescriptor.createFromImage(PaintUtil.iconError));
-        lineItemAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_COPY)); 
-
-        copyItemAction = new Action("Copy") {
-            public void run() {
-                copyItem();
-            }
-        };
-        // copyItemAction.setImageDescriptor(ImageDescriptor.createFromImage(PaintUtil.iconError));
-        copyItemAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_COPY)); 
+        deleteItemAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
+        deleteItemAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_DELETE);
 
         selectAllAction = new Action("Select All") {
             public void run() {
                 selectAll();
             }
         };
+        selectAllAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_SELECT_ALL);
 
         // Add selection listener.
         viewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -213,25 +221,11 @@ public class BandsawView extends ViewPart {
         });
     }
 
-   /**
-    * Returns the image descriptor with the given relative path.
-    */
-//   private ImageDescriptor getImageDescriptor(String relativePath) {
-//       String iconPath = "icons/";
-//       try {
-//           Bandsaw plugin = Bandsaw.getDefault();
-//           URL installURL = plugin.getDescriptor().getInstallURL();
-//           URL url = new URL(installURL, iconPath + relativePath);
-//           return ImageDescriptor.createFromURL(url);
-//       }
-//       catch (MalformedURLException e) {
-//           // should not happen
-//           return ImageDescriptor.getMissingImageDescriptor();
-//       }
-//   }
-
    private void updateActionEnablement() {
        IStructuredSelection sel = (IStructuredSelection)viewer.getSelection();
+       jumpAction.setEnabled(sel.size() > 0);
+       viewItemAction.setEnabled(sel.size() > 0);
+       deleteItemAction.setEnabled(sel.size() > 0);
        copyItemAction.setEnabled(sel.size() > 0);
    }
 
@@ -254,72 +248,20 @@ public class BandsawView extends ViewPart {
     }
 
     private void fillContextMenu(IMenuManager mgr) {
+        mgr.add(jumpAction);
         mgr.add(viewItemAction);
-        mgr.add(lineItemAction);
         mgr.add(new Separator());
         mgr.add(copyItemAction);
-        mgr.add(new Separator());
+        mgr.add(deleteItemAction);
         mgr.add(selectAllAction);
     }
 
-    private void copyItem() {
-
-        @SuppressWarnings("rawtypes")
-            List leList = ((IStructuredSelection)viewer.getSelection()).toList();
-
-        if (leList.isEmpty()) {
-            return;
-        }
-
-        Clipboard clipboard = new Clipboard(viewer.getControl().getDisplay());
-        for (Object obj : leList) {
-            LoggingEvent le = (LoggingEvent) obj;
-
-            String renderedMessage = le.getRenderedMessage();
-            System.out.println("Copying to clipboard:" + renderedMessage);
-
-            clipboard.setContents(new Object[] { renderedMessage }, new Transfer[] { TextTransfer.getInstance() });
-        }
-        clipboard.dispose();
-    }
-
-    private void jumpToFile() {
-
-        @SuppressWarnings("rawtypes")
-        List leList = ((IStructuredSelection)viewer.getSelection()).toList();
-
-        if (leList.isEmpty()) {
-            return;
-        }
-
-        for (Object obj : leList) {
-            LoggingEvent le = (LoggingEvent) obj;
-
-            if (le.locationInformationExists()) {
-
-                LocationInfo locationInfo = le.getLocationInformation();
-
-                String className = locationInfo.getClassName();
-                String fileName = locationInfo.getFileName();
-                String lineNumber = locationInfo.getLineNumber();
-
-                System.out.println(className);
-                System.out.println(fileName);
-                System.out.println(lineNumber);
-
-                File fileToOpen = new File(fileName);
-                if (fileToOpen.exists() && fileToOpen.isFile()) {
-
-                    IFileStore fileStore = EFS.getLocalFileSystem().getStore(fileToOpen.toURI());
-                    IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-                    try {
-                        IDE.openEditorOnFileStore( page, fileStore );
-                    } catch ( PartInitException e ) {
-                        //Put your exception handler here if you wish to
-                    }
-                }
-            }
+    private void deleteItem() {
+        IStructuredSelection sel = (IStructuredSelection)viewer.getSelection();
+        Iterator<?> iter = sel.iterator();
+        while (iter.hasNext()) {
+            LoggingEvent loggingEvent = (LoggingEvent)iter.next();
+            viewer.remove(loggingEvent);
         }
     }
 
@@ -332,11 +274,9 @@ public class BandsawView extends ViewPart {
     }
 
     private void hookDoubleClickAction() {
-        BandsawUtilities.setShowDetailAction(new ShowDetailAction());
-
         viewer.getTable().addMouseListener(new IMouseListener() {
             public void mouseDoubleClick(MouseEvent e) {
-                BandsawUtilities.getShowDetailAction().run();
+                jumpAction.run();
             }
         });
     }

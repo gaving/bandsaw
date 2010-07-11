@@ -65,6 +65,7 @@
 				menubarPath="Bandsaw.Log4jServerMenu/Bandsaw.Log4jServerGroup1"
 				tooltip="&amp;Start Log4j Server">
 			</action>
+
 			<menu label="Log4j Server" path="additions" id="Bandsaw.Log4jServerMenu">
 				<separator name="Bandsaw.Log4jServerGroup1">
 				</separator>
@@ -78,5 +79,44 @@
 				</separator>
 			</menu>
 		</viewContribution>
+
 	</extension>
+
+        <extension point="org.eclipse.ui.contexts">
+            <context
+                description="Activates in the bandsaw view"
+                id="net.brokentrain.view.context"
+                name="Bandsaw View"
+                parentId="org.eclipse.ui.contexts.window">
+            </context>
+        </extension>
+
+        <extension point="org.eclipse.ui.commands">
+            <category
+                id="net.brokentrain.category"
+                name="%brokentrain.category">
+            </category>
+            <command
+                categoryId="net.brokentrain.category"
+                id="net.brokentrain.commands.jump"
+                name="%brokentrain.commands.jump">
+            </command>
+            <command
+                categoryId="net.brokentrain.category"
+                id="net.brokentrain.commands.view"
+                name="%brokentrain.commands.view">
+            </command>
+        </extension>
+
+        <extension point="org.eclipse.ui.bindings">
+            <key sequence="M1+O"
+                commandId="net.brokentrain.commands.view"
+                schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+                contextId="net.brokentrain.view.context"/>
+            <key sequence="M1+J"
+                commandId="net.brokentrain.commands.jump"
+                schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+                contextId="net.brokentrain.view.context"/>
+        </extension>
+
 </plugin>

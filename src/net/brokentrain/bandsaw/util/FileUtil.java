@@ -16,9 +16,21 @@ import java.io.StringWriter;
 
 import net.brokentrain.bandsaw.Bandsaw;
 
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.texteditor.IDocumentProvider;
+import org.eclipse.ui.texteditor.ITextEditor;
 
 public class FileUtil extends SimpleFileUtil {
 
@@ -197,7 +209,18 @@ public class FileUtil extends SimpleFileUtil {
             Bandsaw.log.error("Couldn't write to file!", ioe);
         }
     }
+    
+    public static void openFile(File fileToOpen) {
 
+        IFileStore fileStore = EFS.getLocalFileSystem().getStore(fileToOpen.toURI());
+        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+
+        try {
+            IDE.openEditorOnFileStore( page, fileStore );
+        } catch ( PartInitException e ) {
+            //Put your exception handler here if you wish to
+        }
+    }
 
     public static Object readObject(File path) {
 
@@ -220,6 +243,54 @@ public class FileUtil extends SimpleFileUtil {
         }
         return null;
     }
+    
+    public static void selectEclipseEditorRegion(IEditorPart editorPart, int line, int colStart, int colEnd)
+    {
+        if (line >= 0 && editorPart instanceof ITextEditor)
+        {
+            try
+            {
+                ITextEditor textEditor = (ITextEditor) editorPart;
+                IEditorInput input = editorPart.getEditorInput();
+                IDocumentProvider provider = textEditor.getDocumentProvider();
+                provider.connect(input);
+                IDocument document = provider.getDocument(input);
+                int maxLines = document.getNumberOfLines();
+                int lineNum = line == 0 ? 1 : line;
+                lineNum = Math.min(lineNum, maxLines);
+                int fileOffset = document.getLineOffset(lineNum - 1);
+                int fileLength = document.getLineLength(lineNum - 1);
+                provider.disconnect(input);
+                if (fileOffset >= 0 && fileLength >= 0)
+                {
+                    if (colStart >= 0)
+                    {
+                        int start = -1, end = -1;
+                        start = colStart == 0 ? 1 : colStart;
+                        end = colEnd == 0 ? 1 : colEnd;
+                        start = Math.min(start, fileLength - 1);
+                        end = Math.min(end, fileLength - 1);
+
+                        fileOffset += start - 1;
+                        if (colEnd >= 0 && colEnd > colStart)
+                        {
+                            fileLength = end - start;
+                        }
+                        else
+                        {
+                            fileLength = 0;
+                        }
+                    }
+                    textEditor.selectAndReveal(fileOffset, fileLength);
+                }
+            }
+            catch (Exception e)
+            {
+                System.out.println("Unable to select line/column in editor: " + editorPart.getTitle());
+            }
+        }
+    }
+    
 
     public static boolean writeObject(Object object, File path) {
 

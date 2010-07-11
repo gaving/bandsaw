@@ -2,8 +2,6 @@ package net.brokentrain.bandsaw.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeSet;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
@@ -58,18 +56,6 @@ public class WidgetUtil {
         }
 
         return styleRanges;
-    }
-
-    private static boolean collides(TreeSet<StyleRange> styleRanges,
-            StyleRange newRange) {
-        for (StyleRange range : styleRanges) {
-
-            if ((range.start < newRange.start + newRange.length)
-                    && (range.start + range.length > newRange.start)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public static void createWildCardMenu(final Text text, String[] wildcards) {
