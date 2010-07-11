@@ -11,12 +11,5 @@
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/org.eclipse.swt"/>
 	<classpathentry exported="true" kind="lib" path="include/log4j-1.2.16.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/gavin/Sandbox/what/dltkwhat/eclipse/plugins/org.eclipse.dltk_2.0.0.v20090827.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/gavin/Sandbox/what/dltkwhat/eclipse/plugins/org.eclipse.dltk.ui_2.0.0.v20100603-0936.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/gavin/Sandbox/what/dltkwhat/eclipse/plugins/org.eclipse.dltk.core_2.0.0.v20100603-0936.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/gavin/Sandbox/eclipse/plugins/org.eclipse.php_2.2.0.v20100410-0300.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/gavin/Sandbox/eclipse/plugins/org.eclipse.php.core_2.2.0.v20100609-1200.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/gavin/Sandbox/eclipse/plugins/org.eclipse.php.core.parser_2.2.0.v20100410-0300.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/gavin/Sandbox/eclipse/plugins/org.eclipse.php.ui_2.2.0.v20100609-1200.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
