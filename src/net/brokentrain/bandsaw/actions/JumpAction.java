@@ -18,8 +18,8 @@ import org.eclipse.dltk.ast.ASTVisitor;
 import org.eclipse.dltk.ast.declarations.ModuleDeclaration;
 import org.eclipse.dltk.ast.expressions.Expression;
 import org.eclipse.dltk.ast.statements.Statement;
-import org.eclipse.dltk.compiler.env.ISourceModule;
 import org.eclipse.dltk.core.DLTKCore;
+import org.eclipse.dltk.core.ISourceModule;
 import org.eclipse.dltk.core.SourceParserUtil;
 import org.eclipse.dltk.ui.DLTKUIPlugin;
 import org.eclipse.jface.action.Action;
@@ -49,9 +49,10 @@ public class JumpAction extends Action {
 
                 LocationInfo locationInfo = le.getLocationInformation();
 
-                String className = locationInfo.getClassName();
+                //String className = locationInfo.getClassName();
                 String fileName = locationInfo.getFileName();
                 String lineNumber = locationInfo.getLineNumber();
+                String message = le.getRenderedMessage();
 
                 // System.out.println(className);
                 // System.out.println(fileName);
@@ -82,10 +83,11 @@ public class JumpAction extends Action {
                     try {
 
                         HashMap<String, Integer> map = new HashMap<String, Integer>();
-                        MarkerUtilities.setMessage(map, "HAZARD");
-                        map.put(IMarker.PRIORITY, new Integer(IMarker.PRIORITY_HIGH));
+                        MarkerUtilities.setMessage(map, message);
                         MarkerUtilities.setLineNumber(map, Integer.valueOf(lineNumber));
-                        MarkerUtilities.createMarker((IFile)resource, map, IMarker.TASK);
+                        MarkerUtilities.createMarker((IFile)resource, map, IMarker.BOOKMARK);
+
+                        /* Set a marker with the text mouse overed! */
 
                         ModuleDeclaration moduleDeclaration = SourceParserUtil.getModuleDeclaration((org.eclipse.dltk.core.ISourceModule) model, null);
                         moduleDeclaration.traverse(new ASTVisitor() {
@@ -102,7 +104,7 @@ public class JumpAction extends Action {
                         });
 
                         /* Jump to class or method, parse that ast tree? */
-                        IEditorPart editor = DLTKUIPlugin.openInEditor(model.getModelElement(), true, true);
+                        IEditorPart editor = DLTKUIPlugin.openInEditor(model, true, true);
                         FileUtil.selectEclipseEditorRegion(editor, Integer.valueOf(lineNumber), 0, 0);
                     } catch (Exception e) {
                         e.printStackTrace();

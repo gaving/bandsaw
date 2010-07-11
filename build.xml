@@ -11,7 +11,7 @@
     <property name="cfg" value="cfg"/>
     <property name="src" value="src"/>
 
-    <property name="version" value="0.1" />
+    <property name="version" value="0.2pre" />
     <tstamp />
     <property name="date" value="${DSTAMP}" />
     <property name="time" value="${TSTAMP}" />

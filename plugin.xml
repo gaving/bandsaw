@@ -50,7 +50,7 @@
 			</action>
 			<action style="push" id="Bandsaw.ClearAction" toolbarPath="Group1"
 				class="net.brokentrain.bandsaw.actions.ClearAction" enablesFor="*"
-				icon="icons/clear.png" label="&amp;Clear Display"
+				icon="platform:/plugin/org.eclipse.ui.console/icons/full/elcl16/clear_co.gif" label="&amp;Clear Display"
 				menubarPath="Bandsaw.DisplayMenu/Bandsaw.DisplayGroup1" tooltip="&amp;Clear">
 			</action>
 			<action style="push" id="Bandsaw.StopAction" toolbarPath="Group2"
