@@ -1,5 +1,8 @@
 package net.brokentrain.bandsaw.views;
 
+import java.util.List;
+
+import org.apache.log4j.spi.LoggingEvent;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
@@ -11,8 +14,10 @@ public class BandsawViewContentProvider implements IStructuredContentProvider {
     public void dispose() {
     }
 
-    public Object[] getElements(final Object parent) {
-        return new String[] {};
+    public Object[] getElements(Object inputElement) {
+        @SuppressWarnings("unchecked")
+        List<LoggingEvent> events = (List<LoggingEvent>) inputElement;
+        return events.toArray();
     }
 }
 

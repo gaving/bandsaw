@@ -27,9 +27,12 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -54,6 +57,8 @@ public class BandsawView extends ViewPart {
     private GridData gridData;
     private Label filterBaseLabel;
     private Label filterLabel;
+
+    private BandsawViewSorter tableSorter;
 
     Action viewItemAction, copyItemAction, deleteItemAction, selectAllAction, jumpAction;
 
@@ -106,10 +111,6 @@ public class BandsawView extends ViewPart {
         BandsawUtilities.updateTitleBar(null);
 
         viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
-        viewer.setContentProvider(new BandsawViewContentProvider());
-        viewer.setLabelProvider(new BandsawViewLabelProvider());
-        viewer.setSorter(new BandsawViewSorter());
-        viewer.setInput(getViewSite());
 
         gridData = new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL);
         gridData.horizontalSpan = 3;
@@ -130,10 +131,42 @@ public class BandsawView extends ViewPart {
                 ColumnList.deSerialize(
                     store.getString(Log4jColumnsPreferencePage.P_COLUMNS)));
 
-        // Create ColumnList.COL_COUNT columns
+        ColumnList list = ColumnList.getInstance();
+        Iterator<Integer> iter = list.getList();
         for (int i = 0; i < ColumnList.getInstance().getColumnCount(); i++) {
-            new TableColumn(table, SWT.NONE);
+
+            int val = (iter.next()).intValue();
+
+            final int index = i;
+            final TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
+            final TableColumn column = viewerColumn.getColumn();
+
+            column.setText(BandsawUtilities.getLabelText(val));
+            column.setResizable(true);
+            column.setMoveable(true);
+            column.setWidth(100);
+            column.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    ((BandsawViewSorter) viewer.getSorter()).setColumn(index);
+                    int dir = viewer.getTable().getSortDirection();
+                    if (viewer.getTable().getSortColumn() == column) {
+                        dir = dir == SWT.UP ? SWT.DOWN : SWT.UP;
+                    } else {
+                        dir = SWT.DOWN;
+                    }
+                    viewer.getTable().setSortDirection(dir);
+                    viewer.getTable().setSortColumn(column);
+                    viewer.refresh();
+                }
+            });
         }
+
+        viewer.setContentProvider(new BandsawViewContentProvider());
+        viewer.setLabelProvider(new BandsawViewLabelProvider());
+        tableSorter = new BandsawViewSorter();
+        viewer.setSorter(tableSorter);
+        viewer.setInput(BandsawViewModelProvider.getInstance().getEvents());
 
         getSite().getPage().addPartListener(new LifecycleListener());
 
@@ -145,7 +178,7 @@ public class BandsawView extends ViewPart {
         createContextMenu();
         hookGlobalActions();
 
-        BandsawUtilities.updateTableColumns();
+ //       BandsawUtilities.updateTableColumns();
 
         BandsawUtilities.initColorDefaults();
 
@@ -153,7 +186,7 @@ public class BandsawView extends ViewPart {
 
         BandsawUtilities.updateColors();
 
-        BandsawUtilities.updateTableColumnWidths();
+//        BandsawUtilities.updateTableColumnWidths();
 
         BandsawUtilities.setViewTitle(table.getParent().getShell().getText());
 

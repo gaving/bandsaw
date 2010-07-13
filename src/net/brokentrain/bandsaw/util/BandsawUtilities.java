@@ -20,6 +20,7 @@ import net.brokentrain.bandsaw.log4j.Log4jThrowable;
 import net.brokentrain.bandsaw.log4j.LogSet;
 import net.brokentrain.bandsaw.preferences.ColorPreferencePage;
 import net.brokentrain.bandsaw.views.BandsawView;
+import net.brokentrain.bandsaw.views.BandsawViewModelProvider;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
@@ -292,8 +293,7 @@ public class BandsawUtilities {
      * @param message
      */
     public static void showMessage(String message) {
-        MessageDialog.openInformation(getTable().getParent().getShell(),
-                "Bandsaw", message + "...");
+        MessageDialog.openInformation(getTable().getParent().getShell(), "Bandsaw", message + "...");
     }
 
     /**
@@ -522,18 +522,9 @@ public class BandsawUtilities {
      * @param le
      */
     public static void addTableItem(LoggingEvent le) {
-        //TableItem tableItem = createTableItem(0);
-
-        //tableItem.setImage(0, PaintUtil.getIcon(le.getLevel().toInt()));
-        //tableItem.setForeground(BandsawUtilities.getColor(le.getLevel()));
-
-        //for (int i = 0; i < getTable().getColumnCount(); i++) {
-            //tableItem.setText(i, getColumnText(le, i));
-        //}
-
-        //table.setSelection(0);
-
-        getViewer().add(le);
+        BandsawViewModelProvider persons = BandsawViewModelProvider.getInstance();
+        persons.getEvents().add(le);
+        getViewer().refresh();
     }
 
     public static void updateTitleBar(String filterText) {
