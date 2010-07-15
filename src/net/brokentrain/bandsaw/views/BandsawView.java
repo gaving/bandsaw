@@ -5,7 +5,6 @@ import java.util.Iterator;
 import net.brokentrain.bandsaw.Bandsaw;
 import net.brokentrain.bandsaw.actions.CopyAction;
 import net.brokentrain.bandsaw.actions.JumpAction;
-import net.brokentrain.bandsaw.actions.QuickFilterAction;
 import net.brokentrain.bandsaw.actions.ShowDetailAction;
 import net.brokentrain.bandsaw.listeners.IMouseListener;
 import net.brokentrain.bandsaw.listeners.LifecycleListener;
@@ -28,18 +27,20 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewSite;
@@ -55,10 +56,7 @@ public class BandsawView extends ViewPart {
 
     private TableViewer viewer;
     private GridData gridData;
-    private Label filterBaseLabel;
-    private Label filterLabel;
-
-    private BandsawViewSorter tableSorter;
+    private Composite labelArea;
 
     Action viewItemAction, copyItemAction, deleteItemAction, selectAllAction, jumpAction;
 
@@ -78,37 +76,25 @@ public class BandsawView extends ViewPart {
         GridLayout layout = new GridLayout(2, false);
         parent.setLayout(layout);
 
-        Composite labelArea = new Composite(parent, SWT.NONE);
+        labelArea = new Composite(parent, SWT.NONE);
         gridData = new GridData(GridData.FILL_HORIZONTAL);
-        gridData.exclude = false;
+        gridData.exclude = true;
         labelArea.setLayout(new GridLayout(2, false));
         labelArea.setLayoutData(gridData);
+        labelArea.setVisible(false);
 
-        filterBaseLabel = new Label(labelArea,SWT.NONE);
-        filterBaseLabel.setText("Quick Filter: ");
-        gridData = new GridData();
-        filterBaseLabel.setLayoutData(gridData);
-
-        filterLabel = new Label(labelArea,SWT.NONE);
-        gridData = new GridData(GridData.FILL_HORIZONTAL);
-        filterLabel.setLayoutData(gridData);
-
-        filterLabel.addMouseListener(new MouseListener() {
-            public void mouseDoubleClick(MouseEvent e) {
-                new QuickFilterAction().run(null);
-            }
-
-            public void mouseDown(MouseEvent e) {
-                // TODO Auto-generated method stub
-
-            }
-
-            public void mouseUp(MouseEvent e) {
-                // TODO Auto-generated method stub
+        final Text searchText = new Text(labelArea, SWT.BORDER | SWT.SEARCH | SWT.CANCEL | SWT.ICON_CANCEL | SWT.ICON_SEARCH);
+        // searchText.setText("type filter text");
+        searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+        searchText.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent ke) {
+                ViewerFilter[] filters = viewer.getFilters();
+                for (ViewerFilter filter : filters) {
+                    ((BandsawViewFilter) filter).setSearchText(searchText.getText());
+                }
+                viewer.refresh();
             }
         });
-
-        BandsawUtilities.updateTitleBar(null);
 
         viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 
@@ -164,8 +150,12 @@ public class BandsawView extends ViewPart {
 
         viewer.setContentProvider(new BandsawViewContentProvider());
         viewer.setLabelProvider(new BandsawViewLabelProvider());
-        tableSorter = new BandsawViewSorter();
-        viewer.setSorter(tableSorter);
+        viewer.setSorter(new BandsawViewSorter());
+        viewer.addFilter(new BandsawViewFilter());
+
+        labelArea.pack();
+        parent.pack();
+
         viewer.setInput(BandsawViewModelProvider.getInstance().getEvents());
 
         getSite().getPage().addPartListener(new LifecycleListener());
@@ -323,31 +313,17 @@ public class BandsawView extends ViewPart {
         }
     }
 
+    public void toggleFilter() {
+        labelArea.setVisible(!labelArea.isVisible());
+        ((GridData) labelArea.getLayoutData()).exclude = !labelArea.isVisible();
+        labelArea.getParent().layout();
+    }
+
     /* (non-Javadoc)
      * @see org.eclipse.ui.IViewPart#init(org.eclipse.ui.IViewSite)
      */
     public void init(IViewSite site) throws PartInitException {
         super.init(site);
         BandsawUtilities.setSite(site);
-    }
-
-    /**
-     * @param filterLabel The filterLabel to set.
-     */
-    public void updateFilterLabel(String text) {
-        GridData labelData = (GridData) this.filterBaseLabel.getParent().getLayoutData();
-        if (text == null || text.equals("")) {
-            labelData.exclude = true;
-            this.filterBaseLabel.setVisible(false);
-            this.filterLabel.setVisible(false);
-            this.filterLabel.getParent().setVisible(false);
-        } else {
-            labelData.exclude = false;
-            this.filterBaseLabel.setVisible(true);
-            this.filterLabel.setVisible(true);
-            this.filterLabel.setText(text);
-            this.filterLabel.getParent().setVisible(true);
-        }
-        this.filterBaseLabel.getParent().getParent().layout();
     }
 }

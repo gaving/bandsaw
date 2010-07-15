@@ -1,25 +1,30 @@
 Bandsaw TODO list
 =================
 
-0.2+
+0.3+
 ----
 
 - [_] Integrate checkstyle into the ant task
 - [_] Javadoc and lots of formatting updates
-- [_] Improve the filter dialog (check out error logs filters)
 - [_] Optionally allow the log to be stored somewhere
-- [_] Allow sorting of the columns
-- [_] Type-as-you-filter filter box for filtering table. filterprovider
-- [_] Use the new preference handling stuff
-- [_] Let the colors be background colors
-- [x] Jump to file and line when log items have location info
-- [!] Remove socket hub appender stuff
-- [_] Tidy up the dialogs, make them a bit nicer with jface
+- [_] Persist logs after close
 - [_] Display ip address in prefs
+- [_] Tidy up dialogs
+
+0.2
+---
+
+- [_] Allow sorting of the columns
+- [_] Allow filtering of the columns (type as you filter box)
+- [_] Improve the filter dialog (check out error logs filters)
+- [_] Use the new preference handling stuff
+- [_] Let the colors be background colors too (pastel gradients, bold?)
+- [x] Jump to file and line when log items have location info
+- [!] Remove socket hub appender stuff completely
 - [_] Turn pause into a lock scroll bar action
 - [_] Show rendered text as marker tooltip (window to expand with f2)
 - [x] Tidy up menu items
-- [_] Persist message after close
+- [_] Notifications?
 
 0.1
 ---

@@ -527,10 +527,6 @@ public class BandsawUtilities {
         getViewer().refresh();
     }
 
-    public static void updateTitleBar(String filterText) {
-        BandsawUtilities.getView().updateFilterLabel(filterText);
-    }
-
     public static int getServerType() {
         return mServerType;
     }
