@@ -25,7 +25,8 @@ public class CopyAction extends Action {
     @Override
     public void run() {
         @SuppressWarnings("rawtypes")
-            List leList = ((IStructuredSelection)BandsawUtilities.getViewer().getSelection()).toList();
+        List leList = ((IStructuredSelection) BandsawUtilities.getViewer()
+                .getSelection()).toList();
 
         if (leList.isEmpty()) {
             return;
@@ -33,15 +34,20 @@ public class CopyAction extends Action {
 
         String renderedMessage = "";
 
-        Clipboard clipboard = new Clipboard(BandsawUtilities.getViewer().getControl().getDisplay());
+        Clipboard clipboard = new Clipboard(BandsawUtilities.getViewer()
+                .getControl().getDisplay());
         for (Object obj : leList) {
             LoggingEvent le = (LoggingEvent) obj;
             renderedMessage += le.getRenderedMessage();
-            clipboard.setContents(new Object[] { renderedMessage }, new Transfer[] { TextTransfer.getInstance() });
+            clipboard.setContents(new Object[] { renderedMessage },
+                    new Transfer[] { TextTransfer.getInstance() });
         }
 
-        IActionBars bars = ((IViewSite)BandsawUtilities.getViewer().getInput()).getActionBars();
-        bars.getStatusLineManager().setMessage("Copied " + renderedMessage.length() + " characters to clipboard");
+        IActionBars bars = ((IViewSite) BandsawUtilities.getViewer().getInput())
+                .getActionBars();
+        bars.getStatusLineManager().setMessage(
+                "Copied " + renderedMessage.length()
+                        + " characters to clipboard");
         clipboard.dispose();
     }
 }

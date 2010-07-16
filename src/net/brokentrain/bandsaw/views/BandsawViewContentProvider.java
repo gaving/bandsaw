@@ -8,16 +8,16 @@ import org.eclipse.jface.viewers.Viewer;
 
 public class BandsawViewContentProvider implements IStructuredContentProvider {
 
-    public void inputChanged(final Viewer v, final Object oldInput, final Object newInput) {
+    public void inputChanged(final Viewer v, final Object oldInput,
+            final Object newInput) {
     }
 
     public void dispose() {
     }
 
-    public Object[] getElements(Object inputElement) {
+    public final Object[] getElements(final Object inputElement) {
         @SuppressWarnings("unchecked")
         List<LoggingEvent> events = (List<LoggingEvent>) inputElement;
         return events.toArray();
     }
 }
-

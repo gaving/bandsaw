@@ -42,10 +42,10 @@
     <extension id="net.brokentrain.bandsaw.viewactions" point="org.eclipse.ui.viewActions">
         <viewContribution targetID="net.brokentrain.bandsaw.views.BandsawView"
             id="Bandsaw.ViewContribution">
-            <action style="toggle" id="Bandsaw.PauseAction" toolbarPath="Group1"
-                class="net.brokentrain.bandsaw.actions.PauseAction" enablesFor="*"
-                icon="icons/pause.png" label="Pause Display"
-                menubarPath="Bandsaw.DisplayMenu/Bandsaw.DisplayGroup1" tooltip="&amp;Pause">
+            <action style="toggle" id="Bandsaw.LockAction" toolbarPath="Group1"
+                class="net.brokentrain.bandsaw.actions.LockAction" enablesFor="*"
+                icon="platform:/plugin/org.eclipse.ui.console/icons/full/elcl16/lock_co.gif" label="Lock Table"
+                menubarPath="Bandsaw.DisplayMenu/Bandsaw.DisplayGroup1" tooltip="&amp;Lock Table">
             </action>
             <action style="push" id="Bandsaw.ClearAction" toolbarPath="Group1"
                 class="net.brokentrain.bandsaw.actions.ClearAction" enablesFor="*"
@@ -56,13 +56,13 @@
                 class="net.brokentrain.bandsaw.actions.StopAction" enablesFor="*"
                 icon="icons/stop.png" label="S&amp;top Server"
                 menubarPath="Bandsaw.Log4jServerMenu/Bandsaw.Log4jServerGroup1"
-                tooltip="S&amp;top  Server">
+                tooltip="S&amp;top Server">
             </action>
             <action style="push" id="Bandsaw.StartAction" toolbarPath="Group2"
                 class="net.brokentrain.bandsaw.actions.StartAction" enablesFor="*"
-                icon="icons/start.png" label="&amp;Start Log4j Server"
+                icon="icons/start.png" label="&amp;Start Server"
                 menubarPath="Bandsaw.Log4jServerMenu/Bandsaw.Log4jServerGroup1"
-                tooltip="&amp;Start Log4j Server">
+                tooltip="&amp;Start Server">
             </action>
             <action style="toggle" id="Bandsaw.ShowFilter"
                 class="net.brokentrain.bandsaw.actions.ShowFilterActionDelegate" enablesFor="*"

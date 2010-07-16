@@ -29,15 +29,16 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 
 public class JumpAction extends Action {
 
-    public JumpAction(String label) {
+    public JumpAction(final String label) {
         super(label);
     }
 
     @Override
-    public void run() {
+    public final void run() {
 
         @SuppressWarnings("rawtypes")
-            List leList = ((IStructuredSelection)BandsawUtilities.getViewer().getSelection()).toList();
+        List leList = ((IStructuredSelection) BandsawUtilities.getViewer()
+                .getSelection()).toList();
 
         if (leList.isEmpty()) {
             return;
@@ -50,7 +51,7 @@ public class JumpAction extends Action {
 
                 LocationInfo locationInfo = le.getLocationInformation();
 
-                //String className = locationInfo.getClassName();
+                // String className = locationInfo.getClassName();
                 String fileName = locationInfo.getFileName();
                 String lineNumber = locationInfo.getLineNumber();
                 String message = le.getRenderedMessage();
@@ -72,11 +73,17 @@ public class JumpAction extends Action {
 
                     System.out.println("Handling it like a php file");
 
-                    IResource resource = ResourcesPlugin.getWorkspace().getRoot().getFileForLocation(new Path(fileToOpen.getAbsolutePath()));
-                    ISourceModule model = (ISourceModule) DLTKCore.create((IFile) resource);
+                    IResource resource = ResourcesPlugin
+                            .getWorkspace()
+                            .getRoot()
+                            .getFileForLocation(
+                                    new Path(fileToOpen.getAbsolutePath()));
+                    ISourceModule model = (ISourceModule) DLTKCore
+                            .create((IFile) resource);
                     if (resource == null || !(resource instanceof IFile)) {
 
-                        System.out.println("Can't find the file in the workspace - just open a normal editor");
+                        System.out
+                                .println("Can't find the file in the workspace - just open a normal editor");
                         FileUtil.openFile(fileToOpen);
                         return;
                     }
@@ -85,30 +92,35 @@ public class JumpAction extends Action {
 
                         HashMap<String, Integer> map = new HashMap<String, Integer>();
                         MarkerUtilities.setMessage(map, message);
-                        MarkerUtilities.setLineNumber(map, Integer.valueOf(lineNumber));
-                        MarkerUtilities.createMarker(resource, map, IMarker.BOOKMARK);
+                        MarkerUtilities.setLineNumber(map,
+                                Integer.valueOf(lineNumber));
+                        MarkerUtilities.createMarker(resource, map,
+                                IMarker.BOOKMARK);
 
                         /* Set a marker with the text mouse overed! */
 
-                        ModuleDeclaration moduleDeclaration = SourceParserUtil.getModuleDeclaration(model, null);
+                        ModuleDeclaration moduleDeclaration = SourceParserUtil
+                                .getModuleDeclaration(model, null);
                         moduleDeclaration.traverse(new ASTVisitor() {
 
                             @Override
-                            public boolean visit(Expression s) throws Exception {
+                            public boolean visit(final Expression s) throws Exception {
                                 System.out.println(s.toString());
                                 return super.visit(s);
                             }
 
                             @Override
-                            public boolean visit(Statement s) throws Exception {
+                            public boolean visit(final Statement s) throws Exception {
                                 System.out.println(s.toString());
                                 return super.visit(s);
                             };
                         });
 
                         /* Jump to class or method, parse that ast tree? */
-                        IEditorPart editor = DLTKUIPlugin.openInEditor(model, true, true);
-                        FileUtil.selectEclipseEditorRegion(editor, Integer.valueOf(lineNumber), 0, 0);
+                        IEditorPart editor = DLTKUIPlugin.openInEditor(model,
+                                true, true);
+                        FileUtil.selectEclipseEditorRegion(editor,
+                                Integer.valueOf(lineNumber), 0, 0);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -123,56 +135,38 @@ public class JumpAction extends Action {
     }
 
     /*
-     *     private void openTypes() {
-     *         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-     *         root.getProject
-     *
-     *             Shell parent = DLTKUIPlugin.getActiveWorkbenchShell();
-     *         OpenTypeSelectionDialog2 dialog = new OpenTypeSelectionDialog2(parent,
-     *                 true, PlatformUI.getWorkbench().getProgressService(), null,
-     *                 IDLTKSearchConstants.TYPE, PHPUILanguageToolkit.getInstance());
-     *         dialog.setTitle("what");
-     *         dialog.setMessage("yeah");
-     *
-     *         int result = dialog.open();
-     *         if (result != IDialogConstants.OK_ID)
-     *             return;
-     *
-     *         PHPUILanguageToolkit.getInstance().g
-     *
-     *             OpenTypeHistory history = OpenTypeHistory.getInstance(PHPUILanguageToolkit.getInstance());
-     *         List result = new ArrayList(selected.length);
-     *         for (int i = 0; i < selected.length; i++) {
-     *             TypeNameMatch typeInfo = selected[i];
-     *             IType type = typeInfo.getType();
-     *             if (!type.exists()) {
-     *                 ISourceModule module = type.getSourceModule();
-     *                 if (module.exists()) {
-     *                     result.add(module);
-     *                 } else {
-     *                     String title = DLTKUIMessages.TypeSelectionDialog_errorTitle;
-     *                     IProjectFragment root = typeInfo.getProjectFragment();
-     *                     ScriptElementLabels labels = this.fToolkit
-     *                         .getScriptElementLabels();
-     *                     String containerName = labels.getElementLabel(root,
-     *                             ScriptElementLabels.ROOT_QUALIFIED);
-     *                     String message = Messages.format(
-     *                             DLTKUIMessages.TypeSelectionDialog_dialogMessage,
-     *                             new String[] { typeInfo.getFullyQualifiedName(),
-     *                                 containerName });
-     *                     MessageDialog.openError(getShell(), title, message);
-     *                     history.remove(typeInfo);
-     *                     setResult(null);
-     *                 }
-     *             } else {
-     *                 history.accessed(typeInfo);
-     *                 result.add(type);
-     *             }
-     *         }
-     *
-     *         type = (IModelElement) types[i];
-     *         DLTKUIPlugin.openInEditor(type, true, true);
-     *     }
+     * private void openTypes() { IWorkspaceRoot root =
+     * ResourcesPlugin.getWorkspace().getRoot(); root.getProject
+     * 
+     * Shell parent = DLTKUIPlugin.getActiveWorkbenchShell();
+     * OpenTypeSelectionDialog2 dialog = new OpenTypeSelectionDialog2(parent,
+     * true, PlatformUI.getWorkbench().getProgressService(), null,
+     * IDLTKSearchConstants.TYPE, PHPUILanguageToolkit.getInstance());
+     * dialog.setTitle("what"); dialog.setMessage("yeah");
+     * 
+     * int result = dialog.open(); if (result != IDialogConstants.OK_ID) return;
+     * 
+     * PHPUILanguageToolkit.getInstance().g
+     * 
+     * OpenTypeHistory history =
+     * OpenTypeHistory.getInstance(PHPUILanguageToolkit.getInstance()); List
+     * result = new ArrayList(selected.length); for (int i = 0; i <
+     * selected.length; i++) { TypeNameMatch typeInfo = selected[i]; IType type
+     * = typeInfo.getType(); if (!type.exists()) { ISourceModule module =
+     * type.getSourceModule(); if (module.exists()) { result.add(module); } else
+     * { String title = DLTKUIMessages.TypeSelectionDialog_errorTitle;
+     * IProjectFragment root = typeInfo.getProjectFragment();
+     * ScriptElementLabels labels = this.fToolkit .getScriptElementLabels();
+     * String containerName = labels.getElementLabel(root,
+     * ScriptElementLabels.ROOT_QUALIFIED); String message = Messages.format(
+     * DLTKUIMessages.TypeSelectionDialog_dialogMessage, new String[] {
+     * typeInfo.getFullyQualifiedName(), containerName });
+     * MessageDialog.openError(getShell(), title, message);
+     * history.remove(typeInfo); setResult(null); } } else {
+     * history.accessed(typeInfo); result.add(type); } }
+     * 
+     * type = (IModelElement) types[i]; DLTKUIPlugin.openInEditor(type, true,
+     * true); }
      */
 
 }

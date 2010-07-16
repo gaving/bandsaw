@@ -35,10 +35,8 @@ public class ColumnList {
     }
 
     public String getText(int col, LoggingEvent le) {
-        return BandsawUtilities.handleNull(
-                BandsawUtilities
-                .Log4jItemFactory((columns.get(col)).intValue(), le)
-                .getText());
+        return BandsawUtilities.handleNull(BandsawUtilities.Log4jItemFactory(
+                (columns.get(col)).intValue(), le).getText());
     }
 
     public void add(int col) {
@@ -79,7 +77,7 @@ public class ColumnList {
         return (columns.get(index)).intValue();
     }
 
-    //TODO: Make this thread safe
+    // TODO: Make this thread safe
     public int[] getCols() {
         int size = getColumnCount();
         int[] list = new int[size];
@@ -90,8 +88,8 @@ public class ColumnList {
     }
 
     public static int[] deSerialize(String object) {
-        StringTokenizer st =
-            new StringTokenizer(object, Character.toString(delimiter));
+        StringTokenizer st = new StringTokenizer(object,
+                Character.toString(delimiter));
         int size = st.countTokens();
         int[] j = new int[size];
         int i = 0;
@@ -102,10 +100,10 @@ public class ColumnList {
         }
         return j;
     }
-    
+
     public static String[] strdeSerialize(String object) {
-        StringTokenizer st =
-            new StringTokenizer(object, Character.toString(delimiter));
+        StringTokenizer st = new StringTokenizer(object,
+                Character.toString(delimiter));
         int size = st.countTokens();
         String[] j = new String[size];
         int i = 0;

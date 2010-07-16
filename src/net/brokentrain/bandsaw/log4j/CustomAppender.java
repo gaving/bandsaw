@@ -19,7 +19,8 @@ public class CustomAppender extends AppenderSkeleton {
      * Constructor with default values.
      */
     public CustomAppender() {
-        setLayout(new PatternLayout("%-27d{dd/MMM/yyyy HH:mm:ss Z}%n%n%-5p%n%n%c%n%n%m%n%n"));
+        setLayout(new PatternLayout(
+                "%-27d{dd/MMM/yyyy HH:mm:ss Z}%n%n%-5p%n%n%c%n%n%m%n%n"));
     }
 
     /**
@@ -32,6 +33,7 @@ public class CustomAppender extends AppenderSkeleton {
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.apache.log4j.AppenderSkeleton#close()
      */
     public synchronized void close() {
@@ -40,6 +42,7 @@ public class CustomAppender extends AppenderSkeleton {
 
     /**
      * {@inheritDoc}
+     * 
      * @see org.apache.log4j.AppenderSkeleton#requiresLayout()
      */
     public boolean requiresLayout() {

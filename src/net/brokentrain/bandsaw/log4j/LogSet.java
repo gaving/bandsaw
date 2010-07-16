@@ -1,10 +1,9 @@
 package net.brokentrain.bandsaw.log4j;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Vector;
 
-import net.brokentrain.bandsaw.actions.PauseAction;
+import net.brokentrain.bandsaw.actions.LockAction;
 import net.brokentrain.bandsaw.util.BandsawUtilities;
 
 import org.apache.log4j.spi.LoggingEvent;
@@ -33,22 +32,20 @@ public class LogSet {
 
     /**
      * Add a log4j event to the set and alert listeners
+     * 
      * @param le
      */
     public void addLoggingEvent(LoggingEvent le) {
-        mAllLogs.add(le); // add to entire set regardless of filters
         if (getFilterset().isValidForShow(le)) {
-            if (BandsawUtilities.isShowing() && !PauseAction.isPaused()) {
+            if (BandsawUtilities.isShowing()) {
                 BandsawUtilities.addTableItem(le);
-                mShowingLogs.insertElementAt(le, 0);
-            } else if (PauseAction.isPaused()) {
-                mHiddenLogs.insertElementAt(le, 0);
             }
         }
     }
 
     /**
      * Returns the filterset.
+     * 
      * @return FilterSet
      */
     public FilterSet getFilterset() {
@@ -57,7 +54,9 @@ public class LogSet {
 
     /**
      * Sets the filterset.
-     * @param filterset The filterset to set
+     * 
+     * @param filterset
+     *            The filterset to set
      */
     public void setFilterset(FilterSet filterset) {
         this.mFilterset = filterset;
@@ -76,7 +75,7 @@ public class LogSet {
     public Collection<LoggingEvent> getValidLogs() {
         Vector<LoggingEvent> rSet = new Vector<LoggingEvent>();
 
-        if (!PauseAction.isPaused()) {
+        if (!LockAction.isLocked()) {
             rSet.addAll(mHiddenLogs);
         }
         rSet.addAll(mShowingLogs);
@@ -87,18 +86,4 @@ public class LogSet {
     public int getValidLogCount() {
         return mShowingLogs.size();
     }
-
-    public void revalidateAll() {
-        mShowingLogs.clear();
-        mHiddenLogs.clear();
-        Iterator<LoggingEvent> allLogs = mAllLogs.iterator();
-        LoggingEvent thisEvent;
-        while (allLogs.hasNext()) {
-            thisEvent = allLogs.next();
-            if (getFilterset().isValidForShow(thisEvent)) {
-                mShowingLogs.insertElementAt(thisEvent, 0);
-            }
-        }
-    }
-
 }

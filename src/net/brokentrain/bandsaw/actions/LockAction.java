@@ -1,23 +1,23 @@
 package net.brokentrain.bandsaw.actions;
 
-import net.brokentrain.bandsaw.log4j.Log4jServer;
-import net.brokentrain.bandsaw.util.BandsawUtilities;
-
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
 /**
- * TODO: Provide description for "StartAction".
+ * TODO: Provide description for "LockAction".
  * 
  * @see IViewActionDelegate
  */
-public class StartAction implements IViewActionDelegate {
+public class LockAction implements IViewActionDelegate {
+
+    public static boolean sLocked;
+
     /**
-     * TODO: Implement the "StartAction" constructor.
+     * TODO: Implement the "LockAction" constructor.
      */
-    public StartAction() {
+    public LockAction() {
     }
 
     /**
@@ -26,12 +26,7 @@ public class StartAction implements IViewActionDelegate {
      * @see IViewActionDelegate#run
      */
     public void run(IAction action) {
-        boolean success = Log4jServer.startListener();
-        if (success) {
-            action.setEnabled(false);
-        } else {
-            BandsawUtilities.showMessage("Could not start Log4j");
-        }
+        setLocked(!isLocked());
     }
 
     /**
@@ -48,5 +43,19 @@ public class StartAction implements IViewActionDelegate {
      * @see IViewActionDelegate#init
      */
     public void init(IViewPart view) {
+    }
+
+    /**
+     * @return
+     */
+    public static boolean isLocked() {
+        return sLocked;
+    }
+
+    /**
+     * @param aB
+     */
+    public static void setLocked(boolean aB) {
+        sLocked = aB;
     }
 }

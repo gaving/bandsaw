@@ -5,7 +5,7 @@ import org.eclipse.swt.widgets.List;
 
 public class FilterList extends List {
 
-    public FilterList (Composite parent, int style) {
+    public FilterList(Composite parent, int style) {
         super(parent, style);
     }
 
@@ -14,7 +14,7 @@ public class FilterList extends List {
      */
     public void setItems(Filter[] items) {
         String[] rval = new String[items.length];
-        for (int i=0; i<items.length; i++) {
+        for (int i = 0; i < items.length; i++) {
             rval[i] = items[i].toString();
         }
         super.setItems(rval);

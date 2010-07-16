@@ -14,7 +14,7 @@ public class Log4jThrowable implements Log4jItem {
      * @see net.brokentrain.bandsaw.log4j.Log4jItem#getText()
      */
     public String getText() {
-        if ( le.getThrowableInformation() != null ) {
+        if (le.getThrowableInformation() != null) {
             return "X"; // TODO: use image instead
         } else {
             return "";

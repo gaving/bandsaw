@@ -89,9 +89,8 @@ public class FileUtil extends SimpleFileUtil {
 
             in.close();
         } catch (IOException ioe) {
-        	Bandsaw.log
-                    .error("An error occurred processing the input stream!",
-                            ioe);
+            Bandsaw.log.error("An error occurred processing the input stream!",
+                    ioe);
             return "";
         }
 
@@ -196,7 +195,7 @@ public class FileUtil extends SimpleFileUtil {
         try {
             new File(path).mkdir();
         } catch (Exception e) {
-        	Bandsaw.log.error("Couldn't create directory!", e);
+            Bandsaw.log.error("Couldn't create directory!", e);
         }
     }
 
@@ -208,16 +207,18 @@ public class FileUtil extends SimpleFileUtil {
             Bandsaw.log.error("Couldn't write to file!", ioe);
         }
     }
-    
+
     public static void openFile(File fileToOpen) {
 
-        IFileStore fileStore = EFS.getLocalFileSystem().getStore(fileToOpen.toURI());
-        IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        IFileStore fileStore = EFS.getLocalFileSystem().getStore(
+                fileToOpen.toURI());
+        IWorkbenchPage page = PlatformUI.getWorkbench()
+                .getActiveWorkbenchWindow().getActivePage();
 
         try {
-            IDE.openEditorOnFileStore( page, fileStore );
-        } catch ( PartInitException e ) {
-            //Put your exception handler here if you wish to
+            IDE.openEditorOnFileStore(page, fileStore);
+        } catch (PartInitException e) {
+            // Put your exception handler here if you wish to
         }
     }
 
@@ -234,7 +235,7 @@ public class FileUtil extends SimpleFileUtil {
                 x = ois.readObject();
                 fis.close();
             } catch (Exception e) {
-            	Bandsaw.log.error("Failed to read incoming object!", e);
+                Bandsaw.log.error("Failed to read incoming object!", e);
                 return null;
             }
 
@@ -242,13 +243,11 @@ public class FileUtil extends SimpleFileUtil {
         }
         return null;
     }
-    
-    public static void selectEclipseEditorRegion(IEditorPart editorPart, int line, int colStart, int colEnd)
-    {
-        if (line >= 0 && editorPart instanceof ITextEditor)
-        {
-            try
-            {
+
+    public static void selectEclipseEditorRegion(IEditorPart editorPart,
+            int line, int colStart, int colEnd) {
+        if (line >= 0 && editorPart instanceof ITextEditor) {
+            try {
                 ITextEditor textEditor = (ITextEditor) editorPart;
                 IEditorInput input = editorPart.getEditorInput();
                 IDocumentProvider provider = textEditor.getDocumentProvider();
@@ -260,10 +259,8 @@ public class FileUtil extends SimpleFileUtil {
                 int fileOffset = document.getLineOffset(lineNum - 1);
                 int fileLength = document.getLineLength(lineNum - 1);
                 provider.disconnect(input);
-                if (fileOffset >= 0 && fileLength >= 0)
-                {
-                    if (colStart >= 0)
-                    {
+                if (fileOffset >= 0 && fileLength >= 0) {
+                    if (colStart >= 0) {
                         int start = -1, end = -1;
                         start = colStart == 0 ? 1 : colStart;
                         end = colEnd == 0 ? 1 : colEnd;
@@ -271,25 +268,20 @@ public class FileUtil extends SimpleFileUtil {
                         end = Math.min(end, fileLength - 1);
 
                         fileOffset += start - 1;
-                        if (colEnd >= 0 && colEnd > colStart)
-                        {
+                        if (colEnd >= 0 && colEnd > colStart) {
                             fileLength = end - start;
-                        }
-                        else
-                        {
+                        } else {
                             fileLength = 0;
                         }
                     }
                     textEditor.selectAndReveal(fileOffset, fileLength);
                 }
-            }
-            catch (Exception e)
-            {
-                System.out.println("Unable to select line/column in editor: " + editorPart.getTitle());
+            } catch (Exception e) {
+                System.out.println("Unable to select line/column in editor: "
+                        + editorPart.getTitle());
             }
         }
     }
-    
 
     public static boolean writeObject(Object object, File path) {
 
@@ -300,7 +292,7 @@ public class FileUtil extends SimpleFileUtil {
             oos.flush();
             fos.close();
         } catch (Exception e) {
-        	Bandsaw.log.error("Failed to write outgoing object!", e);
+            Bandsaw.log.error("Failed to write outgoing object!", e);
             return false;
         }
 

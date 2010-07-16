@@ -27,8 +27,7 @@ public class Log4jEventDialog extends Dialog {
     /**
      * @param parentShell
      */
-    public Log4jEventDialog(Shell parentShell, LoggingEvent le)
-    {
+    public Log4jEventDialog(Shell parentShell, LoggingEvent le) {
         super(parentShell);
         setShellStyle(SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL | SWT.RESIZE);
         setLoggingEvent(le);
@@ -38,8 +37,7 @@ public class Log4jEventDialog extends Dialog {
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
     @Override
-    public Control createDialogArea(Composite parent)
-    {
+    public Control createDialogArea(Composite parent) {
         GridData gData;
         Label label;
         Text text;
@@ -57,10 +55,8 @@ public class Log4jEventDialog extends Dialog {
 
         label = new Label(topDataComposite, SWT.NONE);
         label.setText("Severity: ");
-        label.setForeground(
-                new Color(
-                    BandsawUtilities.getTable().getDisplay(),
-                    new RGB(0, 0, 255)));
+        label.setForeground(new Color(BandsawUtilities.getTable().getDisplay(),
+                new RGB(0, 0, 255)));
         gData = new GridData();
         gData.horizontalSpan = 1;
         label.setLayoutData(gData);
@@ -73,10 +69,8 @@ public class Log4jEventDialog extends Dialog {
 
         label = new Label(topDataComposite, SWT.NONE);
         label.setText("Category: ");
-        label.setForeground(
-                new Color(
-                    BandsawUtilities.getTable().getDisplay(),
-                    new RGB(0, 0, 255)));
+        label.setForeground(new Color(BandsawUtilities.getTable().getDisplay(),
+                new RGB(0, 0, 255)));
         gData = new GridData();
         gData.horizontalSpan = 1;
         label.setLayoutData(gData);
@@ -87,19 +81,16 @@ public class Log4jEventDialog extends Dialog {
         gData.horizontalSpan = 2;
         label.setLayoutData(gData);
 
-        if (getLoggingEvent().getLocationInformation() != null)
-        {
+        if (getLoggingEvent().getLocationInformation() != null) {
             label = new Label(topDataComposite, SWT.NONE);
             label.setText("Location Information");
-            label.setForeground(
-                    new Color(
-                        BandsawUtilities.getTable().getDisplay(),
-                        new RGB(255, 0, 0)));
+            label.setForeground(new Color(BandsawUtilities.getTable()
+                    .getDisplay(), new RGB(255, 0, 0)));
             gData = new GridData();
             gData.horizontalSpan = 3;
             label.setLayoutData(gData);
 
-            //          empty space
+            // empty space
             label = new Label(topDataComposite, SWT.NONE);
             label.setText("      ");
             gData = new GridData();
@@ -108,17 +99,15 @@ public class Log4jEventDialog extends Dialog {
 
             label = new Label(topDataComposite, SWT.NONE);
             label.setText("File Name: ");
-            label.setForeground(
-                    new Color(
-                        BandsawUtilities.getTable().getDisplay(),
-                        new RGB(0, 0, 255)));
+            label.setForeground(new Color(BandsawUtilities.getTable()
+                    .getDisplay(), new RGB(0, 0, 255)));
             gData = new GridData();
             gData.horizontalSpan = 1;
             label.setLayoutData(gData);
 
             label = new Label(topDataComposite, SWT.NONE);
-            label.setText(
-                    getLoggingEvent().getLocationInformation().getFileName());
+            label.setText(getLoggingEvent().getLocationInformation()
+                    .getFileName());
             gData = new GridData();
             gData.horizontalSpan = 1;
             label.setLayoutData(gData);
@@ -132,17 +121,15 @@ public class Log4jEventDialog extends Dialog {
 
             label = new Label(topDataComposite, SWT.NONE);
             label.setText("Class Name: ");
-            label.setForeground(
-                    new Color(
-                        BandsawUtilities.getTable().getDisplay(),
-                        new RGB(0, 0, 255)));
+            label.setForeground(new Color(BandsawUtilities.getTable()
+                    .getDisplay(), new RGB(0, 0, 255)));
             gData = new GridData();
             gData.horizontalSpan = 1;
             label.setLayoutData(gData);
 
             label = new Label(topDataComposite, SWT.NONE);
-            label.setText(
-                    getLoggingEvent().getLocationInformation().getClassName());
+            label.setText(getLoggingEvent().getLocationInformation()
+                    .getClassName());
             gData = new GridData();
             gData.horizontalSpan = 1;
             label.setLayoutData(gData);
@@ -156,18 +143,15 @@ public class Log4jEventDialog extends Dialog {
 
             label = new Label(topDataComposite, SWT.NONE);
             label.setText("Method: ");
-            label.setForeground(
-                    new Color(
-                        BandsawUtilities.getTable().getDisplay(),
-                        new RGB(0, 0, 255)));
+            label.setForeground(new Color(BandsawUtilities.getTable()
+                    .getDisplay(), new RGB(0, 0, 255)));
             gData = new GridData();
             gData.horizontalSpan = 1;
             label.setLayoutData(gData);
 
             label = new Label(topDataComposite, SWT.NONE);
-            label.setText(
-                    getLoggingEvent().getLocationInformation().getMethodName()
-                    + "()");
+            label.setText(getLoggingEvent().getLocationInformation()
+                    .getMethodName() + "()");
             gData = new GridData();
             gData.horizontalSpan = 1;
             label.setLayoutData(gData);
@@ -181,17 +165,15 @@ public class Log4jEventDialog extends Dialog {
 
             label = new Label(topDataComposite, SWT.NONE);
             label.setText("Line Number: ");
-            label.setForeground(
-                    new Color(
-                        BandsawUtilities.getTable().getDisplay(),
-                        new RGB(0, 0, 255)));
+            label.setForeground(new Color(BandsawUtilities.getTable()
+                    .getDisplay(), new RGB(0, 0, 255)));
             gData = new GridData();
             gData.horizontalSpan = 1;
             label.setLayoutData(gData);
 
             label = new Label(topDataComposite, SWT.NONE);
-            label.setText(
-                    getLoggingEvent().getLocationInformation().getLineNumber());
+            label.setText(getLoggingEvent().getLocationInformation()
+                    .getLineNumber());
             gData = new GridData();
             gData.horizontalSpan = 1;
             label.setLayoutData(gData);
@@ -205,52 +187,42 @@ public class Log4jEventDialog extends Dialog {
 
         label = new Label(renderedMessageComposite, SWT.NONE);
         label.setText("Rendered Message");
-        label.setForeground(
-                new Color(
-                    BandsawUtilities.getTable().getDisplay(),
-                    new RGB(255, 0, 0)));
+        label.setForeground(new Color(BandsawUtilities.getTable().getDisplay(),
+                new RGB(255, 0, 0)));
         gData = new GridData();
         gData.horizontalSpan = 3;
         label.setLayoutData(gData);
 
-        text =
-            new Text(renderedMessageComposite,
-                    SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.H_SCROLL);
+        text = new Text(renderedMessageComposite, SWT.BORDER | SWT.WRAP
+                | SWT.V_SCROLL | SWT.H_SCROLL);
         text.setText(getLoggingEvent().getRenderedMessage());
         text.setEditable(false);
         gData = new GridData(GridData.FILL_BOTH);
         gData.horizontalSpan = 3;
         text.setLayoutData(gData);
 
-        if (getLoggingEvent().getThrowableInformation() != null)
-        {
+        if (getLoggingEvent().getThrowableInformation() != null) {
 
-            Composite throwableMessageComposite = new Composite(sashForm, SWT.BORDER);
+            Composite throwableMessageComposite = new Composite(sashForm,
+                    SWT.BORDER);
             GridLayout throwableMessageCompositeLayout = new GridLayout();
             throwableMessageCompositeLayout.numColumns = 3;
             throwableMessageComposite.setLayout(renderedMessageCompositeLayout);
 
             label = new Label(throwableMessageComposite, SWT.NONE);
             label.setText("Exception");
-            label.setForeground(
-                    new Color(
-                        BandsawUtilities.getTable().getDisplay(),
-                        new RGB(255, 0, 0)));
+            label.setForeground(new Color(BandsawUtilities.getTable()
+                    .getDisplay(), new RGB(255, 0, 0)));
             gData = new GridData();
             gData.horizontalSpan = 3;
             label.setLayoutData(gData);
 
-            text =
-                new Text(
-                        throwableMessageComposite,
-                        SWT.BORDER | SWT.WRAP | SWT.V_SCROLL | SWT.H_SCROLL);
-            String[] stack =
-                getLoggingEvent()
-                .getThrowableInformation()
-                .getThrowableStrRep();
+            text = new Text(throwableMessageComposite, SWT.BORDER | SWT.WRAP
+                    | SWT.V_SCROLL | SWT.H_SCROLL);
+            String[] stack = getLoggingEvent().getThrowableInformation()
+                    .getThrowableStrRep();
             StringBuffer stackString = new StringBuffer();
-            for (int i = 0; i < stack.length; i++)
-            {
+            for (int i = 0; i < stack.length; i++) {
                 stackString.append(stack[i]);
                 stackString.append("\n");
             }
@@ -266,28 +238,23 @@ public class Log4jEventDialog extends Dialog {
 
     /**
      * Get the title for the log4j detail screen
+     * 
      * @param le
      * @return String
      */
-    public static String getTitleText(LoggingEvent le)
-    {
-        if (le.getLocationInformation() != null)
-        {
-            return "["
-                + le.getLevel()
-                + "] "
-                + le.getLoggerName()
-                + "(line #: "
-                + le.getLocationInformation().getLineNumber()
-                + ")";
-        }
-        else
-        {
+    public static String getTitleText(LoggingEvent le) {
+        if (le.getLocationInformation() != null) {
+            return "[" + le.getLevel() + "] " + le.getLoggerName()
+                    + "(line #: " + le.getLocationInformation().getLineNumber()
+                    + ")";
+        } else {
             return "[" + le.getLevel() + "] " + le.getLoggerName();
         }
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.eclipse.jface.window.Window#getInitialSize()
      */
     @Override
@@ -295,12 +262,15 @@ public class Log4jEventDialog extends Dialog {
         return new Point(600, 400);
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets
+     * .Shell)
      */
     @Override
-    protected void configureShell(Shell newShell)
-    {
+    protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
         newShell.setText(getTitleText(getLoggingEvent()));
     }
@@ -308,39 +278,40 @@ public class Log4jEventDialog extends Dialog {
     /**
      * @return
      */
-    public LoggingEvent getLoggingEvent()
-    {
+    public LoggingEvent getLoggingEvent() {
         return mLoggingEvent;
     }
 
     /**
      * @param aEvent
      */
-    public void setLoggingEvent(LoggingEvent aEvent)
-    {
+    public void setLoggingEvent(LoggingEvent aEvent) {
         mLoggingEvent = aEvent;
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse
+     * .swt.widgets.Composite)
      */
     @Override
-    protected void createButtonsForButtonBar(Composite parent)
-    {
-        createButton(
-                parent,
-                IDialogConstants.OK_ID,
-                IDialogConstants.OK_LABEL,
+    protected void createButtonsForButtonBar(Composite parent) {
+        createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL,
                 true);
     }
+
     /**
      * @return Returns the topComposite.
      */
     public Composite getTopComposite() {
         return topComposite;
     }
+
     /**
-     * @param topComposite The topComposite to set.
+     * @param topComposite
+     *            The topComposite to set.
      */
     public void setTopComposite(Composite topComposite) {
         this.topComposite = topComposite;

@@ -11,8 +11,8 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-
-public class ColorPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class ColorPreferencePage extends FieldEditorPreferencePage implements
+        IWorkbenchPreferencePage {
 
     public ColorPreferencePage() {
         super(GRID);
@@ -32,45 +32,35 @@ public class ColorPreferencePage extends FieldEditorPreferencePage implements IW
 
     public static void initializeDefaults() {
         IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
-        PreferenceConverter.setDefault(store, ColorPreferencePage.DEBUG_COLOR_KEY, new RGB(0, 0, 0));
-        PreferenceConverter.setDefault(store, ColorPreferencePage.INFO_COLOR_KEY, new RGB(0, 255, 0));
-        PreferenceConverter.setDefault(store, ColorPreferencePage.WARN_COLOR_KEY, new RGB(255, 128, 0));
-        PreferenceConverter.setDefault(store, ColorPreferencePage.ERROR_COLOR_KEY, new RGB(255, 0, 0));
-        PreferenceConverter.setDefault(store, ColorPreferencePage.FATAL_COLOR_KEY, new RGB(255, 0, 0));
+        PreferenceConverter.setDefault(store,
+                ColorPreferencePage.DEBUG_COLOR_KEY, new RGB(0, 0, 0));
+        PreferenceConverter.setDefault(store,
+                ColorPreferencePage.INFO_COLOR_KEY, new RGB(0, 255, 0));
+        PreferenceConverter.setDefault(store,
+                ColorPreferencePage.WARN_COLOR_KEY, new RGB(255, 128, 0));
+        PreferenceConverter.setDefault(store,
+                ColorPreferencePage.ERROR_COLOR_KEY, new RGB(255, 0, 0));
+        PreferenceConverter.setDefault(store,
+                ColorPreferencePage.FATAL_COLOR_KEY, new RGB(255, 0, 0));
     }
 
     @Override
     public void createFieldEditors() {
 
-        addField(
-                new ColorFieldEditor(
-                    DEBUG_COLOR_KEY,
-                    "Debug",
-                    getFieldEditorParent()));
+        addField(new ColorFieldEditor(DEBUG_COLOR_KEY, "Debug",
+                getFieldEditorParent()));
 
-        addField(
-                new ColorFieldEditor(
-                    INFO_COLOR_KEY,
-                    "Info",
-                    getFieldEditorParent()));
+        addField(new ColorFieldEditor(INFO_COLOR_KEY, "Info",
+                getFieldEditorParent()));
 
-        addField(
-                new ColorFieldEditor(
-                    WARN_COLOR_KEY,
-                    "Warn",
-                    getFieldEditorParent()));
+        addField(new ColorFieldEditor(WARN_COLOR_KEY, "Warn",
+                getFieldEditorParent()));
 
-        addField(
-                new ColorFieldEditor(
-                    ERROR_COLOR_KEY,
-                    "Error",
-                    getFieldEditorParent()));
+        addField(new ColorFieldEditor(ERROR_COLOR_KEY, "Error",
+                getFieldEditorParent()));
 
-        addField(
-                new ColorFieldEditor(
-                    FATAL_COLOR_KEY,
-                    "Fatal",
-                    getFieldEditorParent()));
+        addField(new ColorFieldEditor(FATAL_COLOR_KEY, "Fatal",
+                getFieldEditorParent()));
     }
 
     @Override

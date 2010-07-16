@@ -76,7 +76,6 @@ public class WidgetUtil {
         text.setMenu(wildCardMenu);
     }
 
-
     public static void initMnemonics(Button buttons[]) {
 
         ArrayList<String> chars = new ArrayList<String>();
@@ -93,8 +92,8 @@ public class WidgetUtil {
 
                     if (!chars.contains(name.substring(b, b + 1).toLowerCase())) {
 
-                        StringBuffer buttonText = new StringBuffer(name
-                                .substring(0, b));
+                        StringBuffer buttonText = new StringBuffer(
+                                name.substring(0, b));
                         buttonText.append("&").append(
                                 name.substring(b, name.length()));
 
@@ -124,8 +123,8 @@ public class WidgetUtil {
 
                     if (!chars.contains(name.substring(b, b + 1).toLowerCase())) {
 
-                        StringBuffer itemText = new StringBuffer(name
-                                .substring(0, b));
+                        StringBuffer itemText = new StringBuffer(
+                                name.substring(0, b));
                         itemText.append("&").append(
                                 name.substring(b, name.length()));
 

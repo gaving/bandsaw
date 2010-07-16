@@ -20,12 +20,13 @@ public class ShowDetailAction extends Action {
 
         /* Retrieve all the currently highlighted items of the viewer */
         @SuppressWarnings("rawtypes")
-		List leList = ((IStructuredSelection)viewer.getSelection()).toList();
+        List leList = ((IStructuredSelection) viewer.getSelection()).toList();
         for (Object obj : leList) {
 
             /* Pass the LoggingEvent from the model over to the dialog */
             LoggingEvent le = (LoggingEvent) obj;
-            Log4jEventDialog dialog = new Log4jEventDialog(viewer.getControl().getParent().getShell(), le);
+            Log4jEventDialog dialog = new Log4jEventDialog(viewer.getControl()
+                    .getParent().getShell(), le);
             dialog.open();
         }
     }

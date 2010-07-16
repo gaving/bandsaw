@@ -12,16 +12,19 @@ import org.eclipse.jface.preference.IPreferenceStore;
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
-	 */
-	@Override
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#
+     * initializeDefaultPreferences()
+     */
+    @Override
     public void initializeDefaultPreferences() {
-		IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
-        int[] defaultCols = { Log4jItem.LEVEL, Log4jItem.CATEGORY, Log4jItem.MESSAGE };
-        store.setDefault(PreferenceConstants.P_COLUMNS, ColumnList.serialize(defaultCols));		
-	}
+        IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
+        int[] defaultCols = { Log4jItem.LEVEL, Log4jItem.CATEGORY,
+                Log4jItem.MESSAGE };
+        store.setDefault(PreferenceConstants.P_COLUMNS,
+                ColumnList.serialize(defaultCols));
+    }
 
 }

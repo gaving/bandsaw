@@ -11,6 +11,7 @@ public class Log4jDate implements Log4jItem {
     public Log4jDate(LoggingEvent event) {
         le = event;
     }
+
     /**
      * @see net.brokentrain.bandsaw.log4j.Log4jItem#getText()
      */

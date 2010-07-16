@@ -53,8 +53,9 @@ public class FilterSet {
     }
 
     /**
-     * How many filters do we have, useful for filling in
-     * arrays of values elsewhere
+     * How many filters do we have, useful for filling in arrays of values
+     * elsewhere
+     * 
      * @return int
      */
     public int getCount() {

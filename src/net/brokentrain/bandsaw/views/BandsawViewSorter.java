@@ -31,8 +31,10 @@ public class BandsawViewSorter extends ViewerSorter {
     public int compare(Viewer viewer, Object e1, Object e2) {
         LoggingEvent event1 = (LoggingEvent) e1;
         LoggingEvent event2 = (LoggingEvent) e2;
-        Log4jItem item1 = BandsawUtilities.Log4jItemFactory(propertyIndex, event1);
-        Log4jItem item2 = BandsawUtilities.Log4jItemFactory(propertyIndex, event2);
+        Log4jItem item1 = BandsawUtilities.Log4jItemFactory(propertyIndex,
+                event1);
+        Log4jItem item2 = BandsawUtilities.Log4jItemFactory(propertyIndex,
+                event2);
         int rc = item1.getText().compareTo(item2.getText());
         if (direction == DESCENDING) {
             rc = -rc;

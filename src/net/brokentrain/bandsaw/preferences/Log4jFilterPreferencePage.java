@@ -25,7 +25,8 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-public class Log4jFilterPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
+public class Log4jFilterPreferencePage extends PreferencePage implements
+        IWorkbenchPreferencePage {
 
     /**
      * List is stored as one string, need a separator for storing
@@ -45,7 +46,7 @@ public class Log4jFilterPreferencePage extends PreferencePage implements IWorkbe
      */
     private void initializeDefaults() {
         Iterator<Filter> i = LogSet.getInstance().getFilterset().iterator();
-        while ( i.hasNext() ) {
+        while (i.hasNext()) {
             Filter filter = i.next();
             filterList.add(filter.toString());
         }
@@ -58,7 +59,7 @@ public class Log4jFilterPreferencePage extends PreferencePage implements IWorkbe
     protected Control createContents(Composite parent) {
         Composite entryTable = new Composite(parent, SWT.NULL);
 
-        //Create a data that takes up the extra space in the dialog .
+        // Create a data that takes up the extra space in the dialog .
         GridData data = new GridData(GridData.FILL_HORIZONTAL);
         data.grabExcessHorizontalSpace = true;
         entryTable.setLayoutData(data);
@@ -66,16 +67,15 @@ public class Log4jFilterPreferencePage extends PreferencePage implements IWorkbe
         GridLayout layout = new GridLayout();
         entryTable.setLayout(layout);
 
-        //Add in a dummy label for spacing
+        // Add in a dummy label for spacing
         new Label(entryTable, SWT.NONE);
 
         filterList = new List(entryTable, SWT.BORDER);
-        filterList.setItems(
-                convert(
-                    Bandsaw.getDefault().getPreferenceStore().getString(
-                        P_FILTERS)));
+        filterList.setItems(convert(Bandsaw.getDefault().getPreferenceStore()
+                .getString(P_FILTERS)));
 
-        //Create a data that takes up the extra space in the dialog and spans both columns.
+        // Create a data that takes up the extra space in the dialog and spans
+        // both columns.
         data = new GridData(GridData.FILL_BOTH);
         filterList.setLayoutData(data);
         // Type
@@ -86,7 +86,7 @@ public class Log4jFilterPreferencePage extends PreferencePage implements IWorkbe
         for (Integer col : labels.keySet()) {
             combo1.add(labels.get(col));
         }
-        
+
         combo1.select(0);
         combo1.setLayoutData(data);
 
@@ -109,16 +109,11 @@ public class Log4jFilterPreferencePage extends PreferencePage implements IWorkbe
         addButton.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
-                String filter =
-            combo1.getText()
-            + " "
-            + combo2.getText()
-            + " "
-            + criteriaText.getText();
-        filterList.add(filter, filterList.getItemCount());
-        Filter filtere = Filter.composeFromForm(filter);
-        LogSet.getInstance().getFilterset().addFilter(filtere);
-        BandsawUtilities.filterUpdated();
+                String filter = combo1.getText() + " " + combo2.getText() + " "
+                        + criteriaText.getText();
+                filterList.add(filter, filterList.getItemCount());
+                Filter filtere = Filter.composeFromForm(filter);
+                LogSet.getInstance().getFilterset().addFilter(filtere);
             }
         });
 
@@ -132,7 +127,6 @@ public class Log4jFilterPreferencePage extends PreferencePage implements IWorkbe
                 Filter filter = Filter.composeFromForm(selection);
                 LogSet.getInstance().getFilterset().removeFilter(filter);
                 filterList.remove(filterList.getSelectionIndex());
-                BandsawUtilities.filterUpdated();
             }
         });
 
@@ -142,10 +136,9 @@ public class Log4jFilterPreferencePage extends PreferencePage implements IWorkbe
     }
 
     /**
-     * Creates the field editors. Field editors are abstractions of
-     * the common GUI blocks needed to manipulate various types
-     * of preferences. Each field editor knows how to save and
-     * restore itself.
+     * Creates the field editors. Field editors are abstractions of the common
+     * GUI blocks needed to manipulate various types of preferences. Each field
+     * editor knows how to save and restore itself.
      */
     public void createFieldEditors() {
     }
@@ -160,6 +153,7 @@ public class Log4jFilterPreferencePage extends PreferencePage implements IWorkbe
 
     /**
      * Convert the serialized string into the list of filters
+     * 
      * @param input
      * @return String[]
      */

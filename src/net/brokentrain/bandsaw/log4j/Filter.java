@@ -1,6 +1,5 @@
 package net.brokentrain.bandsaw.log4j;
 
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.StringTokenizer;
@@ -13,9 +12,7 @@ import org.apache.regexp.RECompiler;
 import org.apache.regexp.REProgram;
 import org.apache.regexp.RESyntaxException;
 
-
-public class Filter implements Serializable
-{
+public class Filter implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -33,11 +30,11 @@ public class Filter implements Serializable
 
     /**
      * ALL TYPES [EVEN LEVEL]
+     * 
      * @param type
      * @param criteria
      */
-    public Filter(int type, String criteria, boolean inclusive)
-    {
+    public Filter(int type, String criteria, boolean inclusive) {
         this.type = type;
         this.criteria = criteria;
         this.inclusive = inclusive;
@@ -46,7 +43,8 @@ public class Filter implements Serializable
             mExpression = new RE(program);
             mRegExpValid = true;
         } catch (RESyntaxException e) {
-            System.out.println("Could not compile regular expression, will use java contains");
+            System.out
+                    .println("Could not compile regular expression, will use java contains");
             mRegExpValid = false;
         }
 
@@ -54,107 +52,83 @@ public class Filter implements Serializable
 
     /**
      * Get the value of the specified field in string form
+     * 
      * @param event
      * @return String
      */
-    private String getInputValue(LoggingEvent event)
-    {
+    private String getInputValue(LoggingEvent event) {
         return getInputValue(event, type);
     }
 
-    private String getInputValue(LoggingEvent event, int type)
-    {
+    private String getInputValue(LoggingEvent event, int type) {
         return BandsawUtilities.Log4jItemFactory(type, event).getText();
     }
 
     /**
      * See if we are valid
+     * 
      * @param le
      * @return boolean
      */
-    public boolean isValid(LoggingEvent le)
-    {
+    public boolean isValid(LoggingEvent le) {
         String fromMessage = getInputValue(le);
         String fromFilter = criteria;
 
-        if (mRegExpValid)
-        {
-            if (mExpression.match(fromMessage))
-            {
+        if (mRegExpValid) {
+            if (mExpression.match(fromMessage)) {
                 return isInclusive();
-            }
-            else
-            {
+            } else {
                 return !isInclusive();
             }
-        }
-        else
-        {
+        } else {
             int index = fromMessage.indexOf(fromFilter);
-            if (index > -1 && isInclusive())
-            {
+            if (index > -1 && isInclusive()) {
                 return true;
-            }
-            else if (index == -1 && !isInclusive())
-            {
+            } else if (index == -1 && !isInclusive()) {
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
     }
 
-    public boolean isValid(LoggingEvent le, boolean allFields)
-    {
-        if (allFields)
-        {
-            if (mExpression.match(getInputValue(le, Log4jItem.CATEGORY)))
-            {
+    public boolean isValid(LoggingEvent le, boolean allFields) {
+        if (allFields) {
+            if (mExpression.match(getInputValue(le, Log4jItem.CATEGORY))) {
                 return true;
             }
-            if (mExpression.match(getInputValue(le, Log4jItem.DATE)))
-            {
+            if (mExpression.match(getInputValue(le, Log4jItem.DATE))) {
                 return true;
             }
 
-            if (mExpression.match(getInputValue(le, Log4jItem.LEVEL)))
-            {
+            if (mExpression.match(getInputValue(le, Log4jItem.LEVEL))) {
                 return true;
             }
-            if (mExpression.match(getInputValue(le, Log4jItem.LINE_NUMBER)))
-            {
+            if (mExpression.match(getInputValue(le, Log4jItem.LINE_NUMBER))) {
                 return true;
             }
-            if (mExpression.match(getInputValue(le, Log4jItem.MESSAGE)))
-            {
+            if (mExpression.match(getInputValue(le, Log4jItem.MESSAGE))) {
                 return true;
             }
 
             return false;
-        }
-        else
-        {
+        } else {
             return isValid(le);
         }
     }
 
     /**
      * String version
+     * 
      * @see java.lang.Object#toString()
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append(BandsawUtilities.getLabelText(type));
-        if (inclusive)
-        {
+        if (inclusive) {
             sb.append(" includes ");
-        }
-        else
-        {
+        } else {
             sb.append(" excludes ");
         }
         sb.append(criteria);
@@ -163,12 +137,12 @@ public class Filter implements Serializable
 
     /**
      * Serialize
+     * 
      * @param serializedFilter
      * @return Filter
      * @throws IOException
      */
-    public static String serialize(Filter filter)
-    {
+    public static String serialize(Filter filter) {
         StringBuffer sb = new StringBuffer();
         sb.append(String.valueOf(filter.getType()));
         sb.append(ENCODING_SEPERATOR);
@@ -180,36 +154,29 @@ public class Filter implements Serializable
 
     /**
      * Deserialize
+     * 
      * @param serializedFilter
      * @return Filter
      * @throws IOException
      */
     public static Filter deSerialize(String serializedFilter)
-        throws IOException
-    {
-        try
-        {
-            StringTokenizer st =
-                new StringTokenizer(serializedFilter, ENCODING_SEPERATOR);
+            throws IOException {
+        try {
+            StringTokenizer st = new StringTokenizer(serializedFilter,
+                    ENCODING_SEPERATOR);
             int tokenCount = st.countTokens();
             String[] fields = new String[tokenCount];
-            for (int i = 0; i < tokenCount; i++)
-            {
+            for (int i = 0; i < tokenCount; i++) {
                 fields[i] = st.nextToken();
             }
-            return new Filter(
-                    Integer.parseInt(fields[0]),
-                    fields[1],
-                    Boolean.valueOf(fields[2]).booleanValue());
-        }
-        catch (NumberFormatException nfe)
-        {
+            return new Filter(Integer.parseInt(fields[0]), fields[1], Boolean
+                    .valueOf(fields[2]).booleanValue());
+        } catch (NumberFormatException nfe) {
             throw new IOException("Could not deserialize filter");
         }
     }
 
-    public static Filter composeFromForm(String input)
-    {
+    public static Filter composeFromForm(String input) {
         StringTokenizer st = new StringTokenizer(input, " ");
 
         String tmp;
@@ -224,12 +191,9 @@ public class Filter implements Serializable
 
         // figure out inclusive
         tmp = st.nextToken();
-        if (tmp.equals("includes"))
-        {
+        if (tmp.equals("includes")) {
             inclusive = true;
-        }
-        else
-        {
+        } else {
             inclusive = false;
         }
 
@@ -241,28 +205,28 @@ public class Filter implements Serializable
 
     /**
      * Returns the criteria.
+     * 
      * @return String
      */
-    public String getCriteria()
-    {
+    public String getCriteria() {
         return criteria;
     }
 
     /**
      * Returns the inclusive.
+     * 
      * @return boolean
      */
-    public boolean isInclusive()
-    {
+    public boolean isInclusive() {
         return inclusive;
     }
 
     /**
      * Returns the type.
+     * 
      * @return int
      */
-    public int getType()
-    {
+    public int getType() {
         return type;
     }
 
@@ -270,15 +234,12 @@ public class Filter implements Serializable
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(Object obj)
-    {
-        if (obj instanceof Filter)
-        {
+    public boolean equals(Object obj) {
+        if (obj instanceof Filter) {
             Filter filter = (Filter) obj;
             if ((filter.getType() == getType())
                     && filter.getCriteria().equalsIgnoreCase(getCriteria())
-                    && (filter.isInclusive() == isInclusive()))
-            {
+                    && (filter.isInclusive() == isInclusive())) {
                 return true;
             }
         }

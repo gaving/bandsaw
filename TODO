@@ -11,21 +11,21 @@ Bandsaw TODO list
 - [_] Display ip address in prefs
 - [_] Tidy up dialogs
 - [_] Improve the complex filter dialog (check out error logs filters)
+- [_] Make marker text a fancy f2 style tooltip
 
 0.2
 ---
 
 - [x] Allow sorting of the columns
 - [x] Allow filtering of the columns (type as you filter box)
-- [_] Use the new preference handling stuff
-- [_] Let the colors be background colors too (pastel gradients, bold?)
+- [x] Use the new preference handling stuff
 - [x] Jump to file and line when log items have location info
-- [!] Remove socket hub appender stuff completely
-- [_] Turn pause into a lock scroll bar action
-- [_] Show rendered text as marker tooltip (window to expand with f2)
+- [x] Remove socket hub appender stuff completely
+- [x] Turn pause into a lock scroll bar action
 - [x] Tidy up menu items
-- [_] Notifications on a new log event?
+- [_] Notifications on a new log event? Preference. Introduces mylyn dep.
 - [_] Make the column widths a bit better
+- [_] Let the colors be background colors too (pastel gradients, bold?)
 
 0.1
 ---

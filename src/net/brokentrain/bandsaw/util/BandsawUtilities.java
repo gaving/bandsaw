@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import net.brokentrain.bandsaw.Bandsaw;
-import net.brokentrain.bandsaw.actions.ShowDetailAction;
+import net.brokentrain.bandsaw.actions.LockAction;
 import net.brokentrain.bandsaw.log4j.ColumnList;
 import net.brokentrain.bandsaw.log4j.Log4jCategory;
 import net.brokentrain.bandsaw.log4j.Log4jDate;
@@ -15,9 +15,7 @@ import net.brokentrain.bandsaw.log4j.Log4jMessage;
 import net.brokentrain.bandsaw.log4j.Log4jNDC;
 import net.brokentrain.bandsaw.log4j.Log4jServer;
 import net.brokentrain.bandsaw.log4j.Log4jThrowable;
-import net.brokentrain.bandsaw.log4j.LogSet;
 import net.brokentrain.bandsaw.notification.BandsawNotification;
-import net.brokentrain.bandsaw.preferences.PreferenceConstants;
 import net.brokentrain.bandsaw.views.BandsawView;
 import net.brokentrain.bandsaw.views.BandsawViewLabelProvider;
 import net.brokentrain.bandsaw.views.BandsawViewModelProvider;
@@ -40,10 +38,6 @@ public class BandsawUtilities {
 
     private static BandsawView mView;
 
-    private static Log4jServer mSocketServer;
-
-    private static ShowDetailAction mShowDetailAction;
-
     private static IAction mStartAction;
 
     private static IAction mStopAction;
@@ -51,10 +45,6 @@ public class BandsawUtilities {
     private static IViewSite mSite;
 
     private static boolean mActionsInited = false;
-
-    private static String sViewTitle;
-
-    private static int mServerType = PreferenceConstants.P_SERVER_TYPE_SOCKET_APPENDER;
 
     public static HashMap<Integer, String> getColumnLabels() {
         HashMap<Integer, String> columnLabels = new HashMap<Integer, String>();
@@ -76,22 +66,22 @@ public class BandsawUtilities {
      */
     public static String getLabelText(int col) {
         switch (col) {
-            case Log4jItem.LEVEL:
-                return Log4jItem.LABEL_LEVEL;
-            case Log4jItem.CATEGORY:
-                return Log4jItem.LABEL_CATEGORY;
-            case Log4jItem.MESSAGE:
-                return Log4jItem.LABEL_MESSAGE;
-            case Log4jItem.LINE_NUMBER:
-                return Log4jItem.LABEL_LINE_NUMBER;
-            case Log4jItem.DATE:
-                return Log4jItem.LABEL_DATE;
-            case Log4jItem.NDC:
-                return Log4jItem.LABEL_NDC;
-            case Log4jItem.THROWABLE:
-                return Log4jItem.LABEL_THROWABLE;
-            default:
-                return Log4jItem.LABEL_UNKNOWN;
+        case Log4jItem.LEVEL:
+            return Log4jItem.LABEL_LEVEL;
+        case Log4jItem.CATEGORY:
+            return Log4jItem.LABEL_CATEGORY;
+        case Log4jItem.MESSAGE:
+            return Log4jItem.LABEL_MESSAGE;
+        case Log4jItem.LINE_NUMBER:
+            return Log4jItem.LABEL_LINE_NUMBER;
+        case Log4jItem.DATE:
+            return Log4jItem.LABEL_DATE;
+        case Log4jItem.NDC:
+            return Log4jItem.LABEL_NDC;
+        case Log4jItem.THROWABLE:
+            return Log4jItem.LABEL_THROWABLE;
+        default:
+            return Log4jItem.LABEL_UNKNOWN;
         }
     }
 
@@ -124,22 +114,22 @@ public class BandsawUtilities {
 
     public static Log4jItem Log4jItemFactory(int type, LoggingEvent e) {
         switch (type) {
-            case Log4jItem.LEVEL:
-                return new Log4jLevel(e);
-            case Log4jItem.CATEGORY:
-                return new Log4jCategory(e);
-            case Log4jItem.MESSAGE:
-                return new Log4jMessage(e);
-            case Log4jItem.LINE_NUMBER:
-                return new Log4jLineNumber(e);
-            case Log4jItem.DATE:
-                return new Log4jDate(e);
-            case Log4jItem.NDC:
-                return new Log4jNDC(e);
-            case Log4jItem.THROWABLE:
-                return new Log4jThrowable(e);
-            default:
-                return null;
+        case Log4jItem.LEVEL:
+            return new Log4jLevel(e);
+        case Log4jItem.CATEGORY:
+            return new Log4jCategory(e);
+        case Log4jItem.MESSAGE:
+            return new Log4jMessage(e);
+        case Log4jItem.LINE_NUMBER:
+            return new Log4jLineNumber(e);
+        case Log4jItem.DATE:
+            return new Log4jDate(e);
+        case Log4jItem.NDC:
+            return new Log4jNDC(e);
+        case Log4jItem.THROWABLE:
+            return new Log4jThrowable(e);
+        default:
+            return null;
         }
     }
 
@@ -241,13 +231,6 @@ public class BandsawUtilities {
     }
 
     /**
-     * The filter has been updated, so we need to refresh display
-     */
-    public static void filterUpdated() {
-        LogSet.getInstance().revalidateAll();
-    }
-
-    /**
      * @return
      */
     public static BandsawView getView() {
@@ -262,17 +245,9 @@ public class BandsawUtilities {
     }
 
     /**
-     * @return
-     */
-    public static Log4jServer getSocketServer() {
-        return mSocketServer;
-    }
-
-    /**
      * @param aServer
      */
     public static void setSocketServer(Log4jServer aServer) {
-        mSocketServer = aServer;
     }
 
     /**
@@ -281,23 +256,9 @@ public class BandsawUtilities {
      * @param message
      */
     public static void showMessage(String message) {
-        MessageDialog.openInformation(getTable().getParent().getShell(), "Bandsaw", message + "...");
+        MessageDialog.openInformation(getTable().getParent().getShell(),
+                "Bandsaw", message + "...");
     }
-
-    /**
-     * @return
-     */
-    public static ShowDetailAction getShowDetailAction() {
-        return mShowDetailAction;
-    }
-
-    /**
-     * @param aAction
-     */
-    public static void setShowDetailAction(ShowDetailAction aAction) {
-        mShowDetailAction = aAction;
-    }
-
 
     public static void updateColors() {
         BandsawViewLabelProvider.initColors();
@@ -355,12 +316,13 @@ public class BandsawUtilities {
     public static void initActions() {
         setActionsInited(true);
         BandsawUtilities.setStartAction(((ActionContributionItem) getSite()
-                    .getActionBars().getToolBarManager().find(
-                        "Bandsaw.StartAction")).getAction());
+                .getActionBars().getToolBarManager()
+                .find("Bandsaw.StartAction")).getAction());
 
-        BandsawUtilities.setStopAction(((ActionContributionItem) getSite()
-                    .getActionBars().getToolBarManager()
-                    .find("Bandsaw.StopAction")).getAction());
+        BandsawUtilities
+                .setStopAction(((ActionContributionItem) getSite()
+                        .getActionBars().getToolBarManager()
+                        .find("Bandsaw.StopAction")).getAction());
 
         Log4jServer instance = Log4jServer.getLog4jServer();
         if (instance != null && instance.isServerUp()) {
@@ -401,27 +363,18 @@ public class BandsawUtilities {
     }
 
     /**
-     * @return
-     */
-    public static String getViewTitle() {
-        return sViewTitle;
-    }
-
-    /**
-     * @param aString
-     */
-    public static void setViewTitle(String aString) {
-        sViewTitle = aString;
-    }
-
-    /**
      * @param le
      */
     @SuppressWarnings("restriction")
     public static void addTableItem(LoggingEvent le) {
-        BandsawViewModelProvider persons = BandsawViewModelProvider.getInstance();
+        BandsawViewModelProvider persons = BandsawViewModelProvider
+                .getInstance();
         persons.getEvents().add(le);
         getViewer().refresh();
+
+        if (!LockAction.isLocked()) {
+            getViewer().reveal(le);
+        }
 
         BandsawNotification popup = new BandsawNotification();
         popup.setMessage(le.getRenderedMessage());
@@ -430,18 +383,6 @@ public class BandsawUtilities {
 
         // tableViewer.getTable().pack();
         // for (TableColumn column : tableViewer.getTable().getColumns())
-            // column.pack(); 
+        // column.pack();
     }
-
-    public static int getServerType() {
-        return mServerType;
-    }
-
-    public static void setServerType(int serverType) {
-        mServerType = serverType;
-
-        Log4jServer.stopListener();
-        Log4jServer.startListener();
-    }
-
 }

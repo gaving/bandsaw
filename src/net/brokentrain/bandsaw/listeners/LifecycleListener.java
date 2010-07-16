@@ -8,11 +8,11 @@ import net.brokentrain.bandsaw.util.BandsawUtilities;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWorkbenchPart;
 
-
 public class LifecycleListener implements IPartListener {
 
     public void partActivated(IWorkbenchPart part) {
-        boolean automatic = Bandsaw.getDefault().getPreferenceStore().getBoolean(Log4jPreferencePage.P_AUTOMATIC);
+        boolean automatic = Bandsaw.getDefault().getPreferenceStore()
+                .getBoolean(Log4jPreferencePage.P_AUTOMATIC);
         if (automatic) {
             Log4jServer.startListener();
         }
@@ -23,15 +23,15 @@ public class LifecycleListener implements IPartListener {
     }
 
     public void partClosed(IWorkbenchPart part) {
-        //              boolean shutdown =
-        //                      MessageDialog.openQuestion(
-        //                              BandsawUtilities.getTable().getParent().getShell(),
-        //                              "Shut Down Log4j Server",
-        //                              "Do you want to stop listening for Log4j Messages?");
-        //              if (shutdown)
-        //              {
-        //                      Log4jServer.stopListener();
-        //              }       
+        // boolean shutdown =
+        // MessageDialog.openQuestion(
+        // BandsawUtilities.getTable().getParent().getShell(),
+        // "Shut Down Log4j Server",
+        // "Do you want to stop listening for Log4j Messages?");
+        // if (shutdown)
+        // {
+        // Log4jServer.stopListener();
+        // }
     }
 
     public void partDeactivated(IWorkbenchPart part) {

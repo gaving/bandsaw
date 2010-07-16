@@ -33,7 +33,7 @@ public class SimpleFileUtil {
                 fos.write(buffer, 0, nbytes);
             }
         } catch (IOException e) {
-        	Bandsaw.log.debug("copy");
+            Bandsaw.log.debug("copy");
         } finally {
 
             if (fis != null) {
@@ -48,7 +48,7 @@ public class SimpleFileUtil {
                 try {
                     fos.close();
                 } catch (IOException e) {
-                	Bandsaw.log.debug("copy");
+                    Bandsaw.log.debug("copy");
                 }
             }
         }

@@ -23,7 +23,7 @@ public class ShowFilterActionDelegate implements IViewActionDelegate {
     }
 
     public void init(IViewPart view) {
-        this.view = (BandsawView)view;
+        this.view = (BandsawView) view;
         this.viewer = BandsawUtilities.getViewer();
     }
 

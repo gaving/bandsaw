@@ -25,7 +25,8 @@ import org.eclipse.swt.widgets.List;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
+public class Log4jColumnsPreferencePage extends PreferencePage implements
+        IWorkbenchPreferencePage {
 
     public static final String P_COLUMNS = "P_COLUMNS";
     private List columnList;
@@ -48,7 +49,7 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
 
         Composite entryTable = new Composite(parent, SWT.NULL);
 
-        //Create a data that takes up the extra space in the dialog .
+        // Create a data that takes up the extra space in the dialog .
         GridData data = new GridData(GridData.FILL_HORIZONTAL);
         data.grabExcessHorizontalSpace = true;
         entryTable.setLayoutData(data);
@@ -65,7 +66,8 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
         label.setLayoutData(gData);
 
         // LIST
-        columnList = new List(entryTable, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+        columnList = new List(entryTable, SWT.BORDER | SWT.H_SCROLL
+                | SWT.V_SCROLL);
         gData = new GridData(GridData.FILL_BOTH);
         gData.horizontalSpan = 1;
         gData.verticalSpan = 3;
@@ -121,9 +123,9 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
                 if (index == -1) {
                     return;
                 } // border condition
-                
+
                 columns.remove(columnList.getSelectionIndex());
-                cmboAddList.add(labels.get(index));          
+                cmboAddList.add(labels.get(index));
                 String[] items = cmboAddList.getItems();
                 Arrays.sort(items);
                 cmboAddList.setItems(items);
@@ -137,7 +139,7 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
 
         // LIST
         cmboAddList = new Combo(entryTable, SWT.DROP_DOWN | SWT.READ_ONLY);
-        
+
         gData = new GridData();
         gData.horizontalSpan = 2;
         cmboAddList.setLayoutData(gData);
@@ -148,7 +150,8 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
         btnAdd.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
-                int col = BandsawUtilities.convertColumnToInt(cmboAddList.getText());
+                int col = BandsawUtilities.convertColumnToInt(cmboAddList
+                        .getText());
                 columns.add(col);
                 cmboAddList.remove(cmboAddList.getText());
                 refreshList();
@@ -159,24 +162,24 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
         btnAdd.setLayoutData(gData);
 
         populateColumns();
-        
+
         labels = BandsawUtilities.getColumnLabels();
         for (Integer col : labels.keySet()) {
-        	if (!columns.contains(col)) {
-        		cmboAddList.add(labels.get(col));
-        	}
+            if (!columns.contains(col)) {
+                cmboAddList.add(labels.get(col));
+            }
         }
-        
+
         String[] items = cmboAddList.getItems();
         Arrays.sort(items);
         cmboAddList.setItems(items);
         cmboAddList.select(0);
-        
+
         refreshList();
 
         return null;
     }
-    
+
     protected void populateColumns() {
         Iterator<Integer> i = ColumnList.getInstance().getList();
         while (i.hasNext()) {

@@ -29,16 +29,16 @@ public class PaintUtil {
 
     public static Image getIcon(int type) {
         switch (type) {
-            case Priority.ERROR_INT:
-                return PaintUtil.iconError;
-            case Priority.INFO_INT:
-                return PaintUtil.iconInfo;
-            case Priority.WARN_INT:
-                return PaintUtil.iconWarning;
-            case Priority.DEBUG_INT:
-                return PaintUtil.iconInfo;
-            default:
-                return PaintUtil.iconInfo;
+        case Priority.ERROR_INT:
+            return PaintUtil.iconError;
+        case Priority.INFO_INT:
+            return PaintUtil.iconInfo;
+        case Priority.WARN_INT:
+            return PaintUtil.iconWarning;
+        case Priority.DEBUG_INT:
+            return PaintUtil.iconInfo;
+        default:
+            return PaintUtil.iconInfo;
         }
     }
 

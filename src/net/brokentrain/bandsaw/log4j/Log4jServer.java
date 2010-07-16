@@ -22,7 +22,8 @@ public class Log4jServer extends Thread {
     private static boolean mServerUp = false;
 
     private static final Object repositorySelectorGuard = new Object();
-    private static final LoggerRepositoryExImpl repositoryExImpl = new LoggerRepositoryExImpl(LogManager.getLoggerRepository());
+    private static final LoggerRepositoryExImpl repositoryExImpl = new LoggerRepositoryExImpl(
+            LogManager.getLoggerRepository());
 
     public static void init() {
         setPrimary(Thread.currentThread());
@@ -31,7 +32,8 @@ public class Log4jServer extends Thread {
 
             public LoggerRepository getLoggerRepository() {
                 return repositoryExImpl;
-            }}, repositorySelectorGuard);
+            }
+        }, repositorySelectorGuard);
 
         new DOMConfigurator();
         DOMConfigurator.configure(clazz.getResource("/cfg/server.xml"));
@@ -39,14 +41,18 @@ public class Log4jServer extends Thread {
 
     /**
      * Stop the Log4j Socket Server
+     * 
      * @return boolean
      */
     public static boolean startListener() {
 
-        //int port = Bandsaw.getDefault().getPreferenceStore().getInt(Log4jPreferencePage.P_PORT);
+        // int port =
+        // Bandsaw.getDefault().getPreferenceStore().getInt(Log4jPreferencePage.P_PORT);
 
-        /* TODO: Should really work out how to change the port of the custom
-         * appender here */
+        /*
+         * TODO: Should really work out how to change the port of the custom
+         * appender here
+         */
         Logger rootLogger = LogManager.getRootLogger();
         rootLogger.setLevel(Level.toLevel("DEBUG"));
 
@@ -72,10 +78,11 @@ public class Log4jServer extends Thread {
     }
 
     /**
-     * Add a new message to the table - this is the 
-     * real connection between our model and firing
-     * off updates to the GUI.
-     * @param le The logging event to add
+     * Add a new message to the table - this is the real connection between our
+     * model and firing off updates to the GUI.
+     * 
+     * @param le
+     *            The logging event to add
      */
     static synchronized public void newMessage(LoggingEvent le) {
         final LoggingEvent thisEvent = le;

@@ -28,7 +28,7 @@ public class Bandsaw extends AbstractUIPlugin {
      * This method is called upon plug-in activation
      */
     @Override
-    public void start(BundleContext context) throws Exception {
+    public final void start(final BundleContext context) throws Exception {
         super.start(context);
         plugin = this;
 
@@ -39,7 +39,7 @@ public class Bandsaw extends AbstractUIPlugin {
      * This method is called when the plug-in is stopped
      */
     @Override
-    public void stop(BundleContext context) throws Exception {
+    public final void stop(final BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);
     }

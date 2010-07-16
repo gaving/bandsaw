@@ -1,6 +1,7 @@
 package net.brokentrain.bandsaw.views;
 
 import java.util.Iterator;
+import java.util.List;
 
 import net.brokentrain.bandsaw.Bandsaw;
 import net.brokentrain.bandsaw.actions.CopyAction;
@@ -59,7 +60,8 @@ public class BandsawView extends ViewPart {
     private GridData gridData;
     private Composite labelArea;
 
-    Action viewItemAction, copyItemAction, deleteItemAction, selectAllAction, jumpAction;
+    Action viewItemAction, copyItemAction, deleteItemAction, selectAllAction,
+            jumpAction;
 
     /**
      * The constructor.
@@ -71,7 +73,7 @@ public class BandsawView extends ViewPart {
     }
 
     @Override
-    public void createPartControl(final Composite parent) {
+    public final void createPartControl(final Composite parent) {
 
         IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
 
@@ -85,23 +87,28 @@ public class BandsawView extends ViewPart {
         labelArea.setLayoutData(gridData);
         labelArea.setVisible(false);
 
-        final Text searchText = new Text(labelArea, SWT.BORDER | SWT.SEARCH | SWT.CANCEL | SWT.ICON_CANCEL | SWT.ICON_SEARCH);
+        final Text searchText = new Text(labelArea, SWT.BORDER | SWT.SEARCH
+                | SWT.CANCEL | SWT.ICON_CANCEL | SWT.ICON_SEARCH);
         // searchText.setText("type filter text");
-        searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
+        searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
+                | GridData.HORIZONTAL_ALIGN_FILL));
         searchText.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyReleased(KeyEvent ke) {
+            public void keyReleased(final KeyEvent ke) {
                 ViewerFilter[] filters = viewer.getFilters();
                 for (ViewerFilter filter : filters) {
-                    ((BandsawViewFilter) filter).setSearchText(searchText.getText());
+                    ((BandsawViewFilter) filter).setSearchText(searchText
+                            .getText());
                 }
                 viewer.refresh();
             }
         });
 
-        viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+        viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
+                | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
 
-        gridData = new GridData(GridData.FILL_HORIZONTAL | GridData.FILL_VERTICAL);
+        gridData = new GridData(GridData.FILL_HORIZONTAL
+                | GridData.FILL_VERTICAL);
         gridData.horizontalSpan = 3;
         gridData.grabExcessHorizontalSpace = true;
         gridData.grabExcessVerticalSpace = true;
@@ -117,8 +124,8 @@ public class BandsawView extends ViewPart {
         BandsawUtilities.setTableViewer(viewer);
 
         ColumnList.getInstance().setColList(
-                ColumnList.deSerialize(
-                    store.getString(Log4jColumnsPreferencePage.P_COLUMNS)));
+                ColumnList.deSerialize(store
+                        .getString(Log4jColumnsPreferencePage.P_COLUMNS)));
 
         ColumnList list = ColumnList.getInstance();
         Iterator<Integer> iter = list.getList();
@@ -127,7 +134,8 @@ public class BandsawView extends ViewPart {
             int val = (iter.next()).intValue();
 
             final int index = i;
-            final TableViewerColumn viewerColumn = new TableViewerColumn(viewer, SWT.NONE);
+            final TableViewerColumn viewerColumn = new TableViewerColumn(
+                    viewer, SWT.NONE);
             final TableColumn column = viewerColumn.getColumn();
 
             column.setText(BandsawUtilities.getLabelText(val));
@@ -136,7 +144,7 @@ public class BandsawView extends ViewPart {
             column.setWidth((index == Log4jItem.MESSAGE) ? 200 : 100);
             column.addSelectionListener(new SelectionAdapter() {
                 @Override
-                public void widgetSelected(SelectionEvent e) {
+                public void widgetSelected(final SelectionEvent e) {
                     ((BandsawViewSorter) viewer.getSorter()).setColumn(index);
                     int dir = viewer.getTable().getSortDirection();
                     if (viewer.getTable().getSortColumn() == column) {
@@ -155,11 +163,16 @@ public class BandsawView extends ViewPart {
         viewer.setLabelProvider(new BandsawViewLabelProvider());
         viewer.setSorter(new BandsawViewSorter());
         viewer.addFilter(new BandsawViewFilter());
-
-        labelArea.pack();
-        parent.pack();
-
         viewer.setInput(BandsawViewModelProvider.getInstance().getEvents());
+
+        for (int i = 0; i < ColumnList.getInstance().getColumnCount(); i++) {
+            final int index = i;
+            if (index == Log4jItem.DATE) {
+                ((BandsawViewSorter) viewer.getSorter()).setColumn(index);
+                viewer.getTable().setSortDirection(SWT.UP);
+                viewer.getTable().setSortColumn(viewer.getTable().getColumn(index));
+            }
+        }
 
         getSite().getPage().addPartListener(new LifecycleListener());
 
@@ -171,11 +184,9 @@ public class BandsawView extends ViewPart {
         createContextMenu();
         hookGlobalActions();
 
-        BandsawUtilities.updateColors();
-
-        BandsawUtilities.setViewTitle(table.getParent().getShell().getText());
-
         hookDoubleClickAction();
+
+        BandsawUtilities.updateColors();
     }
 
     private void hookGlobalActions() {
@@ -185,23 +196,27 @@ public class BandsawView extends ViewPart {
 
     /**
      * Activate a context that this view uses. It will be tied to this view
-     * activation events and will be removed when the view is disposed.
-     * Copied from org.eclipse.ui.examples.contributions.InfoView.java
+     * activation events and will be removed when the view is disposed. Copied
+     * from org.eclipse.ui.examples.contributions.InfoView.java
      */
     private void activateContext() {
         IContextService contextService = (IContextService) getSite()
-        .getService(IContextService.class);
+                .getService(IContextService.class);
         contextService.activateContext("net.brokentrain.view.context");
     }
 
-    public void createActions() {
+    public final void createActions() {
 
-        IHandlerService hs = (IHandlerService)getSite().getService(IHandlerService.class);
+        IHandlerService hs = (IHandlerService) getSite().getService(
+                IHandlerService.class);
 
         jumpAction = new JumpAction("Go to");
-        jumpAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_REDO));
+        jumpAction.setImageDescriptor(PlatformUI.getWorkbench()
+                .getSharedImages()
+                .getImageDescriptor(ISharedImages.IMG_TOOL_REDO));
         jumpAction.setActionDefinitionId("net.brokentrain.commands.jump");
-        hs.activateHandler("net.brokentrain.commands.jump", new ActionHandler(jumpAction));
+        hs.activateHandler("net.brokentrain.commands.jump", new ActionHandler(
+                jumpAction));
 
         viewItemAction = new Action("View") {
             @Override
@@ -209,13 +224,19 @@ public class BandsawView extends ViewPart {
                 new ShowDetailAction().run();
             }
         };
-        viewItemAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_DEF_VIEW));
+        viewItemAction.setImageDescriptor(PlatformUI.getWorkbench()
+                .getSharedImages()
+                .getImageDescriptor(ISharedImages.IMG_DEF_VIEW));
         viewItemAction.setActionDefinitionId("net.brokentrain.commands.view");
-        hs.activateHandler("net.brokentrain.commands.view", new ActionHandler(viewItemAction));
+        hs.activateHandler("net.brokentrain.commands.view", new ActionHandler(
+                viewItemAction));
 
         copyItemAction = new CopyAction("Copy");
-        copyItemAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
-        copyItemAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_COPY);
+        copyItemAction.setImageDescriptor(PlatformUI.getWorkbench()
+                .getSharedImages()
+                .getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
+        copyItemAction
+                .setActionDefinitionId(IWorkbenchCommandConstants.EDIT_COPY);
 
         deleteItemAction = new Action("Delete") {
             @Override
@@ -223,8 +244,11 @@ public class BandsawView extends ViewPart {
                 deleteItem();
             }
         };
-        deleteItemAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
-        deleteItemAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_DELETE);
+        deleteItemAction.setImageDescriptor(PlatformUI.getWorkbench()
+                .getSharedImages()
+                .getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
+        deleteItemAction
+                .setActionDefinitionId(IWorkbenchCommandConstants.EDIT_DELETE);
 
         selectAllAction = new Action("Select All") {
             @Override
@@ -232,30 +256,31 @@ public class BandsawView extends ViewPart {
                 selectAll();
             }
         };
-        selectAllAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_SELECT_ALL);
+        selectAllAction
+                .setActionDefinitionId(IWorkbenchCommandConstants.EDIT_SELECT_ALL);
 
         // Add selection listener.
         viewer.addSelectionChangedListener(new ISelectionChangedListener() {
-            public void selectionChanged(SelectionChangedEvent event) {
+            public void selectionChanged(final SelectionChangedEvent event) {
                 updateActionEnablement();
             }
         });
     }
 
-   private void updateActionEnablement() {
-       IStructuredSelection sel = (IStructuredSelection)viewer.getSelection();
-       jumpAction.setEnabled(sel.size() > 0);
-       viewItemAction.setEnabled(sel.size() > 0);
-       deleteItemAction.setEnabled(sel.size() > 0);
-       copyItemAction.setEnabled(sel.size() > 0);
-   }
+    private void updateActionEnablement() {
+        IStructuredSelection sel = (IStructuredSelection) viewer.getSelection();
+        jumpAction.setEnabled(sel.size() > 0);
+        viewItemAction.setEnabled(sel.size() > 0);
+        deleteItemAction.setEnabled(sel.size() > 0);
+        copyItemAction.setEnabled(sel.size() > 0);
+    }
 
     private void createContextMenu() {
         // Create menu manager.
         MenuManager menuMgr = new MenuManager();
         menuMgr.setRemoveAllWhenShown(true);
         menuMgr.addMenuListener(new IMenuListener() {
-            public void menuAboutToShow(IMenuManager mgr) {
+            public void menuAboutToShow(final IMenuManager mgr) {
                 fillContextMenu(mgr);
             }
         });
@@ -268,7 +293,7 @@ public class BandsawView extends ViewPart {
         getSite().registerContextMenu(menuMgr, viewer);
     }
 
-    private void fillContextMenu(IMenuManager mgr) {
+    private void fillContextMenu(final IMenuManager mgr) {
         mgr.add(jumpAction);
         mgr.add(viewItemAction);
         mgr.add(new Separator());
@@ -278,12 +303,14 @@ public class BandsawView extends ViewPart {
     }
 
     private void deleteItem() {
-        IStructuredSelection sel = (IStructuredSelection)viewer.getSelection();
+        IStructuredSelection sel = (IStructuredSelection) viewer.getSelection();
         Iterator<?> iter = sel.iterator();
+        List<LoggingEvent> events = BandsawViewModelProvider.getInstance().getEvents();
         while (iter.hasNext()) {
-            LoggingEvent loggingEvent = (LoggingEvent)iter.next();
-            viewer.remove(loggingEvent);
+            LoggingEvent loggingEvent = (LoggingEvent) iter.next();
+            events.remove(loggingEvent);
         }
+        viewer.refresh();
     }
 
     /**
@@ -297,7 +324,7 @@ public class BandsawView extends ViewPart {
     private void hookDoubleClickAction() {
         viewer.getTable().addMouseListener(new IMouseListener() {
             @Override
-            public void mouseDoubleClick(MouseEvent e) {
+            public void mouseDoubleClick(final MouseEvent e) {
                 jumpAction.run();
             }
         });
@@ -307,23 +334,25 @@ public class BandsawView extends ViewPart {
      * Passing the focus request to the viewer's control.
      */
     @Override
-    public void setFocus() {
+    public final void setFocus() {
         if (BandsawUtilities.isShowing()) {
             viewer.getTable().getParent().setFocus();
         }
     }
 
-    public void toggleFilter() {
+    public final void toggleFilter() {
         labelArea.setVisible(!labelArea.isVisible());
         ((GridData) labelArea.getLayoutData()).exclude = !labelArea.isVisible();
         labelArea.getParent().layout();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     *
      * @see org.eclipse.ui.IViewPart#init(org.eclipse.ui.IViewSite)
      */
     @Override
-    public void init(IViewSite site) throws PartInitException {
+    public final void init(final IViewSite site) throws PartInitException {
         super.init(site);
         BandsawUtilities.setSite(site);
     }

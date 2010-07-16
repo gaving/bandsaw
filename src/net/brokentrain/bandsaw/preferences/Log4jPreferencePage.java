@@ -11,7 +11,8 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-public class Log4jPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class Log4jPreferencePage extends FieldEditorPreferencePage implements
+        IWorkbenchPreferencePage {
 
     /**
      * Port log4j server listens on
@@ -44,7 +45,8 @@ public class Log4jPreferencePage extends FieldEditorPreferencePage implements IW
 
     @Override
     public void createFieldEditors() {
-        addField(new BooleanFieldEditor(P_AUTOMATIC, "&Automatic start", getFieldEditorParent()));
+        addField(new BooleanFieldEditor(P_AUTOMATIC, "&Automatic start",
+                getFieldEditorParent()));
     }
 
     /**
@@ -69,7 +71,7 @@ public class Log4jPreferencePage extends FieldEditorPreferencePage implements IW
 
     public void init(IWorkbench workbench) {
     }
-    
+
     public RadioGroupFieldEditor getRadioEditor() {
         return radioEditor;
     }

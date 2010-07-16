@@ -16,7 +16,7 @@ public class Log4jLineNumber implements Log4jItem {
      */
     public String getText() {
         LocationInfo location = le.getLocationInformation();
-        if ( location == null ) {
+        if (location == null) {
             return "";
         } else {
             return location.getLineNumber();
