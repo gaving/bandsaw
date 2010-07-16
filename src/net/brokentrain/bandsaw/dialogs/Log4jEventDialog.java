@@ -37,6 +37,7 @@ public class Log4jEventDialog extends Dialog {
     /**
      * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     public Control createDialogArea(Composite parent)
     {
         GridData gData;
@@ -289,6 +290,7 @@ public class Log4jEventDialog extends Dialog {
     /* (non-Javadoc)
      * @see org.eclipse.jface.window.Window#getInitialSize()
      */
+    @Override
     protected Point getInitialSize() {
         return new Point(600, 400);
     }
@@ -296,6 +298,7 @@ public class Log4jEventDialog extends Dialog {
     /* (non-Javadoc)
      * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
      */
+    @Override
     protected void configureShell(Shell newShell)
     {
         super.configureShell(newShell);
@@ -321,6 +324,7 @@ public class Log4jEventDialog extends Dialog {
     /* (non-Javadoc)
      * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(org.eclipse.swt.widgets.Composite)
      */
+    @Override
     protected void createButtonsForButtonBar(Composite parent)
     {
         createButton(

@@ -10,13 +10,13 @@ Bandsaw TODO list
 - [_] Persist logs after close
 - [_] Display ip address in prefs
 - [_] Tidy up dialogs
+- [_] Improve the complex filter dialog (check out error logs filters)
 
 0.2
 ---
 
-- [_] Allow sorting of the columns
-- [_] Allow filtering of the columns (type as you filter box)
-- [_] Improve the filter dialog (check out error logs filters)
+- [x] Allow sorting of the columns
+- [x] Allow filtering of the columns (type as you filter box)
 - [_] Use the new preference handling stuff
 - [_] Let the colors be background colors too (pastel gradients, bold?)
 - [x] Jump to file and line when log items have location info
@@ -24,7 +24,8 @@ Bandsaw TODO list
 - [_] Turn pause into a lock scroll bar action
 - [_] Show rendered text as marker tooltip (window to expand with f2)
 - [x] Tidy up menu items
-- [_] Notifications?
+- [_] Notifications on a new log event?
+- [_] Make the column widths a bit better
 
 0.1
 ---

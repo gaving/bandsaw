@@ -2,6 +2,7 @@ package net.brokentrain.bandsaw.util;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;

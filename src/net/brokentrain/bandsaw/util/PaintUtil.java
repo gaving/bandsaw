@@ -3,7 +3,7 @@ package net.brokentrain.bandsaw.util;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.log4j.Level;
+import org.apache.log4j.Priority;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
@@ -29,13 +29,13 @@ public class PaintUtil {
 
     public static Image getIcon(int type) {
         switch (type) {
-            case Level.ERROR_INT:
+            case Priority.ERROR_INT:
                 return PaintUtil.iconError;
-            case Level.INFO_INT:
+            case Priority.INFO_INT:
                 return PaintUtil.iconInfo;
-            case Level.WARN_INT:
+            case Priority.WARN_INT:
                 return PaintUtil.iconWarning;
-            case Level.DEBUG_INT:
+            case Priority.DEBUG_INT:
                 return PaintUtil.iconInfo;
             default:
                 return PaintUtil.iconInfo;

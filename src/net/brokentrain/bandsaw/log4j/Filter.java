@@ -144,6 +144,7 @@ public class Filter implements Serializable
      * String version
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString()
     {
         StringBuffer sb = new StringBuffer();
@@ -268,6 +269,7 @@ public class Filter implements Serializable
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
+    @Override
     public boolean equals(Object obj)
     {
         if (obj instanceof Filter)

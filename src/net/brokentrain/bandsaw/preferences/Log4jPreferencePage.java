@@ -1,7 +1,6 @@
 package net.brokentrain.bandsaw.preferences;
 
 import net.brokentrain.bandsaw.Bandsaw;
-import net.brokentrain.bandsaw.util.BandsawUtilities;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -20,14 +19,6 @@ public class Log4jPreferencePage extends FieldEditorPreferencePage implements IW
     public static final String P_PORT = "log4j_socket_server_port";
 
     public static final String P_SERVER = "log4j_socket_server";
-
-    public static final String P_TYPE = "log4j_server_type";
-
-    public static final String P_TYPE_SOCKET_APPENDER_VAL = "socket_appender";
-
-    public static final String P_TYPE_SOCKET_HUB_APPENDER_VAL = "socket_hub_appender";
-
-    public static final String P_MAX_MESSAGES = "log4j_max_messages";
 
     public static final String P_AUTOMATIC = "log4j_automatic_start";
 
@@ -48,43 +39,11 @@ public class Log4jPreferencePage extends FieldEditorPreferencePage implements IW
     public static void initializeDefaults() {
         IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
         store.setDefault(P_PORT, 4445);
-        if (store.getString(P_TYPE).equals(P_TYPE_SOCKET_APPENDER_VAL)
-                && BandsawUtilities.getServerType() != Bandsaw.P_SERVER_TYPE_SOCKET_APPENDER) {
-            BandsawUtilities
-                .setServerType(Bandsaw.P_SERVER_TYPE_SOCKET_APPENDER);
-        } else if (store.getString(P_TYPE).equals(
-                    P_TYPE_SOCKET_HUB_APPENDER_VAL)
-                && BandsawUtilities.getServerType() != Bandsaw.P_SERVER_TYPE_SOCKET_HUB_APPENDER) {
-            BandsawUtilities
-                .setServerType(Bandsaw.P_SERVER_TYPE_SOCKET_HUB_APPENDER);
-                }
         store.setDefault(P_AUTOMATIC, false);
-        // store.setDefault(P_MAX_MESSAGES, 50);
     }
 
+    @Override
     public void createFieldEditors() {
-//        RadioGroupFieldEditor radioEditor = new RadioGroupFieldEditor(P_TYPE,
-//                "&Type", 2, getServerTypeFieldAndValues(),
-//                getFieldEditorParent(), true);
-//        StringFieldEditor serverEditor = new StringFieldEditor(P_SERVER,
-//                "&Server", getFieldEditorParent());
-//        addField(radioEditor);
-//        addField(serverEditor);
-//        addField(new IntegerFieldEditor(P_PORT, "Server &Port",
-//                    getFieldEditorParent()));
-//
-//        setRadioEditor(radioEditor);
-//        setServerEditor(serverEditor);
-//
-//        // initial active/inactive for server
-//        if (getPreferenceStore().getString(P_TYPE).equals(
-//                    P_TYPE_SOCKET_APPENDER_VAL)) {
-//            getServerEditor().setEnabled(false, getFieldEditorParent());
-//        } else if (getPreferenceStore().getString(P_TYPE).equals(
-//                    P_TYPE_SOCKET_HUB_APPENDER_VAL)) {
-//            getServerEditor().setEnabled(true, getFieldEditorParent());
-//                    }
-
         addField(new BooleanFieldEditor(P_AUTOMATIC, "&Automatic start", getFieldEditorParent()));
     }
 
@@ -92,68 +51,25 @@ public class Log4jPreferencePage extends FieldEditorPreferencePage implements IW
      * I needed to change the systems server type here, so I had to override
      * this.
      */
+    @Override
     public boolean performOk() {
-//        getRadioEditor().store();
-
-//        if (getPreferenceStore().getString(P_TYPE).equals(
-//                    P_TYPE_SOCKET_APPENDER_VAL)
-//                && BandsawUtilities.getServerType() != Bandsaw.P_SERVER_TYPE_SOCKET_APPENDER) {
-//            BandsawUtilities
-//                .setServerType(Bandsaw.P_SERVER_TYPE_SOCKET_APPENDER);
-//        } else if (getPreferenceStore().getString(P_TYPE).equals(
-//                    P_TYPE_SOCKET_HUB_APPENDER_VAL)
-//                && BandsawUtilities.getServerType() != Bandsaw.P_SERVER_TYPE_SOCKET_HUB_APPENDER) {
-//            BandsawUtilities
-//                .setServerType(Bandsaw.P_SERVER_TYPE_SOCKET_HUB_APPENDER);
-//                }
-
         return super.performOk();
     }
 
-    // A property was changed.
+    @Override
     public void propertyChange(PropertyChangeEvent event) {
-        // TODO Auto-generated method stub
         super.propertyChange(event);
-
-//        if (event.getSource() == getRadioEditor()
-//                && !event.getNewValue().equals(
-//                    getPreferenceStore().getString(P_TYPE))) // are they
-//            // the same
-//        {
-//            MessageBox serverTypeWarningBox = new MessageBox(
-//                    getFieldEditorParent().getShell().getParent().getShell(),
-//                    SWT.OK | SWT.ICON_WARNING);
-//            serverTypeWarningBox
-//                .setMessage("You are attempting to switch server types.  This requires Bandsaw to restart.");
-//            serverTypeWarningBox.open();
-//            if (event.getNewValue().equals(
-//                        Log4jPreferencePage.P_TYPE_SOCKET_APPENDER_VAL)) {
-//                getServerEditor().setEnabled(false, getFieldEditorParent());
-//            } else if (event.getNewValue().equals(
-//                        Log4jPreferencePage.P_TYPE_SOCKET_HUB_APPENDER_VAL)) {
-//                getServerEditor().setEnabled(true, getFieldEditorParent());
-//                        }
-//        }
     }
 
+    @Override
     protected void performApply() {
         // TODO Auto-generated method stub
         super.performApply();
     }
 
-//    private String[][] getServerTypeFieldAndValues() {
-//        // TODO Auto-generated method stub
-//        String[][] rVal = new String[2][2];
-//        rVal[0][0] = "Socket Appender";
-//        rVal[0][1] = P_TYPE_SOCKET_APPENDER_VAL;
-//        rVal[1][0] = "Socket Hub Appender";
-//        rVal[1][1] = P_TYPE_SOCKET_HUB_APPENDER_VAL;
-//        return rVal;
-//    }
-
     public void init(IWorkbench workbench) {
     }
-
+    
     public RadioGroupFieldEditor getRadioEditor() {
         return radioEditor;
     }

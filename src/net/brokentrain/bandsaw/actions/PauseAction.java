@@ -1,13 +1,11 @@
 package net.brokentrain.bandsaw.actions;
 
-
 import net.brokentrain.bandsaw.log4j.LogSet;
-import net.brokentrain.bandsaw.util.BandsawUtilities;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewActionDelegate;
+import org.eclipse.ui.IViewPart;
 
 /**
  * TODO: Provide description for "PauseAction".
@@ -33,7 +31,6 @@ public class PauseAction implements IViewActionDelegate
         setPaused(!isPaused());
         if (!isPaused()) {
             LogSet.getInstance().revalidateAll();
-            BandsawUtilities.resetTableRows();
         }
     }
 

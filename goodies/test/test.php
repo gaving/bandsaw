@@ -8,8 +8,9 @@
     $logger = Logger::getRootLogger();
     // $logger = Logger::getLogger("Log4PHPTestLogger");
 
-    $message = (!isset($argv[1])) ? "test" : implode(' ', $argv);
+    $message = (!isset($argv[1])) ? md5(rand(0,10)) : implode(' ', $argv);
 
+    $logger->info("zebra");
     $logger->info($message);
     $logger->warn($message);
     $logger->debug($message);

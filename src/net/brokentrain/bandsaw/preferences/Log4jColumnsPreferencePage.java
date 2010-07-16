@@ -43,6 +43,7 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
         setPreferenceStore(Bandsaw.getDefault().getPreferenceStore());
     }
 
+    @Override
     protected Control createContents(Composite parent) {
 
         Composite entryTable = new Composite(parent, SWT.NULL);
@@ -74,6 +75,7 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
         btnMoveUp = new Button(entryTable, SWT.PUSH | SWT.CENTER);
         btnMoveUp.setText("Move Up"); //$NON-NLS-1$
         btnMoveUp.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent event) {
                 int index = columnList.getSelectionIndex();
                 if (index == 0 || index < 0) {
@@ -93,6 +95,7 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
         btnMoveDown = new Button(entryTable, SWT.PUSH | SWT.CENTER);
         btnMoveDown.setText("Move Down"); //$NON-NLS-1$
         btnMoveDown.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent event) {
                 int index = columnList.getSelectionIndex();
                 if (index == columns.size() || index < 0) {
@@ -112,6 +115,7 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
         btnRemove = new Button(entryTable, SWT.PUSH | SWT.CENTER);
         btnRemove.setText("Remove"); //$NON-NLS-1$
         btnRemove.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent event) {
                 int index = columnList.getSelectionIndex();
                 if (index == -1) {
@@ -142,6 +146,7 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
         btnAdd = new Button(entryTable, SWT.PUSH | SWT.CENTER);
         btnAdd.setText("Add Column"); //$NON-NLS-1$
         btnAdd.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent event) {
                 int col = BandsawUtilities.convertColumnToInt(cmboAddList.getText());
                 columns.add(col);
@@ -206,6 +211,7 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
     /**
      * @see org.eclipse.jface.preference.PreferencePage#performApply()
      */
+    @Override
     protected void performApply() {
         updateColumnList();
         storeValues();
@@ -216,6 +222,7 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
     /**
      * @see org.eclipse.jface.preference.PreferencePage#performDefaults()
      */
+    @Override
     protected void performDefaults() {
         columns.clear();
         columnList.removeAll();
@@ -236,6 +243,7 @@ public class Log4jColumnsPreferencePage extends PreferencePage implements IWorkb
     /**
      * @see org.eclipse.jface.preference.IPreferencePage#performOk()
      */
+    @Override
     public boolean performOk() {
         updateColumnList();
         storeValues();

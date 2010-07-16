@@ -9,6 +9,7 @@ import net.brokentrain.bandsaw.actions.ShowDetailAction;
 import net.brokentrain.bandsaw.listeners.IMouseListener;
 import net.brokentrain.bandsaw.listeners.LifecycleListener;
 import net.brokentrain.bandsaw.log4j.ColumnList;
+import net.brokentrain.bandsaw.log4j.Log4jItem;
 import net.brokentrain.bandsaw.log4j.Log4jServer;
 import net.brokentrain.bandsaw.preferences.Log4jColumnsPreferencePage;
 import net.brokentrain.bandsaw.preferences.Log4jPreferencePage;
@@ -69,6 +70,7 @@ public class BandsawView extends ViewPart {
         BandsawUtilities.setView(this);
     }
 
+    @Override
     public void createPartControl(final Composite parent) {
 
         IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
@@ -87,6 +89,7 @@ public class BandsawView extends ViewPart {
         // searchText.setText("type filter text");
         searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
         searchText.addKeyListener(new KeyAdapter() {
+            @Override
             public void keyReleased(KeyEvent ke) {
                 ViewerFilter[] filters = viewer.getFilters();
                 for (ViewerFilter filter : filters) {
@@ -130,7 +133,7 @@ public class BandsawView extends ViewPart {
             column.setText(BandsawUtilities.getLabelText(val));
             column.setResizable(true);
             column.setMoveable(true);
-            column.setWidth(100);
+            column.setWidth((index == Log4jItem.MESSAGE) ? 200 : 100);
             column.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
@@ -168,15 +171,7 @@ public class BandsawView extends ViewPart {
         createContextMenu();
         hookGlobalActions();
 
- //       BandsawUtilities.updateTableColumns();
-
-        BandsawUtilities.initColorDefaults();
-
-        BandsawUtilities.resetTableRows();
-
         BandsawUtilities.updateColors();
-
-//        BandsawUtilities.updateTableColumnWidths();
 
         BandsawUtilities.setViewTitle(table.getParent().getShell().getText());
 
@@ -209,6 +204,7 @@ public class BandsawView extends ViewPart {
         hs.activateHandler("net.brokentrain.commands.jump", new ActionHandler(jumpAction));
 
         viewItemAction = new Action("View") {
+            @Override
             public void run() {
                 new ShowDetailAction().run();
             }
@@ -222,6 +218,7 @@ public class BandsawView extends ViewPart {
         copyItemAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_COPY);
 
         deleteItemAction = new Action("Delete") {
+            @Override
             public void run() {
                 deleteItem();
             }
@@ -230,6 +227,7 @@ public class BandsawView extends ViewPart {
         deleteItemAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_DELETE);
 
         selectAllAction = new Action("Select All") {
+            @Override
             public void run() {
                 selectAll();
             }
@@ -292,12 +290,13 @@ public class BandsawView extends ViewPart {
      * Select all items.
      */
     private void selectAll() {
-        ((Table) viewer.getTable()).selectAll();
+        viewer.getTable().selectAll();
         updateActionEnablement();
     }
 
     private void hookDoubleClickAction() {
         viewer.getTable().addMouseListener(new IMouseListener() {
+            @Override
             public void mouseDoubleClick(MouseEvent e) {
                 jumpAction.run();
             }
@@ -307,6 +306,7 @@ public class BandsawView extends ViewPart {
     /**
      * Passing the focus request to the viewer's control.
      */
+    @Override
     public void setFocus() {
         if (BandsawUtilities.isShowing()) {
             viewer.getTable().getParent().setFocus();
@@ -322,6 +322,7 @@ public class BandsawView extends ViewPart {
     /* (non-Javadoc)
      * @see org.eclipse.ui.IViewPart#init(org.eclipse.ui.IViewSite)
      */
+    @Override
     public void init(IViewSite site) throws PartInitException {
         super.init(site);
         BandsawUtilities.setSite(site);

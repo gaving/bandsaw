@@ -54,6 +54,7 @@ public class Log4jFilterPreferencePage extends PreferencePage implements IWorkbe
     /*
      * @see PreferencePage#createContents(Composite)
      */
+    @Override
     protected Control createContents(Composite parent) {
         Composite entryTable = new Composite(parent, SWT.NULL);
 
@@ -106,6 +107,7 @@ public class Log4jFilterPreferencePage extends PreferencePage implements IWorkbe
         Button addButton = new Button(entryTable, SWT.PUSH | SWT.CENTER);
         addButton.setText("Add to List"); //$NON-NLS-1$
         addButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent event) {
                 String filter =
             combo1.getText()
@@ -124,6 +126,7 @@ public class Log4jFilterPreferencePage extends PreferencePage implements IWorkbe
         Button removeButton = new Button(entryTable, SWT.PUSH | SWT.CENTER);
         removeButton.setText("Remove From List"); //$NON-NLS-1$
         removeButton.addSelectionListener(new SelectionAdapter() {
+            @Override
             public void widgetSelected(SelectionEvent event) {
                 String selection = filterList.getSelection()[0];
                 Filter filter = Filter.composeFromForm(selection);

@@ -1,7 +1,7 @@
 package net.brokentrain.bandsaw.log4j;
 
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.apache.log4j.spi.LoggingEvent;
 

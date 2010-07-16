@@ -1,9 +1,9 @@
 package net.brokentrain.bandsaw.util;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
 
 public class StringUtil {
 

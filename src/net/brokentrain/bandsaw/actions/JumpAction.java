@@ -33,6 +33,7 @@ public class JumpAction extends Action {
         super(label);
     }
 
+    @Override
     public void run() {
 
         @SuppressWarnings("rawtypes")
@@ -85,21 +86,23 @@ public class JumpAction extends Action {
                         HashMap<String, Integer> map = new HashMap<String, Integer>();
                         MarkerUtilities.setMessage(map, message);
                         MarkerUtilities.setLineNumber(map, Integer.valueOf(lineNumber));
-                        MarkerUtilities.createMarker((IFile)resource, map, IMarker.BOOKMARK);
+                        MarkerUtilities.createMarker(resource, map, IMarker.BOOKMARK);
 
                         /* Set a marker with the text mouse overed! */
 
-                        ModuleDeclaration moduleDeclaration = SourceParserUtil.getModuleDeclaration((org.eclipse.dltk.core.ISourceModule) model, null);
+                        ModuleDeclaration moduleDeclaration = SourceParserUtil.getModuleDeclaration(model, null);
                         moduleDeclaration.traverse(new ASTVisitor() {
 
+                            @Override
                             public boolean visit(Expression s) throws Exception {
                                 System.out.println(s.toString());
                                 return super.visit(s);
                             }
 
+                            @Override
                             public boolean visit(Statement s) throws Exception {
                                 System.out.println(s.toString());
-                                return super.visit((Statement) s);
+                                return super.visit(s);
                             };
                         });
 

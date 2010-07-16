@@ -1,8 +1,6 @@
 package net.brokentrain.bandsaw.util;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Iterator;
 
 import net.brokentrain.bandsaw.Bandsaw;
@@ -18,25 +16,20 @@ import net.brokentrain.bandsaw.log4j.Log4jNDC;
 import net.brokentrain.bandsaw.log4j.Log4jServer;
 import net.brokentrain.bandsaw.log4j.Log4jThrowable;
 import net.brokentrain.bandsaw.log4j.LogSet;
-import net.brokentrain.bandsaw.preferences.ColorPreferencePage;
+import net.brokentrain.bandsaw.notification.BandsawNotification;
+import net.brokentrain.bandsaw.preferences.PreferenceConstants;
 import net.brokentrain.bandsaw.views.BandsawView;
+import net.brokentrain.bandsaw.views.BandsawViewLabelProvider;
 import net.brokentrain.bandsaw.views.BandsawViewModelProvider;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.viewers.TableViewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IViewSite;
 
 public class BandsawUtilities {
@@ -51,8 +44,6 @@ public class BandsawUtilities {
 
     private static ShowDetailAction mShowDetailAction;
 
-    private static Hashtable<String, Color> colors = new Hashtable<String, Color>(5);
-
     private static IAction mStartAction;
 
     private static IAction mStopAction;
@@ -63,7 +54,7 @@ public class BandsawUtilities {
 
     private static String sViewTitle;
 
-    private static int mServerType = Bandsaw.P_SERVER_TYPE_SOCKET_APPENDER;
+    private static int mServerType = PreferenceConstants.P_SERVER_TYPE_SOCKET_APPENDER;
 
     public static HashMap<Integer, String> getColumnLabels() {
         HashMap<Integer, String> columnLabels = new HashMap<Integer, String>();
@@ -79,7 +70,7 @@ public class BandsawUtilities {
 
     /**
      * Get the string label
-     * 
+     *
      * @param col
      * @return String
      */
@@ -106,7 +97,7 @@ public class BandsawUtilities {
 
     /**
      * This is used to convert a string column label to it's int counterpart
-     * 
+     *
      * @param colLabel
      *            The column label
      * @return int
@@ -229,8 +220,6 @@ public class BandsawUtilities {
                 tc[i].setText(BandsawUtilities.getLabelText(val));
                 updateTableColumnWidths();
             }
-
-            resetTableRows();
         }
     }
 
@@ -256,7 +245,6 @@ public class BandsawUtilities {
      */
     public static void filterUpdated() {
         LogSet.getInstance().revalidateAll();
-        resetTableRows();
     }
 
     /**
@@ -289,7 +277,7 @@ public class BandsawUtilities {
 
     /**
      * Show a message box
-     * 
+     *
      * @param message
      */
     public static void showMessage(String message) {
@@ -310,113 +298,21 @@ public class BandsawUtilities {
         mShowDetailAction = aAction;
     }
 
+
     public static void updateColors() {
-        IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
-
-        colors.clear();
-        colors.put(Level.DEBUG.toString(), new Color(Display.getCurrent(),
-                    PreferenceConverter.getColor(store,
-                        ColorPreferencePage.DEBUG_COLOR_KEY)));
-        colors.put(Level.INFO.toString(), new Color(Display.getCurrent(),
-                    PreferenceConverter.getColor(store,
-                        ColorPreferencePage.INFO_COLOR_KEY)));
-        colors.put(Level.WARN.toString(), new Color(Display.getCurrent(),
-                    PreferenceConverter.getColor(store,
-                        ColorPreferencePage.WARN_COLOR_KEY)));
-        colors.put(Level.ERROR.toString(), new Color(Display.getCurrent(),
-                    PreferenceConverter.getColor(store,
-                        ColorPreferencePage.ERROR_COLOR_KEY)));
-        colors.put(Level.FATAL.toString(), new Color(Display.getCurrent(),
-                    PreferenceConverter.getColor(store,
-                        ColorPreferencePage.FATAL_COLOR_KEY)));
-
-        // reset display
-        if (isShowing()) {
-            LogSet logSet = LogSet.getInstance();
-            Collection<LoggingEvent> validLogs = logSet.getValidLogs();
-            TableItem[] items = getTable().getItems();
-            int idx = 0;
-            for (Iterator<LoggingEvent> logIter = validLogs.iterator(); logIter.hasNext(); idx++) {
-                LoggingEvent le = logIter.next();
-                items[idx].setForeground(BandsawUtilities.getColor(le.getLevel()));
-            }
-        }
-    }
-
-    public static Color getColor(Level level) {
-        return colors.get(level.toString());
-    }
-
-    public static void initColorDefaults() {
-        IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
-        PreferenceConverter.setDefault(store,
-                ColorPreferencePage.DEBUG_COLOR_KEY, new RGB(0, 0, 0));
-        PreferenceConverter.setDefault(store,
-                ColorPreferencePage.INFO_COLOR_KEY, new RGB(0, 255, 0));
-        PreferenceConverter.setDefault(store,
-                ColorPreferencePage.WARN_COLOR_KEY, new RGB(255, 128, 0));
-        PreferenceConverter.setDefault(store,
-                ColorPreferencePage.ERROR_COLOR_KEY, new RGB(255, 0, 0));
-        PreferenceConverter.setDefault(store,
-                ColorPreferencePage.FATAL_COLOR_KEY, new RGB(255, 0, 0));
+        BandsawViewLabelProvider.initColors();
+        tableViewer.refresh();
     }
 
     /**
      * Is the view active? Use this in preference pages to see if you need to
      * call back to update view.
-     * 
+     *
      * @return
      */
     public static boolean isShowing() {
         Table table = BandsawUtilities.getTable();
         return (table != null && !table.isDisposed());
-    }
-
-    /**
-     * 
-     */
-    public static void resetTableRows() {
-        // refresh display
-        if (isShowing()) {
-            boolean visible = getTable().getVisible();
-            getTable().setVisible(false);
-            LogSet logSet = LogSet.getInstance();
-            Collection<LoggingEvent> validLogs = logSet.getValidLogs();
-            int itemCount = getTable().getItemCount();
-            TableItem[] items = getTable().getItems();
-            TableItem thisItem;
-            int idx = 0;
-
-            for (Iterator<LoggingEvent> logIter = validLogs.iterator(); logIter.hasNext(); idx++) {
-                LoggingEvent le = logIter.next();
-                if (idx < itemCount) {
-                    thisItem = items[idx];
-                } else {
-                    thisItem = createTableItem(idx);
-                }
-
-                int colCount = getTable().getColumnCount();
-                for (int colIdx = 0; colIdx < colCount; colIdx++) {
-                    String text = BandsawUtilities.getColumnText(le, colIdx);
-                    thisItem.setText(colIdx, text);
-                    thisItem.setForeground(BandsawUtilities.getColor(le.getLevel()));
-                }
-            }
-
-            // get rid of any now open spaces
-            if (idx < itemCount) {
-                getTable().remove(idx, itemCount - 1);
-            }
-
-            getTable().setVisible(visible);
-        }
-    }
-
-    /**
-     * @return
-     */
-    private static TableItem createTableItem(int index) {
-        return new TableItem(getTable(), SWT.NONE, index);
     }
 
     /**
@@ -454,7 +350,7 @@ public class BandsawUtilities {
     }
 
     /**
-     * 
+     *
      */
     public static void initActions() {
         setActionsInited(true);
@@ -521,10 +417,20 @@ public class BandsawUtilities {
     /**
      * @param le
      */
+    @SuppressWarnings("restriction")
     public static void addTableItem(LoggingEvent le) {
         BandsawViewModelProvider persons = BandsawViewModelProvider.getInstance();
         persons.getEvents().add(le);
         getViewer().refresh();
+
+        BandsawNotification popup = new BandsawNotification();
+        popup.setMessage(le.getRenderedMessage());
+        popup.create();
+        popup.open();
+
+        // tableViewer.getTable().pack();
+        // for (TableColumn column : tableViewer.getTable().getColumns())
+            // column.pack(); 
     }
 
     public static int getServerType() {

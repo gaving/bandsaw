@@ -9,7 +9,6 @@ public class BandsawViewFilter extends ViewerFilter {
     private String searchString;
 
     public void setSearchText(String s) {
-        // Search must be a substring of the existing value
         this.searchString = ".*" + s + ".*";
     }
 
@@ -18,18 +17,11 @@ public class BandsawViewFilter extends ViewerFilter {
         if (searchString == null || searchString.length() == 0) {
             return true;
         }
-        LoggingEvent p = (LoggingEvent) element;
-        // Log4jItem event = BandsawUtilities.Log4jItemFactory(propertyIndex, event1);
-        if (p.getRenderedMessage().matches(searchString)) {
+
+        LoggingEvent e = (LoggingEvent) element;
+        if (e.getRenderedMessage().matches(searchString)) {
             return true;
         }
-
-        // if (p.getFirstName().matches(searchString)) {
-            // return true;
-        // }
-        // if (p.getLastName().matches(searchString)) {
-            // return true;
-        // }
 
         return false;
     }

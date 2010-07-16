@@ -12,6 +12,7 @@ import org.eclipse.jface.viewers.TableViewer;
 
 public class ShowDetailAction extends Action {
 
+    @Override
     public void run() {
 
         /* Viewer from the view */
