@@ -43,8 +43,7 @@ public class CopyAction extends Action {
                     new Transfer[] { TextTransfer.getInstance() });
         }
 
-        IActionBars bars = ((IViewSite) BandsawUtilities.getViewer().getInput())
-                .getActionBars();
+        IActionBars bars = ((IViewSite) BandsawUtilities.getSite()).getActionBars();
         bars.getStatusLineManager().setMessage(
                 "Copied " + renderedMessage.length()
                         + " characters to clipboard");

@@ -23,6 +23,8 @@ public class Log4jPreferencePage extends FieldEditorPreferencePage implements
 
     public static final String P_AUTOMATIC = "log4j_automatic_start";
 
+    public static final String P_SHOW_NOTIFICATIONS = "show_notifications";
+
     public RadioGroupFieldEditor radioEditor = null;
 
     public StringFieldEditor serverEditor = null;
@@ -41,11 +43,14 @@ public class Log4jPreferencePage extends FieldEditorPreferencePage implements
         IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
         store.setDefault(P_PORT, 4445);
         store.setDefault(P_AUTOMATIC, false);
+        store.setDefault(P_SHOW_NOTIFICATIONS, false);
     }
 
     @Override
     public void createFieldEditors() {
         addField(new BooleanFieldEditor(P_AUTOMATIC, "&Automatic start",
+                getFieldEditorParent()));
+        addField(new BooleanFieldEditor(P_SHOW_NOTIFICATIONS, "&Show notifications",
                 getFieldEditorParent()));
     }
 

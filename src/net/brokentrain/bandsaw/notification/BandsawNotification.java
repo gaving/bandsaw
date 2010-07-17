@@ -11,10 +11,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 
+import org.apache.log4j.spi.LoggingEvent;
+
 @SuppressWarnings("restriction")
 public class BandsawNotification extends AbstractNotificationPopup {
 
-    private String message;
+    private LoggingEvent le;
 
     public BandsawNotification() {
         super(Display.getCurrent());
@@ -25,7 +27,7 @@ public class BandsawNotification extends AbstractNotificationPopup {
         composite.setLayout(new GridLayout(1, true));
         Label testLabel = new Label(composite, SWT.WRAP);
         testLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        testLabel.setText(this.message);
+        testLabel.setText(this.le.getRenderedMessage());
         testLabel.setBackground(composite.getBackground());
     }
 
@@ -36,10 +38,10 @@ public class BandsawNotification extends AbstractNotificationPopup {
 
     @Override
     protected Image getPopupShellImage(int maximumHeight) {
-        return PaintUtil.iconInfo;
+        return PaintUtil.getIcon(le.getLevel().toInt());
     }
 
-    public void setMessage(String renderedMessage) {
-        this.message = renderedMessage;
+    public void setLoggingEvent(LoggingEvent le) {
+        this.le = le;
     }
 }

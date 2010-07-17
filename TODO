@@ -12,6 +12,7 @@ Bandsaw TODO list
 - [_] Tidy up dialogs
 - [_] Improve the complex filter dialog (check out error logs filters)
 - [_] Make marker text a fancy f2 style tooltip
+- [_] Execute statement with dtp
 
 0.2
 ---

@@ -24,13 +24,12 @@ public class LifecycleListener implements IPartListener {
 
     public void partClosed(IWorkbenchPart part) {
         // boolean shutdown =
-        // MessageDialog.openQuestion(
-        // BandsawUtilities.getTable().getParent().getShell(),
-        // "Shut Down Log4j Server",
-        // "Do you want to stop listening for Log4j Messages?");
-        // if (shutdown)
-        // {
-        // Log4jServer.stopListener();
+            // MessageDialog.openQuestion(
+                    // BandsawUtilities.getTable().getParent().getShell(),
+                    // "Shut Down Log4j Server",
+                    // "Do you want to stop listening for Log4j Messages?");
+        // if (shutdown) {
+            // Log4jServer.stopListener();
         // }
     }
 

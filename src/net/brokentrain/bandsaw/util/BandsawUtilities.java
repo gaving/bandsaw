@@ -16,6 +16,7 @@ import net.brokentrain.bandsaw.log4j.Log4jNDC;
 import net.brokentrain.bandsaw.log4j.Log4jServer;
 import net.brokentrain.bandsaw.log4j.Log4jThrowable;
 import net.brokentrain.bandsaw.notification.BandsawNotification;
+import net.brokentrain.bandsaw.preferences.Log4jPreferencePage;
 import net.brokentrain.bandsaw.views.BandsawView;
 import net.brokentrain.bandsaw.views.BandsawViewLabelProvider;
 import net.brokentrain.bandsaw.views.BandsawViewModelProvider;
@@ -376,10 +377,15 @@ public class BandsawUtilities {
             getViewer().reveal(le);
         }
 
-        BandsawNotification popup = new BandsawNotification();
-        popup.setMessage(le.getRenderedMessage());
-        popup.create();
-        popup.open();
+
+        boolean notification = Bandsaw.getDefault().getPreferenceStore()
+                .getBoolean(Log4jPreferencePage.P_SHOW_NOTIFICATIONS);
+        if (notification) {
+            BandsawNotification popup = new BandsawNotification();
+            popup.setLoggingEvent(le);
+            popup.create();
+            popup.open();
+        }
 
         // tableViewer.getTable().pack();
         // for (TableColumn column : tableViewer.getTable().getColumns())

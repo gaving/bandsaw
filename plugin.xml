@@ -103,18 +103,27 @@
         </command>
         <command
             categoryId="net.brokentrain.category"
+            id="net.brokentrain.commands.execute"
+            name="%brokentrain.commands.execute">
+        </command>
+        <command
+            categoryId="net.brokentrain.category"
             id="net.brokentrain.commands.view"
             name="%brokentrain.commands.view">
         </command>
     </extension>
 
     <extension point="org.eclipse.ui.bindings">
+        <key sequence="M1+J"
+            commandId="net.brokentrain.commands.jump"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            contextId="net.brokentrain.view.context"/>
         <key sequence="M1+O"
             commandId="net.brokentrain.commands.view"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             contextId="net.brokentrain.view.context"/>
-        <key sequence="M1+J"
-            commandId="net.brokentrain.commands.jump"
+        <key sequence="M1+E"
+            commandId="net.brokentrain.commands.execute"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             contextId="net.brokentrain.view.context"/>
     </extension>

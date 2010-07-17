@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.brokentrain.bandsaw.Bandsaw;
 import net.brokentrain.bandsaw.actions.CopyAction;
+import net.brokentrain.bandsaw.actions.ExecuteQueryAction;
 import net.brokentrain.bandsaw.actions.JumpAction;
 import net.brokentrain.bandsaw.actions.ShowDetailAction;
 import net.brokentrain.bandsaw.listeners.IMouseListener;
@@ -61,7 +62,7 @@ public class BandsawView extends ViewPart {
     private Composite labelArea;
 
     Action viewItemAction, copyItemAction, deleteItemAction, selectAllAction,
-            jumpAction;
+            jumpAction, executeItemAction;
 
     /**
      * The constructor.
@@ -205,6 +206,7 @@ public class BandsawView extends ViewPart {
         contextService.activateContext("net.brokentrain.view.context");
     }
 
+    @SuppressWarnings("deprecation")
     public final void createActions() {
 
         IHandlerService hs = (IHandlerService) getSite().getService(
@@ -249,6 +251,14 @@ public class BandsawView extends ViewPart {
                 .getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
         deleteItemAction
                 .setActionDefinitionId(IWorkbenchCommandConstants.EDIT_DELETE);
+
+        executeItemAction = new ExecuteQueryAction("Execute");
+        hs.activateHandler("net.brokentrain.commands.execute", new ActionHandler(
+                executeItemAction));
+        executeItemAction.setImageDescriptor(PlatformUI.getWorkbench()
+                .getSharedImages()
+                .getImageDescriptor(ISharedImages.IMG_TOOL_UP_HOVER));
+        executeItemAction.setActionDefinitionId("net.brokentrain.commands.execute");
 
         selectAllAction = new Action("Select All") {
             @Override
@@ -296,9 +306,11 @@ public class BandsawView extends ViewPart {
     private void fillContextMenu(final IMenuManager mgr) {
         mgr.add(jumpAction);
         mgr.add(viewItemAction);
+        mgr.add(executeItemAction);
         mgr.add(new Separator());
         mgr.add(copyItemAction);
         mgr.add(deleteItemAction);
+        mgr.add(new Separator());
         mgr.add(selectAllAction);
     }
 
