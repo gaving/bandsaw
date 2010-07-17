@@ -148,11 +148,11 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.dltk.ui;bundle-version="2.0.0",
  org.eclipse.php.core;bundle-version="2.2.0",
  org.eclipse.jface.text;bundle-version="3.6.0",
- org.eclipse.mylyn.commons.ui;bundle-version="3.4.0",
- org.eclipse.datatools.sdk;bundle-version="1.7.0",
- org.eclipse.datatools.connectivity;bundle-version="1.2.0",
- org.eclipse.datatools.sqltools.editor.core;bundle-version="1.0.0",
- org.eclipse.datatools.sqltools.sql;bundle-version="1.0.0",
- org.eclipse.datatools.sqltools.sqleditor;bundle-version="1.0.1"
+ org.eclipse.mylyn.commons.ui;bundle-version="3.4.0";resolution:=optional,
+ org.eclipse.datatools.sdk;bundle-version="1.7.0";resolution:=optional,
+ org.eclipse.datatools.connectivity;bundle-version="1.2.0";resolution:=optional,
+ org.eclipse.datatools.sqltools.editor.core;bundle-version="1.0.0";resolution:=optional,
+ org.eclipse.datatools.sqltools.sql;bundle-version="1.0.0";resolution:=optional,
+ org.eclipse.datatools.sqltools.sqleditor;bundle-version="1.0.1";resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

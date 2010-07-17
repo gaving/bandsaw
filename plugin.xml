@@ -37,6 +37,10 @@
             category="net.brokentrain.bandsaw.preferences.Log4jPreferencePage"
             class="net.brokentrain.bandsaw.preferences.ColorPreferencePage" id="net.brokentrain.bandsaw.preferences.ColorPreferencePage">
         </page>
+        <page name="Data Tools"
+            category="net.brokentrain.bandsaw.preferences.Log4jPreferencePage"
+            class="net.brokentrain.bandsaw.preferences.DataToolsPreferencePage" id="net.brokentrain.bandsaw.preferences.DataToolsPreferencePage">
+        </page>
     </extension>
 
     <extension id="net.brokentrain.bandsaw.viewactions" point="org.eclipse.ui.viewActions">

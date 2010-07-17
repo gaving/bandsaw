@@ -12,10 +12,14 @@ Bandsaw TODO list
 - [_] Tidy up dialogs
 - [_] Improve the complex filter dialog (check out error logs filters)
 - [_] Make marker text a fancy f2 style tooltip
-- [_] Execute statement with dtp
+- [_] Bandsaw perspective with log, editor, sql results?
+- [_] Update publisher
 
 0.2
 ---
+
+- [x] Execute statement with dtp (including preferences page)
+- [x] Notifications on a new log event? Preference. Introduces mylyn dep.
 
 - [x] Allow sorting of the columns
 - [x] Allow filtering of the columns (type as you filter box)
@@ -24,7 +28,6 @@ Bandsaw TODO list
 - [x] Remove socket hub appender stuff completely
 - [x] Turn pause into a lock scroll bar action
 - [x] Tidy up menu items
-- [_] Notifications on a new log event? Preference. Introduces mylyn dep.
 - [_] Make the column widths a bit better
 - [_] Let the colors be background colors too (pastel gradients, bold?)
 

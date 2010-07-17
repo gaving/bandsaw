@@ -3,6 +3,8 @@ package net.brokentrain.bandsaw.actions;
 import java.util.HashMap;
 import java.util.List;
 
+import net.brokentrain.bandsaw.Bandsaw;
+import net.brokentrain.bandsaw.preferences.DataToolsPreferencePage;
 import net.brokentrain.bandsaw.util.BandsawUtilities;
 
 import org.apache.log4j.spi.LoggingEvent;
@@ -44,15 +46,24 @@ public class ExecuteQueryAction extends Action {
 
     private void executeQuery(String query) {
         try {
-            IConnectionProfile profile =
-                ProfileManager.getInstance().getProfileByName("sokar");
-            IStatus status = profile.connect();
-            if (status.getCode() == IStatus.OK) {
-                executeDDL(query, profile);
-            } else {
-                if (status.getException() != null) {
-                    status.getException().printStackTrace();
+
+            String defaultProfile = Bandsaw.getDefault().getPreferenceStore()
+                .getString(DataToolsPreferencePage.DEFAULT_DATA_PROFILE);
+            if ((defaultProfile != null) && (!defaultProfile.isEmpty())) {
+
+                IConnectionProfile profile =
+                    ProfileManager.getInstance().getProfileByName(defaultProfile);
+                IStatus status = profile.connect();
+                if (status.getCode() == IStatus.OK) {
+                    executeDDL(query, profile);
+                } else {
+                    if (status.getException() != null) {
+                        status.getException().printStackTrace();
+                    }
                 }
+            } else {
+                System.out.println("No default profile found to use");
+                // TODO: Message
             }
         } catch (Exception e) {
             e.printStackTrace();
