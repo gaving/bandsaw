@@ -6,20 +6,20 @@ Bandsaw TODO list
 
 - [_] Integrate checkstyle into the ant task
 - [_] Javadoc and lots of formatting updates
-- [_] Optionally allow the log to be stored somewhere
+- [_] Optionally allow the log to be tee'd somewhere
 - [_] Persist logs after close
 - [_] Display ip address in prefs
 - [_] Tidy up dialogs
 - [_] Improve the complex filter dialog (check out error logs filters)
 - [_] Make marker text a fancy f2 style tooltip
 - [_] Bandsaw perspective with log, editor, sql results?
-- [_] Update publisher
 
 0.2
 ---
 
 - [x] Execute statement with dtp (including preferences page)
 - [x] Notifications on a new log event? Preference. Introduces mylyn dep.
+- [x] Update site
 
 - [x] Allow sorting of the columns
 - [x] Allow filtering of the columns (type as you filter box)
@@ -30,6 +30,12 @@ Bandsaw TODO list
 - [x] Tidy up menu items
 - [_] Make the column widths a bit better
 - [_] Let the colors be background colors too (pastel gradients, bold?)
+- [_] Fix the column labels
+- [_] Better error handling on the optional features
+- [_] Use error log icons for levels
+- [x] Match the date format of the error log
+- [_] Change level column to message + level
+- [_] Change bandsaw icon
 
 0.1
 ---

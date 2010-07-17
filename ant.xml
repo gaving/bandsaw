@@ -17,6 +17,11 @@
     <property name="time" value="${TSTAMP}" />
     <property name="timestamp" value="${date}${time}" />
 
+    <!-- Key directories -->
+    <property name="local-update-site" value="update"/>
+    <property name="remote-update-site" value="brokentrain.net/bandsaw/"/>
+    <property name="remote-auth" value="gav@brokentrain.net"/>
+
     <path id="ant-contrib-classpath">
         <fileset dir="${include}/" includes="ant-contrib-*.jar"/>
     </path>
@@ -158,6 +163,13 @@
             </fileset>
         </copy>
 
+    </target>
+
+    <target name="deploy">
+        <echo>Deploying update site..</echo>
+        <exec executable="rsync">
+            <arg line="rsync -e ssh -Cavz ${local-update-site}/ ${remote-auth}:${remote-update-site}/" />
+        </exec>
     </target>
 
 </project>
