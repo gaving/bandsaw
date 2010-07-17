@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <description name="Bandsaw" url="http://brokentrain.net/bandsaw/">
+      Bandsaw
+   </description>
+   <feature url="features/net.brokentrain.bandsaw.feature_0.2.0.jar" id="net.brokentrain.bandsaw.feature" version="0.2">
+      <category name="Bandsaw"/>
+   </feature>
+   <feature url="features/net.brokentrain.bandsaw.feature_0.2.1.jar" id="net.brokentrain.bandsaw.feature" version="0.2.1">
+      <category name="Bandsaw"/>
+   </feature>
+   <category-def name="Bandsaw" label="Bandsaw"/>
+</site>

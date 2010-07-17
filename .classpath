@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="lib" path="include/apache-log4j-component-gump-22022009.jar" sourcepath="bandsawsrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="include/apache-log4j-extras-1.0.jar" sourcepath="bandsawsrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="include/apache-log4j-receivers-gump-22022009.jar" sourcepath="bandsawsrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="include/jakarta-regexp-1.2.jar" sourcepath="bandsawsrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="include/log4j-gump-22022009.jar" sourcepath="bandsawsrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="include/ant-contrib-1.0b1.jar"/>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/org.eclipse.swt"/>
+	<classpathentry exported="true" kind="lib" path="include/apache-log4j-component-gump-22022009.jar"/>
+	<classpathentry exported="true" kind="lib" path="include/apache-log4j-extras-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="include/apache-log4j-receivers-gump-22022009.jar"/>
+	<classpathentry exported="true" kind="lib" path="include/jakarta-regexp-1.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="include/log4j-1.2.16.jar"/>
+	<classpathentry exported="true" kind="lib" path="include/log4j-gump-22022009.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

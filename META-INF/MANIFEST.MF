@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: bandsaw
 Bundle-SymbolicName: net.brokentrain.bandsaw; singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 0.2.1
 Bundle-Activator: net.brokentrain.bandsaw.Bandsaw
 Bundle-ClassPath: .,
  include/apache-log4j-component-gump-22022009.jar,
@@ -11,12 +11,7 @@ Bundle-ClassPath: .,
  include/jakarta-regexp-1.2.jar,
  include/log4j-gump-22022009.jar,
  include/log4j-1.2.16.jar
-Export-Package: net.brokentrain.bandsaw;
-  uses:="org.eclipse.jface.preference,
-   org.apache.log4j,
-   org.eclipse.core.resources,
-   org.eclipse.ui.plugin,
-   org.osgi.framework",
+Export-Package: net.brokentrain.bandsaw;uses:="org.apache.log4j,org.eclipse.ui.plugin,org.osgi.framework",
  net.brokentrain.bandsaw.actions;uses:="org.eclipse.jface.action,org.eclipse.ui,org.eclipse.jface.viewers",
  net.brokentrain.bandsaw.dialogs;
   uses:="org.eclipse.swt.graphics,
@@ -25,17 +20,34 @@ Export-Package: net.brokentrain.bandsaw;
    org.eclipse.jface.dialogs",
  net.brokentrain.bandsaw.listeners;uses:="org.eclipse.swt.events,org.eclipse.ui",
  net.brokentrain.bandsaw.log4j;uses:="org.apache.log4j,org.apache.log4j.spi,org.eclipse.swt.widgets",
+ net.brokentrain.bandsaw.notification;
+  uses:="org.eclipse.mylyn.internal.provisional.commons.ui,
+   org.eclipse.swt.graphics,
+   org.apache.log4j.spi,
+   org.eclipse.swt.widgets",
  net.brokentrain.bandsaw.preferences;
   uses:="org.eclipse.jface.preference,
    org.eclipse.ui,
    org.eclipse.jface.util,
+   org.eclipse.swt.widgets,
+   org.eclipse.core.runtime.preferences",
+ net.brokentrain.bandsaw.util;
+  uses:="net.brokentrain.bandsaw.log4j,
+   org.eclipse.ui,
+   org.eclipse.swt.custom,
+   org.apache.log4j.spi,
+   org.eclipse.dltk.core,
+   net.brokentrain.bandsaw.views,
+   org.eclipse.jface.action,
+   org.eclipse.core.resources,
+   org.eclipse.swt.graphics,
+   org.eclipse.jface.viewers,
    org.eclipse.swt.widgets",
- net.brokentrain.bandsaw.util,
  net.brokentrain.bandsaw.views;
   uses:="org.eclipse.jface.action,
    org.eclipse.ui,
-   org.eclipse.jface.viewers,
    org.eclipse.swt.graphics,
+   org.eclipse.jface.viewers,
    org.eclipse.ui.part,
    org.eclipse.swt.widgets",
  org.apache.log4j;uses:="org.apache.log4j.helpers,org.apache.log4j.or,org.apache.log4j.spi",
@@ -147,12 +159,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.dltk.core;bundle-version="2.0.0",
  org.eclipse.dltk.ui;bundle-version="2.0.0",
  org.eclipse.php.core;bundle-version="2.2.0",
- org.eclipse.jface.text;bundle-version="3.6.0",
  org.eclipse.mylyn.commons.ui;bundle-version="3.4.0";resolution:=optional,
- org.eclipse.datatools.sdk;bundle-version="1.7.0";resolution:=optional,
- org.eclipse.datatools.connectivity;bundle-version="1.2.0";resolution:=optional,
  org.eclipse.datatools.sqltools.editor.core;bundle-version="1.0.0";resolution:=optional,
- org.eclipse.datatools.sqltools.sql;bundle-version="1.0.0";resolution:=optional,
  org.eclipse.datatools.sqltools.sqleditor;bundle-version="1.0.1";resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

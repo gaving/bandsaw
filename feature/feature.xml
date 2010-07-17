@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="net.brokentrain.bandsaw.feature"
+      label="Bandsaw"
+      version="0.2.1"
+      provider-name="brokentrain.net">
+
+   <description url="http://brokentrain.net/bandsaw/">
+      Log4* Log Viewer
+
+Added DTP query support.
+   </description>
+
+   <copyright url="http://brokentrain.net/bandsaw/">
+      See LICENSE
+   </copyright>
+
+   <license url="See LICENSE">
+      See LICENSE
+   </license>
+
+   <plugin
+         id="net.brokentrain.bandsaw"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
