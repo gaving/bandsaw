@@ -12,6 +12,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggingEvent;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.jface.viewers.ITableFontProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -63,6 +64,7 @@ public class BandsawViewLabelProvider extends LabelProvider implements
     }
 
     public String getColumnText(final Object obj, final int index) {
+        System.out.println("Getting index " + index);
         LoggingEvent event = (LoggingEvent) obj;
         Log4jItem item = BandsawUtilities.Log4jItemFactory(index, event);
         return item.getText();
@@ -109,6 +111,7 @@ public class BandsawViewLabelProvider extends LabelProvider implements
      * int)
      */
     public Font getFont(Object element, int index) {
+        // return JFaceResources.getFontRegistry().getBold(JFaceResources.DEFAULT_FONT);
         /* Messes up sorted, and the column colours should be updated! */
        return null;
          // return boldFont;

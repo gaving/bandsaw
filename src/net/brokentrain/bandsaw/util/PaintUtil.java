@@ -60,9 +60,9 @@ public class PaintUtil {
     }
 
     public static void initIcons() {
-        iconInfo = loadImage("/icons/info.png");
-        iconWarning = loadImage("/icons/warning.png");
-        iconError = loadImage("/icons/error.png");
+        iconInfo = loadImage("/icons/info.gif");
+        iconWarning = loadImage("/icons/warning.gif");
+        iconError = loadImage("/icons/error.gif");
     }
 
     public static boolean isset(Image image) {
