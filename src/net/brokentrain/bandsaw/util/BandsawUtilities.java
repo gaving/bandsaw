@@ -13,7 +13,6 @@ import net.brokentrain.bandsaw.log4j.Log4jLevel;
 import net.brokentrain.bandsaw.log4j.Log4jLineNumber;
 import net.brokentrain.bandsaw.log4j.Log4jMessage;
 import net.brokentrain.bandsaw.log4j.Log4jNDC;
-import net.brokentrain.bandsaw.log4j.Log4jServer;
 import net.brokentrain.bandsaw.log4j.Log4jThrowable;
 import net.brokentrain.bandsaw.notification.BandsawNotification;
 import net.brokentrain.bandsaw.preferences.Log4jPreferencePage;
@@ -22,13 +21,12 @@ import net.brokentrain.bandsaw.views.BandsawViewLabelProvider;
 import net.brokentrain.bandsaw.views.BandsawViewModelProvider;
 
 import org.apache.log4j.spi.LoggingEvent;
-import org.eclipse.jface.action.ActionContributionItem;
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IViewSite;
 
 public class BandsawUtilities {
@@ -39,13 +37,7 @@ public class BandsawUtilities {
 
     private static BandsawView mView;
 
-    private static IAction mStartAction;
-
-    private static IAction mStopAction;
-
     private static IViewSite mSite;
-
-    private static boolean mActionsInited = false;
 
     public static HashMap<Integer, String> getColumnLabels() {
         HashMap<Integer, String> columnLabels = new HashMap<Integer, String>();
@@ -246,12 +238,6 @@ public class BandsawUtilities {
     }
 
     /**
-     * @param aServer
-     */
-    public static void setSocketServer(Log4jServer aServer) {
-    }
-
-    /**
      * Show a message box
      *
      * @param message
@@ -263,90 +249,18 @@ public class BandsawUtilities {
 
     public static void updateColors() {
         BandsawViewLabelProvider.initColors();
-        tableViewer.refresh();
+
+        if (isShowing()) {
+            tableViewer.refresh();
+        }
     }
 
     /**
-     * Is the view active? Use this in preference pages to see if you need to
-     * call back to update view.
-     *
      * @return
      */
     public static boolean isShowing() {
         Table table = BandsawUtilities.getTable();
         return (table != null && !table.isDisposed());
-    }
-
-    /**
-     * @return
-     */
-    public static IAction getStartAction() {
-        if (!isActionsInited()) {
-            initActions();
-        }
-        return mStartAction;
-    }
-
-    /**
-     * @return
-     */
-    public static IAction getStopAction() {
-        if (!isActionsInited()) {
-            initActions();
-        }
-        return mStopAction;
-    }
-
-    /**
-     * @param aAction
-     */
-    public static void setStartAction(IAction aAction) {
-        mStartAction = aAction;
-    }
-
-    /**
-     * @param aAction
-     */
-    public static void setStopAction(IAction aAction) {
-        mStopAction = aAction;
-    }
-
-    /**
-     *
-     */
-    public static void initActions() {
-        setActionsInited(true);
-        BandsawUtilities.setStartAction(((ActionContributionItem) getSite()
-                .getActionBars().getToolBarManager()
-                .find("Bandsaw.StartAction")).getAction());
-
-        BandsawUtilities
-                .setStopAction(((ActionContributionItem) getSite()
-                        .getActionBars().getToolBarManager()
-                        .find("Bandsaw.StopAction")).getAction());
-
-        Log4jServer instance = Log4jServer.getLog4jServer();
-        if (instance != null && instance.isServerUp()) {
-            getStartAction().setEnabled(false);
-            getStopAction().setEnabled(true);
-        } else {
-            getStartAction().setEnabled(true);
-            getStopAction().setEnabled(false);
-        }
-    }
-
-    /**
-     * @return
-     */
-    public static boolean isActionsInited() {
-        return mActionsInited;
-    }
-
-    /**
-     * @param aB
-     */
-    public static void setActionsInited(boolean aB) {
-        mActionsInited = aB;
     }
 
     /**
@@ -368,15 +282,16 @@ public class BandsawUtilities {
      */
     @SuppressWarnings("restriction")
     public static void addTableItem(LoggingEvent le) {
-        BandsawViewModelProvider persons = BandsawViewModelProvider
+        BandsawViewModelProvider events = BandsawViewModelProvider
                 .getInstance();
-        persons.getEvents().add(le);
+        events.getEvents().add(le);
         getViewer().refresh();
 
         if (!LockAction.isLocked()) {
             getViewer().reveal(le);
         }
-
+        
+        updateContentDescription();        
 
         boolean notification = Bandsaw.getDefault().getPreferenceStore()
                 .getBoolean(Log4jPreferencePage.P_SHOW_NOTIFICATIONS);
@@ -386,9 +301,29 @@ public class BandsawUtilities {
             popup.create();
             popup.open();
         }
-
+        
         // tableViewer.getTable().pack();
         // for (TableColumn column : tableViewer.getTable().getColumns())
         // column.pack();
+    }
+
+
+    public static void updateContentDescription() {
+        getView().setContentDescription(getViewer().getTable().getItemCount() + " items");
+    }
+
+    public static void updateStatus(String message) {
+        IActionBars bars = ((IViewSite) getSite()).getActionBars();
+        bars.getStatusLineManager().setMessage(message);
+    }
+
+    /* TODO Replace this with proper sql validator */
+    public static boolean isSQL(String statement) {
+        statement = statement.trim().toUpperCase();
+        return (statement.startsWith("SELECT") ||
+        (statement.startsWith("UPDATE")) ||
+        (statement.startsWith("INSERT")) ||
+        (statement.startsWith("CREATE")) ||
+        (statement.startsWith("DROP")));
     }
 }

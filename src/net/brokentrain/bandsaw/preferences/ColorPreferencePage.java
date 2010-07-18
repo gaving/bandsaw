@@ -35,7 +35,7 @@ public class ColorPreferencePage extends FieldEditorPreferencePage implements
         PreferenceConverter.setDefault(store,
                 ColorPreferencePage.DEBUG_COLOR_KEY, new RGB(0, 0, 0));
         PreferenceConverter.setDefault(store,
-                ColorPreferencePage.INFO_COLOR_KEY, new RGB(0, 255, 0));
+                ColorPreferencePage.INFO_COLOR_KEY, new RGB(70, 30, 180));
         PreferenceConverter.setDefault(store,
                 ColorPreferencePage.WARN_COLOR_KEY, new RGB(255, 128, 0));
         PreferenceConverter.setDefault(store,

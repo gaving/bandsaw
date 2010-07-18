@@ -5,7 +5,7 @@
     <extension id="Bandsaw.views" name="org.eclipse.ui.views"
         point="org.eclipse.ui.views">
         <category name="Bandsaw" id="BandsawEclipseProject.Bandsaw" />
-        <view name="Bandsaw" icon="icons/bandsaw.png" category="BandsawEclipseProject.Bandsaw"
+        <view name="Bandsaw" icon="icons/bandsaw.gif" category="BandsawEclipseProject.Bandsaw"
             class="net.brokentrain.bandsaw.views.BandsawView" id="net.brokentrain.bandsaw.views.BandsawView">
         </view>
     </extension>
@@ -23,11 +23,11 @@
         <page name="Bandsaw"
             class="net.brokentrain.bandsaw.preferences.Log4jPreferencePage" id="net.brokentrain.bandsaw.preferences.Log4jPreferencePage">
         </page>
-        <page name="Filters"
-            category="net.brokentrain.bandsaw.preferences.Log4jPreferencePage"
-            class="net.brokentrain.bandsaw.preferences.Log4jFilterPreferencePage"
-            id="net.brokentrain.bandsaw.preferences.Log4jFilterPreferencePage">
-        </page>
+        <!-- <page name="Filters" -->
+            <!-- category="net.brokentrain.bandsaw.preferences.Log4jPreferencePage" -->
+            <!-- class="net.brokentrain.bandsaw.preferences.Log4jFilterPreferencePage" -->
+            <!-- id="net.brokentrain.bandsaw.preferences.Log4jFilterPreferencePage"> -->
+        <!-- </page> -->
         <page name="Columns"
             category="net.brokentrain.bandsaw.preferences.Log4jPreferencePage"
             class="net.brokentrain.bandsaw.preferences.Log4jColumnsPreferencePage"
@@ -56,17 +56,10 @@
                 icon="platform:/plugin/org.eclipse.ui.console/icons/full/elcl16/clear_co.gif" label="&amp;Clear Display"
                 menubarPath="Bandsaw.DisplayMenu/Bandsaw.DisplayGroup1" tooltip="&amp;Clear">
             </action>
-            <action style="push" id="Bandsaw.StopAction" toolbarPath="Group2"
-                class="net.brokentrain.bandsaw.actions.StopAction" enablesFor="*"
-                icon="icons/stop.png" label="S&amp;top Server"
-                menubarPath="Bandsaw.Log4jServerMenu/Bandsaw.Log4jServerGroup1"
-                tooltip="S&amp;top Server">
-            </action>
-            <action style="push" id="Bandsaw.StartAction" toolbarPath="Group2"
-                class="net.brokentrain.bandsaw.actions.StartAction" enablesFor="*"
-                icon="icons/start.png" label="&amp;Start Server"
-                menubarPath="Bandsaw.Log4jServerMenu/Bandsaw.Log4jServerGroup1"
-                tooltip="&amp;Start Server">
+            <action style="toggle" id="Bandsaw.ToggleAction" toolbarPath="Group2"
+                class="net.brokentrain.bandsaw.actions.ToggleAction" enablesFor="*"
+                icon="platform:/plugin/org.eclipse.ui.console/icons/full/cview16/console_view.gif" label="Toggle server status"
+                tooltip="Toggle server status">
             </action>
             <action style="toggle" id="Bandsaw.ShowFilter"
                 class="net.brokentrain.bandsaw.actions.ShowFilterActionDelegate" enablesFor="*"
@@ -74,10 +67,6 @@
                 tooltip="&amp;Show text filter">
             </action>
 
-            <menu label="Log4j Server" path="additions" id="Bandsaw.Log4jServerMenu">
-                <separator name="Bandsaw.Log4jServerGroup1">
-                </separator>
-            </menu>
             <menu label="Display" path="additions" id="Bandsaw.DisplayMenu">
                 <separator name="Bandsaw.DisplayGroup1">
                 </separator>

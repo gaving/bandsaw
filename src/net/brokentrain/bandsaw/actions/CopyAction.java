@@ -10,8 +10,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IViewSite;
 
 public class CopyAction extends Action {
 
@@ -39,14 +37,13 @@ public class CopyAction extends Action {
         for (Object obj : leList) {
             LoggingEvent le = (LoggingEvent) obj;
             renderedMessage += le.getRenderedMessage();
-            clipboard.setContents(new Object[] { renderedMessage },
-                    new Transfer[] { TextTransfer.getInstance() });
         }
 
-        IActionBars bars = ((IViewSite) BandsawUtilities.getSite()).getActionBars();
-        bars.getStatusLineManager().setMessage(
-                "Copied " + renderedMessage.length()
-                        + " characters to clipboard");
+        clipboard.setContents(new Object[] { renderedMessage },
+                new Transfer[] { TextTransfer.getInstance() });
+
+        BandsawUtilities.updateStatus("Copied " + renderedMessage.length()
+                + " characters to clipboard");
         clipboard.dispose();
     }
 }

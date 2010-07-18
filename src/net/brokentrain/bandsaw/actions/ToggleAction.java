@@ -9,42 +9,37 @@ import org.eclipse.ui.IViewActionDelegate;
 import org.eclipse.ui.IViewPart;
 
 /**
- * TODO: Provide description for "StartAction".
- * 
  * @see IViewActionDelegate
  */
-public class StartAction implements IViewActionDelegate {
-    /**
-     * TODO: Implement the "StartAction" constructor.
-     */
-    public StartAction() {
+public class ToggleAction implements IViewActionDelegate {
+
+    public ToggleAction() {
     }
 
     /**
-     * TODO: Implement "run".
-     * 
      * @see IViewActionDelegate#run
      */
     public void run(IAction action) {
-        boolean success = Log4jServer.startListener();
-        if (success) {
-            action.setEnabled(false);
+        if (action.isChecked()) {
+            Log4jServer.stopListener();
+            BandsawUtilities.updateStatus("Server stopped");
         } else {
-            BandsawUtilities.showMessage("Could not start Log4j");
+            boolean success = Log4jServer.startListener();
+            if (!success) {
+                BandsawUtilities.showMessage("Could not start Log4j");
+            } else {
+                BandsawUtilities.updateStatus("Server started");
+            }
         }
     }
 
     /**
-     * TODO: Implement "selectionChanged".
-     * 
      * @see IViewActionDelegate#selectionChanged
      */
     public void selectionChanged(IAction action, ISelection selection) {
     }
 
     /**
-     * TODO: Implement "init".
-     * 
      * @see IViewActionDelegate#init
      */
     public void init(IViewPart view) {

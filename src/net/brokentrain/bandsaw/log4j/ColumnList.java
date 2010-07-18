@@ -2,20 +2,18 @@ package net.brokentrain.bandsaw.log4j;
 
 import java.util.Iterator;
 import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import net.brokentrain.bandsaw.util.BandsawUtilities;
 
 import org.apache.log4j.spi.LoggingEvent;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 
 public class ColumnList {
 
-    Vector<Integer> columns = new Vector<Integer>();
+    ArrayList<Integer> columns = new ArrayList<Integer>();
+    ArrayList<Integer> defaultCols = new ArrayList<Integer>();
 
-    private static boolean notInit = true;
+    private static boolean instance = false;
 
     private static ColumnList cl;
 
@@ -27,9 +25,9 @@ public class ColumnList {
     }
 
     public static ColumnList getInstance() {
-        if (notInit) {
+        if (!instance) {
             cl = new ColumnList();
-            notInit = false;
+            instance = true;
         }
         return cl;
     }
@@ -41,28 +39,14 @@ public class ColumnList {
 
     public void add(int col) {
         columns.add(new Integer(col));
-        if (BandsawUtilities.isShowing()) {
-            new TableColumn(BandsawUtilities.getTable(), SWT.NONE);
-        }
     }
 
     public void clear() {
-        Table table = BandsawUtilities.getTable();
-        while (table.getColumnCount() > 0) {
-            int lastOne = table.getColumnCount() - 1;
-            table.getColumn(lastOne).dispose();
-        }
-
         columns.clear();
     }
 
     public void remove(int index) {
         columns.remove(index);
-        if (BandsawUtilities.isShowing()) {
-            Table table = BandsawUtilities.getTable();
-            TableColumn col = table.getColumn(table.getColumnCount() - 1);
-            col.dispose();
-        }
     }
 
     public Iterator<Integer> getList() {
@@ -73,11 +57,10 @@ public class ColumnList {
         return columns.size();
     }
 
-    public int getColType(int index) {
-        return (columns.get(index)).intValue();
+    public ArrayList<Integer> getDefaultColumns() {
+        return defaultCols;
     }
 
-    // TODO: Make this thread safe
     public int[] getCols() {
         int size = getColumnCount();
         int[] list = new int[size];
@@ -101,20 +84,6 @@ public class ColumnList {
         return j;
     }
 
-    public static String[] strdeSerialize(String object) {
-        StringTokenizer st = new StringTokenizer(object,
-                Character.toString(delimiter));
-        int size = st.countTokens();
-        String[] j = new String[size];
-        int i = 0;
-        while (st.hasMoreTokens()) {
-            String thisVal = "";
-            thisVal = st.nextToken();
-            j[i++] = thisVal;
-        }
-        return j;
-    }
-
     public static String serialize(int[] columns) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < columns.length; i++) {
@@ -126,11 +95,13 @@ public class ColumnList {
         return sb.toString();
     }
 
+    @SuppressWarnings("unchecked")
     public void setColList(int[] list) {
-        columns = new Vector<Integer>();
+        columns = new ArrayList<Integer>();
         for (int i = 0; i < list.length; i++) {
             columns.add(new Integer(list[i]));
         }
+        defaultCols = (ArrayList<Integer>) columns.clone();
     }
 
 }

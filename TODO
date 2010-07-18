@@ -14,8 +14,8 @@ Bandsaw TODO list
 - [_] Make marker text a fancy f2 style tooltip
 - [_] Bandsaw perspective with log, editor, sql results?
 
-0.2
----
+0.2.5
+-----
 
 - [x] Execute statement with dtp (including preferences page)
 - [x] Notifications on a new log event? Preference. Introduces mylyn dep.
@@ -32,10 +32,11 @@ Bandsaw TODO list
 - [_] Let the colors be background colors too (pastel gradients, bold?)
 - [_] Fix the column labels
 - [_] Better error handling on the optional features
-- [_] Use error log icons for levels
+- [x] Use error log icons for levels
 - [x] Match the date format of the error log
-- [_] Change level column to message + level
-- [_] Change bandsaw icon
+- [x] Change level column to message + level
+- [x] Change bandsaw icon
+- [_] Bar title thingy that shows you how many log messages
 
 0.1
 ---

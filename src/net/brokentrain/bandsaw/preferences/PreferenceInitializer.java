@@ -21,8 +21,17 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     @Override
     public void initializeDefaultPreferences() {
         IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
-        int[] defaultCols = { Log4jItem.LEVEL, Log4jItem.CATEGORY,
-                Log4jItem.MESSAGE };
+
+        int[] defaultCols = {
+            Log4jItem.LEVEL,
+            Log4jItem.CATEGORY,
+            Log4jItem.MESSAGE,
+            Log4jItem.LINE_NUMBER,
+            Log4jItem.DATE,
+            Log4jItem.NDC,
+            Log4jItem.THROWABLE
+        };
+
         store.setDefault(PreferenceConstants.P_COLUMNS,
                 ColumnList.serialize(defaultCols));
     }

@@ -1,7 +1,5 @@
 package net.brokentrain.bandsaw.log4j;
 
-import net.brokentrain.bandsaw.util.BandsawUtilities;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -58,9 +56,6 @@ public class Log4jServer extends Thread {
 
         mServerUp = true;
 
-        BandsawUtilities.getStartAction().setEnabled(false);
-        BandsawUtilities.getStopAction().setEnabled(true);
-
         return true;
     }
 
@@ -72,9 +67,6 @@ public class Log4jServer extends Thread {
         rootLogger.setLevel(Level.toLevel("OFF"));
 
         mServerUp = false;
-
-        BandsawUtilities.getStartAction().setEnabled(true);
-        BandsawUtilities.getStopAction().setEnabled(false);
     }
 
     /**

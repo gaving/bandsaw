@@ -5,6 +5,8 @@ import net.brokentrain.bandsaw.log4j.Log4jServer;
 import net.brokentrain.bandsaw.preferences.Log4jPreferencePage;
 import net.brokentrain.bandsaw.util.BandsawUtilities;
 
+import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWorkbenchPart;
 
@@ -14,7 +16,17 @@ public class LifecycleListener implements IPartListener {
         boolean automatic = Bandsaw.getDefault().getPreferenceStore()
                 .getBoolean(Log4jPreferencePage.P_AUTOMATIC);
         if (automatic) {
-            Log4jServer.startListener();
+            boolean success = Log4jServer.startListener();
+            if (success) {
+                /* TODO: Show host and port */
+                BandsawUtilities.updateStatus("Server started");
+
+                IContributionItem item = BandsawUtilities.getSite()
+                    .getActionBars().getToolBarManager()
+                               .find("Bandsaw.ToggleAction");
+                ((ActionContributionItem) item).getAction().setChecked(true);
+//                ((PluginAction) ((ActionContributionItem) item).getAction()).g
+            }
         }
     }
 
@@ -26,8 +38,8 @@ public class LifecycleListener implements IPartListener {
         // boolean shutdown =
             // MessageDialog.openQuestion(
                     // BandsawUtilities.getTable().getParent().getShell(),
-                    // "Shut Down Log4j Server",
-                    // "Do you want to stop listening for Log4j Messages?");
+                    // "Stop listening",
+                    // "Do you want to stop listening for log4j events?");
         // if (shutdown) {
             // Log4jServer.stopListener();
         // }

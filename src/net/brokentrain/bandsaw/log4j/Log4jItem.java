@@ -14,7 +14,7 @@ public interface Log4jItem {
     public static final String LABEL_LEVEL = "Level";
     public static final String LABEL_CATEGORY = "Category";
     public static final String LABEL_MESSAGE = "Message";
-    public static final String LABEL_LINE_NUMBER = "Line#";
+    public static final String LABEL_LINE_NUMBER = "Line";
     public static final String LABEL_DATE = "Date";
     public static final String LABEL_NDC = "NDC";
     public static final String LABEL_THROWABLE = "Throwable";

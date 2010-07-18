@@ -17,7 +17,6 @@ import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.jface.viewers.ITableFontProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
@@ -29,12 +28,7 @@ public class BandsawViewLabelProvider extends LabelProvider implements
     private static Hashtable<String, Color> colors = new Hashtable<String, Color>(
             5);
 
-    private static Font boldFont;
-
     public BandsawViewLabelProvider() {
-
-        // boldFont = new Font(Display.getCurrent(), "Tahoma", 10, SWT.BOLD | SWT.ITALIC);
-        boldFont = new Font(Display.getCurrent(), "Tahoma", 10, SWT.BOLD);
         initColors();
     }
 
@@ -64,7 +58,6 @@ public class BandsawViewLabelProvider extends LabelProvider implements
     }
 
     public String getColumnText(final Object obj, final int index) {
-        System.out.println("Getting index " + index);
         LoggingEvent event = (LoggingEvent) obj;
         Log4jItem item = BandsawUtilities.Log4jItemFactory(index, event);
         return item.getText();
@@ -111,9 +104,12 @@ public class BandsawViewLabelProvider extends LabelProvider implements
      * int)
      */
     public Font getFont(Object element, int index) {
-        // return JFaceResources.getFontRegistry().getBold(JFaceResources.DEFAULT_FONT);
-        /* Messes up sorted, and the column colours should be updated! */
+        if (index == Log4jItem.MESSAGE) {
+            LoggingEvent le = (LoggingEvent) element;
+            if (BandsawUtilities.isSQL(le.getRenderedMessage())) {
+                return JFaceResources.getFontRegistry().getBold(JFaceResources.DEFAULT_FONT);
+            }
+        }
        return null;
-         // return boldFont;
     }
 }

@@ -60,6 +60,7 @@ public class BandsawView extends ViewPart {
     private TableViewer viewer;
     private GridData gridData;
     private Composite labelArea;
+    private Text searchText;
 
     Action viewItemAction, copyItemAction, deleteItemAction, selectAllAction,
             jumpAction, executeItemAction;
@@ -88,7 +89,7 @@ public class BandsawView extends ViewPart {
         labelArea.setLayoutData(gridData);
         labelArea.setVisible(false);
 
-        final Text searchText = new Text(labelArea, SWT.BORDER | SWT.SEARCH
+        searchText = new Text(labelArea, SWT.BORDER | SWT.SEARCH
                 | SWT.CANCEL | SWT.ICON_CANCEL | SWT.ICON_SEARCH);
         // searchText.setText("type filter text");
         searchText.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
@@ -129,24 +130,20 @@ public class BandsawView extends ViewPart {
                         .getString(Log4jColumnsPreferencePage.P_COLUMNS)));
 
         ColumnList list = ColumnList.getInstance();
-        Iterator<Integer> iter = list.getList();
-        for (int i = 0; i < ColumnList.getInstance().getColumnCount(); i++) {
-
-            int val = (iter.next()).intValue();
-
-            final int index = i;
+        for (Integer col : list.getDefaultColumns()) {
+            final int val = col.intValue();
             final TableViewerColumn viewerColumn = new TableViewerColumn(
-                    viewer, SWT.NONE);
+                    viewer, SWT.LEFT);
             final TableColumn column = viewerColumn.getColumn();
 
             column.setText(BandsawUtilities.getLabelText(val));
             column.setResizable(true);
             column.setMoveable(true);
-            column.setWidth((index == Log4jItem.MESSAGE) ? 200 : 100);
+            column.setWidth((val == Log4jItem.MESSAGE) ? 200 : 100);
             column.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(final SelectionEvent e) {
-                    ((BandsawViewSorter) viewer.getSorter()).setColumn(index);
+                    ((BandsawViewSorter) viewer.getSorter()).setColumn(val);
                     int dir = viewer.getTable().getSortDirection();
                     if (viewer.getTable().getSortColumn() == column) {
                         dir = dir == SWT.UP ? SWT.DOWN : SWT.UP;
@@ -159,7 +156,7 @@ public class BandsawView extends ViewPart {
                 }
             });
         }
-
+        
         viewer.setContentProvider(new BandsawViewContentProvider());
         viewer.setLabelProvider(new BandsawViewLabelProvider());
         viewer.setSorter(new BandsawViewSorter());
@@ -279,10 +276,12 @@ public class BandsawView extends ViewPart {
 
     private void updateActionEnablement() {
         IStructuredSelection sel = (IStructuredSelection) viewer.getSelection();
-        jumpAction.setEnabled(sel.size() > 0);
-        viewItemAction.setEnabled(sel.size() > 0);
-        deleteItemAction.setEnabled(sel.size() > 0);
-        copyItemAction.setEnabled(sel.size() > 0);
+        boolean enabled = (sel.size() > 0);
+        jumpAction.setEnabled(enabled);
+        viewItemAction.setEnabled(enabled);
+        deleteItemAction.setEnabled(enabled);
+        copyItemAction.setEnabled(enabled);
+        executeItemAction.setEnabled(enabled);
     }
 
     private void createContextMenu() {
@@ -348,14 +347,27 @@ public class BandsawView extends ViewPart {
     @Override
     public final void setFocus() {
         if (BandsawUtilities.isShowing()) {
-            viewer.getTable().getParent().setFocus();
+            viewer.getControl().setFocus();
         }
     }
+    
+
+    /**
+     * Passing the focus request to the viewer's control.
+     */
+    @Override
+    public final void setContentDescription(String message) {
+        super.setContentDescription(message);
+    }    
 
     public final void toggleFilter() {
         labelArea.setVisible(!labelArea.isVisible());
         ((GridData) labelArea.getLayoutData()).exclude = !labelArea.isVisible();
         labelArea.getParent().layout();
+
+        if (labelArea.isVisible()) {
+            searchText.setFocus();
+        }
     }
 
     /*
