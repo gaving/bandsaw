@@ -13,6 +13,10 @@ Bandsaw TODO list
 - [_] Improve the complex filter dialog (check out error logs filters)
 - [_] Make marker text a fancy f2 style tooltip
 - [_] Bandsaw perspective with log, editor, sql results?
+- [!] Make port configurable!
+- [_] Make the column widths a bit better
+- [_] Let the colors be background colors too (pastel gradients, bold?)
+- [_] Better error handling on the optional features
 
 0.2.5
 -----
@@ -28,15 +32,12 @@ Bandsaw TODO list
 - [x] Remove socket hub appender stuff completely
 - [x] Turn pause into a lock scroll bar action
 - [x] Tidy up menu items
-- [_] Make the column widths a bit better
-- [_] Let the colors be background colors too (pastel gradients, bold?)
-- [_] Fix the column labels
-- [_] Better error handling on the optional features
+- [x] Fix the column labels
 - [x] Use error log icons for levels
 - [x] Match the date format of the error log
 - [x] Change level column to message + level
 - [x] Change bandsaw icon
-- [_] Bar title thingy that shows you how many log messages
+- [x] Bar title thingy that shows you how many log messages
 
 0.1
 ---

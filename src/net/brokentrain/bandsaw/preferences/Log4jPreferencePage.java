@@ -42,7 +42,7 @@ public class Log4jPreferencePage extends FieldEditorPreferencePage implements
     public static void initializeDefaults() {
         IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
         store.setDefault(P_PORT, 4445);
-        store.setDefault(P_AUTOMATIC, false);
+        store.setDefault(P_AUTOMATIC, true);
         store.setDefault(P_SHOW_NOTIFICATIONS, false);
     }
 
@@ -54,10 +54,6 @@ public class Log4jPreferencePage extends FieldEditorPreferencePage implements
                 getFieldEditorParent()));
     }
 
-    /**
-     * I needed to change the systems server type here, so I had to override
-     * this.
-     */
     @Override
     public boolean performOk() {
         return super.performOk();

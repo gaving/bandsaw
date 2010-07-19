@@ -9,5 +9,8 @@
    <feature url="features/net.brokentrain.bandsaw.feature_0.2.1.jar" id="net.brokentrain.bandsaw.feature" version="0.2.1">
       <category name="Bandsaw"/>
    </feature>
+   <feature url="features/net.brokentrain.bandsaw.feature_0.2.5.jar" id="net.brokentrain.bandsaw.feature" version="0.2.5">
+      <category name="Bandsaw"/>
+   </feature>
    <category-def name="Bandsaw" label="Bandsaw"/>
 </site>

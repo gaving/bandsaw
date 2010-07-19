@@ -1,8 +1,8 @@
 package net.brokentrain.bandsaw.log4j;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.StringTokenizer;
-import java.util.ArrayList;
 
 import net.brokentrain.bandsaw.util.BandsawUtilities;
 
@@ -22,6 +22,13 @@ public class ColumnList {
     public static final char delimiter = ':';
 
     private ColumnList() {
+        defaultCols.add(new Integer(Log4jItem.LEVEL));
+        defaultCols.add(new Integer(Log4jItem.CATEGORY));
+        defaultCols.add(new Integer(Log4jItem.MESSAGE));
+        defaultCols.add(new Integer(Log4jItem.LINE_NUMBER));
+        defaultCols.add(new Integer(Log4jItem.DATE));
+        defaultCols.add(new Integer(Log4jItem.NDC));
+        defaultCols.add(new Integer(Log4jItem.THROWABLE));
     }
 
     public static ColumnList getInstance() {
@@ -61,6 +68,10 @@ public class ColumnList {
         return defaultCols;
     }
 
+    public ArrayList<Integer> getColumns() {
+        return columns;
+    }
+
     public int[] getCols() {
         int size = getColumnCount();
         int[] list = new int[size];
@@ -68,6 +79,10 @@ public class ColumnList {
             list[i] = (columns.get(i)).intValue();
         }
         return list;
+    }
+
+    public boolean isHidden(Integer col) {
+        return !columns.contains(col);
     }
 
     public static int[] deSerialize(String object) {
@@ -95,13 +110,11 @@ public class ColumnList {
         return sb.toString();
     }
 
-    @SuppressWarnings("unchecked")
     public void setColList(int[] list) {
         columns = new ArrayList<Integer>();
         for (int i = 0; i < list.length; i++) {
             columns.add(new Integer(list[i]));
         }
-        defaultCols = (ArrayList<Integer>) columns.clone();
     }
 
 }

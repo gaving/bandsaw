@@ -6,6 +6,7 @@ import java.util.List;
 import net.brokentrain.bandsaw.Bandsaw;
 import net.brokentrain.bandsaw.preferences.DataToolsPreferencePage;
 import net.brokentrain.bandsaw.util.BandsawUtilities;
+import net.brokentrain.bandsaw.util.MessageBoxUtil;
 
 import org.apache.log4j.spi.LoggingEvent;
 import org.eclipse.core.runtime.IStatus;
@@ -18,6 +19,7 @@ import org.eclipse.datatools.sqltools.sqleditor.internal.actions.Messages;
 import org.eclipse.datatools.sqltools.sqleditor.result.GroupSQLResultRunnable;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.SWT;
 import org.eclipse.ui.PlatformUI;
 
 public class ExecuteQueryAction extends Action {
@@ -62,8 +64,10 @@ public class ExecuteQueryAction extends Action {
                     }
                 }
             } else {
-                System.out.println("No default profile found to use");
-                // TODO: Message
+                MessageBoxUtil
+                .showMessage(BandsawUtilities.getSite().getShell(), SWT.OK | SWT.ICON_INFORMATION,
+                        "Error",
+                        "Could not find a default profile to use");                
             }
         } catch (Exception e) {
             e.printStackTrace();

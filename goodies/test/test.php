@@ -12,6 +12,7 @@
     $logger->info($message);
     $logger->warn($message);
     $logger->debug($message);
+    $logger->debug("select * from masterqueue limit 10");
 
     try {
         throw new Exception("yeah");

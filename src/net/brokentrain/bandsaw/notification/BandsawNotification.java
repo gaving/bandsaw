@@ -2,6 +2,7 @@ package net.brokentrain.bandsaw.notification;
 
 import net.brokentrain.bandsaw.util.PaintUtil;
 
+import org.apache.log4j.spi.LoggingEvent;
 import org.eclipse.mylyn.internal.provisional.commons.ui.AbstractNotificationPopup;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -10,8 +11,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-
-import org.apache.log4j.spi.LoggingEvent;
 
 @SuppressWarnings("restriction")
 public class BandsawNotification extends AbstractNotificationPopup {

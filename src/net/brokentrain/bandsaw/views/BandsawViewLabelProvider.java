@@ -1,8 +1,10 @@
 package net.brokentrain.bandsaw.views;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 import net.brokentrain.bandsaw.Bandsaw;
+import net.brokentrain.bandsaw.log4j.ColumnList;
 import net.brokentrain.bandsaw.log4j.Log4jItem;
 import net.brokentrain.bandsaw.preferences.ColorPreferencePage;
 import net.brokentrain.bandsaw.util.BandsawUtilities;
@@ -28,8 +30,13 @@ public class BandsawViewLabelProvider extends LabelProvider implements
     private static Hashtable<String, Color> colors = new Hashtable<String, Color>(
             5);
 
+    private ArrayList<Integer> columns;
+
     public BandsawViewLabelProvider() {
         initColors();
+
+        ColumnList list = ColumnList.getInstance();
+        columns = list.getColumns();
     }
 
     public static void initColors() {
@@ -64,7 +71,7 @@ public class BandsawViewLabelProvider extends LabelProvider implements
     }
 
     public Image getColumnImage(final Object obj, final int index) {
-        if ((index == 0) && (obj instanceof LoggingEvent)) {
+        if ((index == columns.get(0)) && (obj instanceof LoggingEvent)) {
             LoggingEvent le = (LoggingEvent) obj;
             return PaintUtil.getIcon(le.getLevel().toInt());
         }

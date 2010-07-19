@@ -184,11 +184,12 @@ public class BandsawUtilities {
             IPreferenceStore store = Bandsaw.getDefault().getPreferenceStore();
             TableColumn[] tc = getTable().getColumns();
             ColumnList list = ColumnList.getInstance();
-            Iterator<Integer> iter = list.getList();
-            for (int i = 0; i < list.getColumnCount(); i++) {
-                int val = (iter.next()).intValue();
+            for (Integer col : list.getDefaultColumns()) {
+                int val = col.intValue();
+                if (!list.isHidden(col)) {
                 int width = store.getInt("colWidth." + val);
-                tc[i].setWidth(width);
+                tc[val].setWidth(width);
+                }
             }
         }
     }
@@ -197,12 +198,19 @@ public class BandsawUtilities {
         if (isShowing()) {
             TableColumn[] tc = getTable().getColumns();
             ColumnList list = ColumnList.getInstance();
-            Iterator<Integer> iter = list.getList();
-            for (int i = 0; i < list.getColumnCount(); i++) {
-                int val = (iter.next()).intValue();
-                tc[i].setText(BandsawUtilities.getLabelText(val));
-                updateTableColumnWidths();
+            for (Integer col : list.getDefaultColumns()) {
+                int val = col.intValue();
+                TableColumn column = tc[val];
+                if (list.isHidden(col)) {
+                    column.setWidth(0);
+                    column.setResizable(false);
+                    column.setMoveable(false);
+                } else {
+                    column.setMoveable(true);
+                    column.setResizable(true);
+                }
             }
+            updateTableColumnWidths();
         }
     }
 

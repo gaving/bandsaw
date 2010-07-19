@@ -155,8 +155,15 @@ public class BandsawView extends ViewPart {
                     viewer.refresh();
                 }
             });
+
+
+            if (list.isHidden(col)) {
+                column.setWidth(0);
+                column.setResizable(false);
+                column.setMoveable(false);
+            }
         }
-        
+
         viewer.setContentProvider(new BandsawViewContentProvider());
         viewer.setLabelProvider(new BandsawViewLabelProvider());
         viewer.setSorter(new BandsawViewSorter());
@@ -350,7 +357,7 @@ public class BandsawView extends ViewPart {
             viewer.getControl().setFocus();
         }
     }
-    
+
 
     /**
      * Passing the focus request to the viewer's control.
@@ -358,7 +365,7 @@ public class BandsawView extends ViewPart {
     @Override
     public final void setContentDescription(String message) {
         super.setContentDescription(message);
-    }    
+    }
 
     public final void toggleFilter() {
         labelArea.setVisible(!labelArea.isVisible());

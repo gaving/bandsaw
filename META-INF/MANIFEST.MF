@@ -38,7 +38,6 @@ Export-Package: net.brokentrain.bandsaw;uses:="org.apache.log4j,org.eclipse.ui.p
    org.apache.log4j.spi,
    org.eclipse.dltk.core,
    net.brokentrain.bandsaw.views,
-   org.eclipse.jface.action,
    org.eclipse.core.resources,
    org.eclipse.swt.graphics,
    org.eclipse.jface.viewers,
@@ -164,3 +163,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.datatools.sqltools.sqleditor;bundle-version="1.0.1";resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
+Bundle-Vendor: brokentrain.net
