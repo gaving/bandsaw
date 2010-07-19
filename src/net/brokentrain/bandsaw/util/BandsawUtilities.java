@@ -298,8 +298,8 @@ public class BandsawUtilities {
         if (!LockAction.isLocked()) {
             getViewer().reveal(le);
         }
-        
-        updateContentDescription();        
+
+        updateContentDescription();
 
         boolean notification = Bandsaw.getDefault().getPreferenceStore()
                 .getBoolean(Log4jPreferencePage.P_SHOW_NOTIFICATIONS);
@@ -309,7 +309,7 @@ public class BandsawUtilities {
             popup.create();
             popup.open();
         }
-        
+
         // tableViewer.getTable().pack();
         // for (TableColumn column : tableViewer.getTable().getColumns())
         // column.pack();
@@ -321,7 +321,7 @@ public class BandsawUtilities {
     }
 
     public static void updateStatus(String message) {
-        IActionBars bars = ((IViewSite) getSite()).getActionBars();
+        IActionBars bars = getSite().getActionBars();
         bars.getStatusLineManager().setMessage(message);
     }
 
